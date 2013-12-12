@@ -1,9 +1,11 @@
 package upmc.aar2013.project.heraclessport.server.beans;
-
+/**
+ *
+ */
 public class BeanUser {
 	private String mail;
 	private String password;
-	private String name;
+	private String name; 
 	
 	public BeanUser() {
 		mail = "";
