@@ -17,6 +17,12 @@ ul {
 ul li {
 	float:left;
 }
+p.error {
+	color:#FF0000;
+}
+p.succes {
+	color:#00FF00;
+}
 html {
 	
 }

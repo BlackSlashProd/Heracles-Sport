@@ -4,7 +4,10 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-    <!-- List of servlets --> 
+    <!-- 
+    List of servlets 
+    --> 
+    <!-- Servlets Page -->
     <servlet>
         <servlet-name>ParisPageServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.ParisPageServlet</servlet-class>
@@ -21,6 +24,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>AccountPageServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.AccountPageServlet</servlet-class>
     </servlet>
+    <!-- Servlets Tools -->
+    <servlet>
+        <servlet-name>ConnectServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.ConnectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisconnectServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.DisconnectServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ServletTest</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.TestServlet</servlet-class>
@@ -29,7 +41,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>ServletJSPTest</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.TestJspServlet</servlet-class>
     </servlet>
-    <!-- Mapping the servlets list -->
+    <!-- 
+    Mapping the servlets list 
+    -->
+    <!-- Servlets Page -->
     <servlet-mapping>
         <servlet-name>ParisPageServlet</servlet-name>
         <url-pattern>/paris</url-pattern>
@@ -45,6 +60,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>AccountPageServlet</servlet-name>
         <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+    <!-- Servlets Tools -->    
+    <servlet-mapping>
+        <servlet-name>ConnectServlet</servlet-name>
+        <url-pattern>/connect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisconnectServlet</servlet-name>
+        <url-pattern>/disconnect</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletTest</servlet-name>
