@@ -25,7 +25,7 @@ body {
     font-size:16px;
 	color:#FFFFFF;
 	background-color:#000000;
-	background-attachement:fixed;
+	background-attachment:fixed;
 	background-position:center top;
 	background-repeat:no-repeat;
 	background-image:url('../images/style/bg_stadium001.jpg');
@@ -70,6 +70,8 @@ nav ul li:hover {
 	background-color:#FFFFFF;
 }
 nav ul li a {
+	float:left;
+	width:100%;
 	font-size:20px;
 	color:#000000;
 }
