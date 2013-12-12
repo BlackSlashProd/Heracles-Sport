@@ -33,4 +33,5 @@ public class BeanUser {
 	public String getName() {
 		return name;
 	}
+	
 }
