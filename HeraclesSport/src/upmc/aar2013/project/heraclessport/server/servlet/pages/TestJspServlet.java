@@ -1,6 +1,7 @@
-package upmc.aar2013.project.heraclessport.server;
+package upmc.aar2013.project.heraclessport.server.servlet.pages;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,9 +18,10 @@ public class TestJspServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		int randInt = 42;
+	    Random rand = new Random();
+		int randInt = rand.nextInt(101);
 		request.setAttribute("randInt", randInt);
-		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/TestJSP.jsp");  
+		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/TestJSP.jsp");  
         dispatch.forward(request, response);
 	}
 }

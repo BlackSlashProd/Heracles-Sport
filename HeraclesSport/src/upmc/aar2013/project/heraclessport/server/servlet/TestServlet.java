@@ -1,4 +1,4 @@
-package upmc.aar2013.project.heraclessport.server;
+package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
 import javax.servlet.http.*;

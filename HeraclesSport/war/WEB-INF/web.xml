@@ -6,23 +6,56 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <!-- List of servlets --> 
     <servlet>
+        <servlet-name>ParisPageServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.ParisPageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HistoricPageServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.HistoricPageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RankingPageServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.RankingPageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountPageServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.AccountPageServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletTest</servlet-name>
-        <servlet-class>upmc.aar2013.project.heraclessport.server.TestServlet</servlet-class>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.TestServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletJSPTest</servlet-name>
-        <servlet-class>upmc.aar2013.project.heraclessport.server.TestJspServlet</servlet-class>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.TestJspServlet</servlet-class>
     </servlet>
     <!-- Mapping the servlets list -->
     <servlet-mapping>
+        <servlet-name>ParisPageServlet</servlet-name>
+        <url-pattern>/paris</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RankingPageServlet</servlet-name>
+        <url-pattern>/rank</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoricPageServlet</servlet-name>
+        <url-pattern>/histo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountPageServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ServletTest</servlet-name>
         <url-pattern>/test</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
     <servlet-mapping>
         <servlet-name>ServletJSPTest</servlet-name>
         <url-pattern>/testjsp</url-pattern>
     </servlet-mapping>   
+    <!-- Default Welcome File -->
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>jsp/pages/HomePage.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
