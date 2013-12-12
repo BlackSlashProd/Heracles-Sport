@@ -12,8 +12,18 @@ public class TestServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse rep) 
 			throws IOException {
-		rep.setContentType("text/plain");
-		rep.getWriter().println("Test Servlet Works Fine !!!");
+		rep.setContentType("text/html");
+		rep.getWriter().println("<!DOCTYPE html>");
+		rep.getWriter().println("<html lang=\"fr\">");
+		rep.getWriter().println("<head>");
+		rep.getWriter().println("<meta charset=\"utf-8\">");
+		rep.getWriter().println("<title>Heracles Sport</title>");
+		rep.getWriter().println("</head>");
+		rep.getWriter().println("<body>");
+		rep.getWriter().println("<h1>Test Servlet Works Fine !!!</h1>");
+		rep.getWriter().println("<p>Back to <a href=\"/\">Home</a></p>");
+		rep.getWriter().println("</body>");
+		rep.getWriter().println("</html>");
 		
 	}
 }

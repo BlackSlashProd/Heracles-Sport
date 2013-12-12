@@ -9,12 +9,19 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>ServletTest</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.TestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletJSPTest</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.TestJspServlet</servlet-class>
+    </servlet>
     <!-- Mapping the servlets list -->
     <servlet-mapping>
         <servlet-name>ServletTest</servlet-name>
         <url-pattern>/test</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>ServletJSPTest</servlet-name>
+        <url-pattern>/testjsp</url-pattern>
+    </servlet-mapping>   
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
