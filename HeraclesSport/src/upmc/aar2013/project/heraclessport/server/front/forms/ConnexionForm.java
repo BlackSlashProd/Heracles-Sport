@@ -52,6 +52,9 @@ public class ConnexionForm {
         if(mail != null && !mail.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
             throw new Exception("Adresse mail non valide.");
         }
+        else if(mail==null) {
+        	throw new Exception("Veuillez saisir une adresse mail.");
+        }
     }
 
     private void checkPassword(String password) throws Exception {

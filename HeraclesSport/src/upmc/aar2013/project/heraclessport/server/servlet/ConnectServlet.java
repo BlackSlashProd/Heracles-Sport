@@ -39,7 +39,7 @@ public class ConnectServlet extends HttpServlet {
 		BeanUser user = form.userConnect(request);
         HttpSession session = request.getSession();
         if (form.getErrors().isEmpty()) {
-        	//session.setAttribute(JSP_VAR_SESSION, user);
+        	session.setAttribute(JSP_VAR_SESSION, user);
         } else {
             session.setAttribute(JSP_VAR_SESSION, null);
         }

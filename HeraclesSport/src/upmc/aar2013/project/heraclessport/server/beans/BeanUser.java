@@ -1,8 +1,15 @@
 package upmc.aar2013.project.heraclessport.server.beans;
+
+import java.io.Serializable;
+
 /**
  *
  */
-public class BeanUser {
+public class BeanUser implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2631058839044452508L;
 	private String mail;
 	private String password;
 	private String name; 
