@@ -110,6 +110,12 @@ section h2 {
 	text-align:center;
 	margin-bottom:20px;
 }
+section h3 {
+	font-size:20px;
+	color:#33FF33;
+	text-decoration:underline;
+	margin-bottom:10px;
+}
 footer {
 	height:20px;
 }

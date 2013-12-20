@@ -29,18 +29,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>ConnectServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.ConnectServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>DisconnectServlet</servlet-name>
-        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.DisconnectServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletTest</servlet-name>
-        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.TestServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletJSPTest</servlet-name>
-        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.TestJspServlet</servlet-class>
-    </servlet>
     <!-- 
     Mapping the servlets list 
     -->
@@ -62,22 +50,31 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <!-- Servlets Tools -->    
-    <servlet-mapping>
+     <servlet-mapping>
         <servlet-name>ConnectServlet</servlet-name>
-        <url-pattern>/connect</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DisconnectServlet</servlet-name>
-        <url-pattern>/disconnect</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletTest</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>  
-    <servlet-mapping>
-        <servlet-name>ServletJSPTest</servlet-name>
-        <url-pattern>/testjsp</url-pattern>
-    </servlet-mapping>   
+        <url-pattern>/log</url-pattern>
+    </servlet-mapping> 
+    <!-- Security -->
+    <security-constraint>
+        <!-- Need to be logged -->
+	    <web-resource-collection>
+	        <url-pattern>/account</url-pattern>
+	        <url-pattern>/histo</url-pattern>
+	        <url-pattern>/log</url-pattern>
+	    </web-resource-collection>
+	    <auth-constraint>
+	        <role-name>*</role-name>
+	    </auth-constraint>
+    </security-constraint>
+    <!-- Objectify -->
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>ObjectifyFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
     <!-- Default Welcome File -->
     <welcome-file-list>
         <welcome-file>jsp/pages/HomePage.jsp</welcome-file>

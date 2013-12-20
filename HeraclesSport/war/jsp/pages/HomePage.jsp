@@ -8,27 +8,25 @@
 <section>
     <h2>Home Page</h2>
     <div class="debug" style="border-bottom:2px solid #FFFFFF;">
-    <p>
-        <b><u>Pour les utilisateurs non connectés :</b></u><br/>
-        Descriptif du jeu et formulaire de connection ainsi qu'un lien vers la création de compte.<br/><br/>
-        <b><u>Pour les joueurs connectés :</b></u><br/>
-        Récapitulatif du compte (nombre de point, mise actuelle en jeu, ...).<br/><br/>
-    </p>
-    <p>
-        <b><u>Servlets de test :</u></b><br/>
-        <a href="/test">ServletTest</a><br/>
-        <a href="/testjsp">ServletJSPTest</a><br/><br/>
-    </p>
+	    <p>
+	        <b><u>Pour les utilisateurs non connectés :</b></u><br/>
+	        Descriptif du jeu et formulaire de connection ainsi qu'un lien vers la création de compte.<br/><br/>
+	        <b><u>Pour les joueurs connectés :</b></u><br/>
+	        Récapitulatif du compte (nombre de point, mise actuelle en jeu, ...).<br/><br/>
+	    </p>
     </div>
     <div class="homepage">
         <% if (userService.getCurrentUser() == null) { %>
             <p>
-                Connectez vous pour pouvoir jouer : <a href="<%= userService.createLoginURL("/") %>">Se connecter</a>
+                Connectez vous pour pouvoir jouer : <a href="<%= userService.createLoginURL("/log") %>">Se connecter</a>
             </p>
         <% }
         else { %>
             <p>
-                Bonjour <%= userService.getCurrentUser().getNickname() %>
+                Bonjour <%= userService.getCurrentUser().getNickname() %><br/>
+            </p>
+            <p>
+                <a href="/account">Editer votre profil</a>
             </p>
             <p>
                 <a href="<%= userService.createLogoutURL("/") %>">Se déconnecter</a>
