@@ -8,6 +8,6 @@
     </head>
     <body>
         <div id="page">
-            <header>
+            <header class="bg_gradient_green">
                 <h1>Welcome to Heracles Sport site !</h1>
             </header>

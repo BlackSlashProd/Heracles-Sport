@@ -6,24 +6,29 @@ import com.googlecode.objectify.annotation.*;
 
 @Entity
 public class UserModel {
-    @Id String user_id;
+	@Id String user_id;
     String user_name;
-    String user_pseudo;
+    @Index String user_pseudo;
     String user_mail;
-    @Index Date user_creation;
+    Date user_creation;
     @Index int user_point;
     
-    @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private UserModel() {}
     
-    public UserModel(String uid, String uname, String umail) {
-    	user_id = uid;
-    	user_name = uname;
-    	user_pseudo = uname;
-    	user_mail = umail;
-    	user_creation = new Date();
-    	user_point = Configs.getStartPoint();
-    }
+    /**
+	 * @param user_id
+	 * @param user_name
+	 * @param user_mail
+	 */
+	public UserModel(String user_id, String user_name, String user_mail) {
+		this.user_id = user_id;
+		this.user_name = user_name;
+		this.user_mail = user_mail;
+		this.user_pseudo = user_name;
+    	this.user_creation = new Date();
+    	this.user_point = Configs.getStartPoint();		
+	}	
 	/**
 	 * @return the user_name
 	 */

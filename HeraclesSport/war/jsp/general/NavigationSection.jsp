@@ -9,7 +9,7 @@
             <li><a href="/rank">Classement</a></li>
         <% if (userService.getCurrentUser() == null) { %>
             <li class="log_co">
-                <a href="<%= userService.createLoginURL("/") %>">Connexion</a>
+                <a href="<%= userService.createLoginURL("/log") %>">Connexion</a>
             </li>
         <% }
         else { %>

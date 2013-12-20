@@ -10,11 +10,14 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+import umpc.aar2013.project.heraclessport.server.front.forms.AccountForm;
 import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
 
 public class AccountPageServlet extends HttpServlet {
 
+	public static final String JSP_VAR_FORM = "form";
+	
 	/**
 	 * 
 	 */
@@ -32,7 +35,17 @@ public class AccountPageServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();	
+		
+		AccountForm accform = new AccountForm();
+		UserModel usermod = accform.modifyAccount(request, user.getUserId());
+		
+		request.setAttribute("user", usermod);
+		request.setAttribute(JSP_VAR_FORM, accform);
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/pages/AccountPage.jsp");  
+        dispatch.forward(request, response);		
 	}
 	
 }

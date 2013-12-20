@@ -23,13 +23,12 @@
         <% }
         else { %>
             <p>
-                Bonjour <%= userService.getCurrentUser().getNickname() %><br/>
+                Bonjour <%= userService.getCurrentUser().getNickname() %> (<a href="/account">Editer mon profil</a>)<br/><br/>
             </p>
-            <p>
-                <a href="/account">Editer votre profil</a>
-            </p>
-            <p>
-                <a href="<%= userService.createLogoutURL("/") %>">Se déconnecter</a>
+            <p style="margin:10px 0; padding:5px; border:2px solid #FF0000;">
+                <b>Debug : </b><br/>
+                <a href="/datatest?fct=create">Remplir BDD</a><br/>
+                <a href="/datatest?fct=remove">Vider BDD (Déconnexion)</a><br/>
             </p>
         <% } %>
     </div>
