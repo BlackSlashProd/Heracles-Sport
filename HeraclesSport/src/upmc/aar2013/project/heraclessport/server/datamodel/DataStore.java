@@ -8,6 +8,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
 public class DataStore {
+	
     static {
         ObjectifyService.register(UserModel.class);
         ObjectifyService.register(TeamModel.class);

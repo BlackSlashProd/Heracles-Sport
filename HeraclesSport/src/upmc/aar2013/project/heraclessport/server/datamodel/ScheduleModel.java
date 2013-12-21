@@ -7,13 +7,6 @@ import com.googlecode.objectify.annotation.*;
 
 @Entity
 public class ScheduleModel {
-	/**
-	 * @param sched_isStart the sched_isStart to set
-	 */
-	public void setSched_isStart(boolean sched_isStart) {
-		this.sched_isStart = sched_isStart;
-	}
-
 	@Id String sched_id;
 	Key<TeamModel> sched_home_team_id;
 	Key<TeamModel> sched_away_team_id;
@@ -161,5 +154,11 @@ public class ScheduleModel {
 	 */
 	public boolean isSched_isStart() {
 		return sched_isStart;
+	}
+	/**
+	 * @param sched_isStart the sched_isStart to set
+	 */
+	public void setSched_isStart(boolean sched_isStart) {
+		this.sched_isStart = sched_isStart;
 	}
 }
