@@ -77,7 +77,7 @@ public class DataTestServlet extends HttpServlet {
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();
 			UserService userService = UserServiceFactory.getUserService();
-			dispatch = request.getRequestDispatcher(userService.createLogoutURL("/"));  
+			response.sendRedirect(userService.createLogoutURL("/")); 
 		}   
 		
         dispatch.forward(request, response);
