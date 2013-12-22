@@ -1,7 +1,9 @@
 package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +14,11 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 
 import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.ParisModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.SCORE_TEAM;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
@@ -75,6 +81,25 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeSchedule(schedmod003);
 			DataStore.storeSchedule(schedmod004);
 			DataStore.storeSchedule(schedmod005);
+			
+			// Results
+			/*Key<ScheduleModel> sched001 = Key.create(ScheduleModel.class, schedmod001.getSched_id());
+			ScoreResultModel score001 = new ScoreResultModel(sched001,SCORE_TEAM.HOME);
+			score001.setScore_res_score_home(4);
+			ScoreResultModel score002 = new ScoreResultModel(sched001,SCORE_TEAM.AWAY);
+			score002.setScore_res_score_away(2);
+			DataStore.storeResult(score001);
+			DataStore.storeResult(score002);*/
+			
+			// Paris
+			/*Key<ScheduleModel> sched003 = Key.create(ScheduleModel.class, schedmod003.getSched_id());
+			Key<UserModel> user001 = Key.create(UserModel.class, usermod003.getUser_id());
+			ScoreResultModel scoremod003 = new ScoreResultModel(sched003,SCORE_TEAM.HOME);
+			scoremod003.setScore_res_score_home(4);
+			DataStore.storeResult(scoremod003);
+			Key<ResultModel> score003 = Key.create(ResultModel.class, scoremod003.getRes_id());
+			ParisModel paris001 = new ParisModel(user001,score003, 2);
+			DataStore.storeParis(paris001);*/
 		} 
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();
