@@ -13,6 +13,8 @@ public class DataStore {
         ObjectifyService.register(UserModel.class);
         ObjectifyService.register(TeamModel.class);
         ObjectifyService.register(ScheduleModel.class);
+        ObjectifyService.register(ScoreResultModel.class);
+        ObjectifyService.register(ParisModel.class);
     }
     
     public static void cleanAll() {
@@ -22,6 +24,10 @@ public class DataStore {
     	ofy().delete().entities(getAllTeams());
     	// Schedules
     	ofy().delete().entities(getAllSchedules());
+    	// Results
+    	//ofy().delete().entities(getAllResults());
+    	// Paris
+    	
     	// ...
     }
     /*
@@ -78,5 +84,20 @@ public class DataStore {
 	}
 	public static void storeSchedule(ScheduleModel sched) {
 		ofy().save().entity(sched).now();
+	}
+	/*
+	 * Results Methods 
+	 */
+	public static List<ResultModel> getAllResults() {
+		return ofy().load().type(ResultModel.class).list();
+	}
+	public static void storeResult(ResultModel res) {
+		ofy().save().entity(res).now();
+	}
+	/*
+	 * Paris Methods
+	 */
+	public static void storeParis(ParisModel mod) {
+		ofy().save().entity(mod).now();
 	}
 }

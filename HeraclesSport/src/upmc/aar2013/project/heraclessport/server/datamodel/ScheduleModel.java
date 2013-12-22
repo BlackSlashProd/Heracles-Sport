@@ -12,6 +12,7 @@ public class ScheduleModel {
 	Key<TeamModel> sched_away_team_id;
 	@Index Date sched_date;
 	@Index boolean sched_isFinish;
+	
 	@Ignore boolean sched_isStart;
 	@Ignore String sched_home_team_name;
 	@Ignore String sched_away_team_name;
