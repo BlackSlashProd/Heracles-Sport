@@ -36,7 +36,7 @@ public class APIRequest {
 			this.season2 = season2;
 	}
 
-	public void getLeagueHierarchyRequest(Sport sport) {
+	public Element getLeagueHierarchyRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -44,32 +44,37 @@ public class APIRequest {
 				break;
 			// à compléter si besoin
 		}
-		Element element = send(request);
 		
-		// parcours temporaire
-		NodeList TeamNodes = element.getElementsByTagName("team");
-		for (int i=0;i<5/*TeamNodes.getLength()*/;i++) {
-			NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
-			Node node = nodeMapTeamAttributes.getNamedItem("id");
-			System.out.println("id="+node.getNodeValue());
-			node = nodeMapTeamAttributes.getNamedItem("name");
-			System.out.println("name="+node.getNodeValue());
-			
-			NodeList nodeInTeam  = TeamNodes.item(i).getChildNodes();
-			for (int j=0;j<nodeInTeam.getLength();j++) {
-				if (nodeInTeam.item(j).getNodeName().equals("venue")) {
-					NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
-					node = nodeMapVenueAttributes.getNamedItem("city");
-					System.out.println("city="+node.getNodeValue());
-					node = nodeMapVenueAttributes.getNamedItem("country");
-					System.out.println("country="+node.getNodeValue());
+		Element element = send(request);
+		try {
+			// parcours temporaire
+			NodeList TeamNodes = element.getElementsByTagName("team");
+			for (int i=0;i<5/*TeamNodes.getLength()*/;i++) {
+				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
+				Node node = nodeMapTeamAttributes.getNamedItem("id");
+				System.out.println("id="+node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("name");
+				System.out.println("name="+node.getNodeValue());
+				
+				NodeList nodeInTeam  = TeamNodes.item(i).getChildNodes();
+				for (int j=0;j<nodeInTeam.getLength();j++) {
+					if (nodeInTeam.item(j).getNodeName().equals("venue")) {
+						NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
+						node = nodeMapVenueAttributes.getNamedItem("city");
+						System.out.println("city="+node.getNodeValue());
+						node = nodeMapVenueAttributes.getNamedItem("country");
+						System.out.println("country="+node.getNodeValue());
+					}
 				}
 			}
+		} catch (Exception e) {
+System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getLeagueHierarchyRequest()");
 		}
+		return element;
 	}
 
 	// pas sur que se soit très utile ça
-	public void getTeamProfileRequest(Sport sport, String teamID) {
+	public Element getTeamProfileRequest(Sport sport, String teamID) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -77,28 +82,32 @@ public class APIRequest {
 				break;
 			// à compléter si besoin
 		}
-		Element element = send(request);
 		
-		// parcours temporaire
-		Node node = null;
-		NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
-		node = nodeMapTeamAttributes.getNamedItem("id");
-		System.out.println("id="+node.getNodeValue());
-		node = nodeMapTeamAttributes.getNamedItem("name");
-		System.out.println("name="+node.getNodeValue());
+		Element element = send(request);
+		try {
+			// parcours temporaire
+			Node node = null;
+			NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
+			node = nodeMapTeamAttributes.getNamedItem("id");
+			System.out.println("id="+node.getNodeValue());
+			node = nodeMapTeamAttributes.getNamedItem("name");
+			System.out.println("name="+node.getNodeValue());
 
-		NodeList venueNodes = element.getElementsByTagName("venue");
-		for (int j=0;j<venueNodes.getLength();j++) {
-			NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
-			node = nodeMapVenueAttributes.getNamedItem("city");
-			System.out.println("city="+node.getNodeValue());
-			node = nodeMapVenueAttributes.getNamedItem("country");
-			System.out.println("country="+node.getNodeValue());
+			NodeList venueNodes = element.getElementsByTagName("venue");
+			for (int j=0;j<venueNodes.getLength();j++) {
+				NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
+				node = nodeMapVenueAttributes.getNamedItem("city");
+				System.out.println("city="+node.getNodeValue());
+				node = nodeMapVenueAttributes.getNamedItem("country");
+				System.out.println("country="+node.getNodeValue());
+			}
+		} catch (Exception e) {
+System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getTeamProfileRequest()");
 		}
-
+		return element;
 	}
 	
-	public void getScheduleRequest(Sport sport) {
+	public Element getScheduleRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -106,13 +115,45 @@ public class APIRequest {
 				break;
 			// à compléter si besoin
 		}
-		Element element = send(request);
 		
-		// parcours temporaire
-		NodeList TeamNodes = element.getElementsByTagName("game");
-		for (int i=0;i<5/*TeamNodes.getLength()*/;i++) {
-			NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
-			Node node = nodeMapTeamAttributes.getNamedItem("id");
+		Element element = send(request);
+		try {
+			// parcours temporaire
+			NodeList TeamNodes = element.getElementsByTagName("game");
+			for (int i=0;i<5/*TeamNodes.getLength()*/;i++) {
+				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
+				Node node = nodeMapTeamAttributes.getNamedItem("id");
+				System.out.println("id="+node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("status");
+				System.out.println("status="+node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("home_team");
+				System.out.println("home_team"+node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("away_team");
+				System.out.println("away_team="+node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("scheduled");
+				System.out.println("scheduled="+node.getNodeValue());
+			}
+		} catch (Exception e) {
+System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
+		}
+		return element;
+	}
+	
+	public Element getGameBoxscore(Sport sport, String teamID) {
+		String request = null;
+		switch(sport) {
+			case NBA: case NHL:
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + teamID + "/boxscore.xml?api_key=" + sport.getKey();
+				break;
+			// à compléter si besoin
+		}
+		
+		Element element = send(request);
+		try {
+			// parcours temporaire
+			Node node = null;
+			NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
+			node = nodeMapTeamAttributes.getNamedItem("id");
 			System.out.println("id="+node.getNodeValue());
 			node = nodeMapTeamAttributes.getNamedItem("status");
 			System.out.println("status="+node.getNodeValue());
@@ -122,46 +163,26 @@ public class APIRequest {
 			System.out.println("away_team="+node.getNodeValue());
 			node = nodeMapTeamAttributes.getNamedItem("scheduled");
 			System.out.println("scheduled="+node.getNodeValue());
+			
+			NodeList venueNodes = element.getElementsByTagName("team");
+			for (int j=0;j<venueNodes.getLength();j++) {
+				NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
+				node = nodeMapVenueAttributes.getNamedItem("id");
+				System.out.println("id="+node.getNodeValue());
+				node = nodeMapVenueAttributes.getNamedItem("name");
+				System.out.println("name="+node.getNodeValue());
+				node = nodeMapVenueAttributes.getNamedItem("points");
+				System.out.println("points="+node.getNodeValue());
+			}
+		} catch (Exception e) {
+System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getGameBoxscore()");
 		}
-	}
-	
-	public void getGameBoxscore(Sport sport, String teamID) {
-		String request = null;
-		switch(sport) {
-			case NBA: case NHL:
-				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + teamID + "/boxscore.xml?api_key=" + sport.getKey();
-				break;
-			// à compléter si besoin
-		}
-		Element element = send(request);
-		
-		// parcours temporaire
-		Node node = null;
-		NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
-		node = nodeMapTeamAttributes.getNamedItem("id");
-		System.out.println("id="+node.getNodeValue());
-		node = nodeMapTeamAttributes.getNamedItem("status");
-		System.out.println("status="+node.getNodeValue());
-		node = nodeMapTeamAttributes.getNamedItem("home_team");
-		System.out.println("home_team"+node.getNodeValue());
-		node = nodeMapTeamAttributes.getNamedItem("away_team");
-		System.out.println("away_team="+node.getNodeValue());
-		node = nodeMapTeamAttributes.getNamedItem("scheduled");
-		System.out.println("scheduled="+node.getNodeValue());
-		
-		NodeList venueNodes = element.getElementsByTagName("team");
-		for (int j=0;j<venueNodes.getLength();j++) {
-			NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
-			node = nodeMapVenueAttributes.getNamedItem("id");
-			System.out.println("id="+node.getNodeValue());
-			node = nodeMapVenueAttributes.getNamedItem("name");
-			System.out.println("name="+node.getNodeValue());
-			node = nodeMapVenueAttributes.getNamedItem("points");
-			System.out.println("points="+node.getNodeValue());
-		}
+		return element;
 	}
 		
-	private Element send(String request) {
+	private synchronized Element send(String request) {
+System.out.println("Thread:"+Thread.currentThread().getName());
+System.out.println("Thread:"+Thread.currentThread().toString());
 System.out.println(request);
 		if (request!=null ) {
 			long current = System.currentTimeMillis();
@@ -172,8 +193,10 @@ System.out.println("past:"+past);
 System.out.println("to wait:"+ (this.timeBetweenRequest - past));
 				try {
 					Thread.sleep(this.timeBetweenRequest - past);
+System.out.println("really wait:"+(System.currentTimeMillis()-current));
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.out.println("##################################### Thread.sleep()");
+					//e.printStackTrace();
 					return null;
 				}
 			}
@@ -188,13 +211,15 @@ System.out.println("to wait:"+ (this.timeBetweenRequest - past));
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				document = builder.parse(is);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("##################################### new URL(), openStream() and parse()");
+				//e.printStackTrace();
 				return null;
 			} finally {
 	            try {
 	                is.close();
 	            } catch (IOException e) {
-	                e.printStackTrace();
+	            	System.out.println("##################################### is.close()");
+	               //e.printStackTrace();
 	            }
 			}
 			return document.getDocumentElement();
