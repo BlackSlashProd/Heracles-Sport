@@ -1,6 +1,8 @@
 package upmc.aar2013.project.heraclessport.server.datamodel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
@@ -14,8 +16,9 @@ public class ScheduleModel {
 	@Index boolean sched_isFinish;
 	
 	@Ignore boolean sched_isStart;
-	@Ignore String sched_home_team_name;
-	@Ignore String sched_away_team_name;
+	@Ignore TeamModel sched_home_team;
+	@Ignore TeamModel sched_away_team;
+	@Ignore List<ResultModel> sched_res;
 	
 	@SuppressWarnings("unused")
 	private ScheduleModel() {}
@@ -26,24 +29,32 @@ public class ScheduleModel {
 	 * @param sched_away_team_id
 	 * @param sched_date
 	 */
-	public ScheduleModel(String sched_id, Key<TeamModel> sched_home_team_id,
-			Key<TeamModel> sched_away_team_id, Date sched_date) {
+	public ScheduleModel(String sched_id, String home_team_id,
+			String away_team_id, Date sched_date) {
 		this.sched_id = sched_id;
-		this.sched_home_team_id = sched_home_team_id;
-		this.sched_away_team_id = sched_away_team_id;
+		this.sched_home_team_id = DataStore.createTeamKey(home_team_id);
+		this.sched_away_team_id = DataStore.createTeamKey(away_team_id);
 		this.sched_date = sched_date;
+		
 		if(sched_date.before(new Date()))
 			this.sched_isStart = true;
-		this.sched_home_team_name = sched_id+"teamhome";
-		this.sched_away_team_name = sched_id+"teamaway";
+		this.sched_home_team = null;
+		this.sched_away_team = null;		
 	}
 	
 	@OnLoad 
 	public void onLoad() {
-		TeamModel teamHome = DataStore.getTeam(sched_home_team_id);
-		if(teamHome!=null) this.sched_home_team_name = teamHome.getTeam_name();
-		TeamModel teamAway = DataStore.getTeam(sched_away_team_id);
-		if(teamAway!=null) this.sched_away_team_name = teamAway.getTeam_name();		
+		TeamModel teamHome = DataStore.getTeam(getSched_home_team_id());
+		if(teamHome!=null) this.sched_home_team = teamHome;
+		TeamModel teamAway = DataStore.getTeam(getSched_away_team_id());
+		if(teamAway!=null) this.sched_away_team = teamAway;	
+		List<ScoreResultModel> results = (List<ScoreResultModel>)DataStore.getScoreResultsBySchedule(sched_id);
+		this.sched_res = new ArrayList<ResultModel>();
+		if(results!=null) {
+			for(ScoreResultModel res : results) {
+				this.sched_res.add(res);
+			}
+		}
 	}
 	
 	public Date computeTimeLeft() {
@@ -53,33 +64,7 @@ public class ScheduleModel {
 		}
 		return null;
 	}
-	/**
-	 * @return the sched_home_team_name
-	 */
-	public String getSchedTeamHome() {
-		return sched_home_team_name;
-	}
 
-	/**
-	 * @param sched_home_team_name the sched_home_team_name to set
-	 */
-	public void setSchedTeamHome(String sched_home_team_name) {
-		this.sched_home_team_name = sched_home_team_name;
-	}
-
-	/**
-	 * @return the sched_away_team_name
-	 */
-	public String getSchedTeamAway() {
-		return sched_away_team_name;
-	}
-
-	/**
-	 * @param sched_away_team_name the sched_away_team_name to set
-	 */
-	public void setSchedTeamAway(String sched_away_team_name) {
-		this.sched_away_team_name = sched_away_team_name;
-	}	
 	/**
 	 * @return the sched_id
 	 */
@@ -97,29 +82,15 @@ public class ScheduleModel {
 	/**
 	 * @return the sched_home_team_id
 	 */
-	public Key<TeamModel> getSched_home_team_id() {
-		return sched_home_team_id;
-	}
-
-	/**
-	 * @param sched_home_team_id the sched_home_team_id to set
-	 */
-	public void setSched_home_team_id(Key<TeamModel> sched_home_team_id) {
-		this.sched_home_team_id = sched_home_team_id;
+	public String getSched_home_team_id() {
+		return sched_home_team_id.getRaw().getName();
 	}
 
 	/**
 	 * @return the sched_away_team_id
 	 */
-	public Key<TeamModel> getSched_away_team_id() {
-		return sched_away_team_id;
-	}
-
-	/**
-	 * @param sched_away_team_id the sched_away_team_id to set
-	 */
-	public void setSched_away_team_id(Key<TeamModel> sched_away_team_id) {
-		this.sched_away_team_id = sched_away_team_id;
+	public String getSched_away_team_id() {
+		return sched_away_team_id.getRaw().getName();
 	}
 
 	/**
@@ -157,9 +128,23 @@ public class ScheduleModel {
 		return sched_isStart;
 	}
 	/**
-	 * @param sched_isStart the sched_isStart to set
+	 * @return the sched_home_team
 	 */
-	public void setSched_isStart(boolean sched_isStart) {
-		this.sched_isStart = sched_isStart;
+	public TeamModel getSched_home_team() {
+		return sched_home_team;
+	}
+
+	/**
+	 * @return the sched_away_team
+	 */
+	public TeamModel getSched_away_team() {
+		return sched_away_team;
+	}
+
+	/**
+	 * @return the sched_res
+	 */
+	public List<ResultModel> getSched_res() {
+		return sched_res;
 	}
 }

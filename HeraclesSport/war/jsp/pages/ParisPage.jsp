@@ -23,7 +23,9 @@
         %>
         <div class="sched">
             <h3>
-                <%= sched.getSchedTeamHome() %> <span class="orange">VS</span> <%= sched.getSchedTeamAway() %>
+                <%= sched.getSched_home_team().getTeam_name() %> 
+                <span class="orange">VS</span> 
+                <%= sched.getSched_away_team().getTeam_name() %>
             </h3>
             <p>
                 <b>Date : </b><%= sched.getSched_date() %><br/>

@@ -4,6 +4,8 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.List;
 
+import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.RES_TEAM;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -25,16 +27,21 @@ public class DataStore {
     	// Schedules
     	ofy().delete().entities(getAllSchedules());
     	// Results
-    	//ofy().delete().entities(getAllResults());
+    	ofy().delete().entities(getAllScoreResults());
     	// Paris
-    	
+    	ofy().delete().entities(getAllParis());
     	// ...
     }
+
     /*
      * Users Methods
      */
+    public static Key<UserModel> createUserKey(String userId) {
+    	return Key.create(UserModel.class,userId);
+    }
 	public static UserModel getUser(String userId) {
-		return ofy().load().type(UserModel.class).filter("user_id", userId).first().now();
+		Key<UserModel> userKey = createUserKey(userId);
+		return ofy().load().key(userKey).now();
 	}
 	
 	public static UserModel getUserByPseudo(String userPsd) {
@@ -46,7 +53,7 @@ public class DataStore {
 	}
 	
 	public static List<UserModel> getAllUsers() {
-		return ofy().load().type(UserModel.class).list();
+		return (List<UserModel>)ofy().load().type(UserModel.class).list();
 	}
 	
 	public static List<UserModel> getAllUsersOrderBy(String order) {
@@ -55,10 +62,11 @@ public class DataStore {
 	/*
 	 * Teams Methods
 	 */
+    public static Key<TeamModel> createTeamKey(String teamId) {
+    	return Key.create(TeamModel.class,teamId);
+    }
 	public static TeamModel getTeam(String teamId) {
-		return ofy().load().type(TeamModel.class).filter("team_id", teamId).first().now();
-	}	
-	public static TeamModel getTeam(Key<TeamModel> teamKey) {
+		Key<TeamModel> teamKey = createTeamKey(teamId);
 		return ofy().load().key(teamKey).now();
 	}
 	public static List<TeamModel> getAllTeams() {
@@ -70,8 +78,12 @@ public class DataStore {
 	/*
 	 * Schedules Methods
 	 */
+    public static Key<ScheduleModel> createScheduleKey(String schedId) {
+    	return Key.create(ScheduleModel.class,schedId);
+    }
 	public static ScheduleModel getSchedule(String schedId) {
-		return ofy().load().type(ScheduleModel.class).filter("sched_id", schedId).first().now();
+		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
+		return ofy().load().key(schedKey).now();
 	}	
 	public static List<ScheduleModel> getAllSchedules() {
 		return ofy().load().type(ScheduleModel.class).list();
@@ -79,8 +91,8 @@ public class DataStore {
 	public static List<ScheduleModel> getAllSchedulesOrderBy(String order) {
 		return ofy().load().type(ScheduleModel.class).order("-"+order).list();
 	}
-	public static List<ScheduleModel> getAllSchedulesNotFinish(String order) {
-		return ofy().load().type(ScheduleModel.class).filter("sched_isFinish", false).order("-"+order).list();
+	public static List<ScheduleModel> getAllSchedulesByFinish(String order, boolean isFinish) {
+		return (List<ScheduleModel>)ofy().load().type(ScheduleModel.class).filter("sched_isFinish", isFinish).order("-"+order).list();
 	}
 	public static void storeSchedule(ScheduleModel sched) {
 		ofy().save().entity(sched).now();
@@ -88,8 +100,19 @@ public class DataStore {
 	/*
 	 * Results Methods 
 	 */
-	public static List<ResultModel> getAllResults() {
-		return ofy().load().type(ResultModel.class).list();
+    public static Key<ResultModel> createResultKey(Long resId) {
+    	return Key.create(ResultModel.class,resId);
+    }
+    public static ResultModel getResult(Long resId) {
+    	Key<ResultModel> result = createResultKey(resId);
+    	return ofy().load().key(result).now();
+    }
+	public static List<ScoreResultModel> getAllScoreResults() {
+		return ofy().load().type(ScoreResultModel.class).list();
+	}
+	public static List<ScoreResultModel> getScoreResultsBySchedule(String schedId) {
+		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
+		return (List<ScoreResultModel>)(ofy().load().type(ScoreResultModel.class).filter("res_sched_key", schedKey).filter("res_team", RES_TEAM.ALL).list());
 	}
 	public static void storeResult(ResultModel res) {
 		ofy().save().entity(res).now();
@@ -98,6 +121,11 @@ public class DataStore {
 	 * Paris Methods
 	 */
 	public static void storeParis(ParisModel mod) {
+		// ATTENTION : Vérifier clé unique (schedule+user).
+		// TODO : Enlever des points au user.
 		ofy().save().entity(mod).now();
+	}
+	public static List<ParisModel> getAllParis() {
+		return ofy().load().type(ParisModel.class).list();
 	}
 }

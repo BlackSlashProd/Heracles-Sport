@@ -1,9 +1,7 @@
 package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,12 +9,10 @@ import javax.servlet.http.*;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.googlecode.objectify.Key;
 
 import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.ParisModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.SCORE_TEAM;
+import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.RES_TEAM;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
@@ -62,18 +58,13 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod003);
 			DataStore.storeTeam(teammod004);
 			// Schedules
-			Key<TeamModel> team001 = Key.create(TeamModel.class, teammod001.getTeam_id());
-			Key<TeamModel> team002 = Key.create(TeamModel.class, teammod002.getTeam_id());
-			Key<TeamModel> team003 = Key.create(TeamModel.class, teammod003.getTeam_id());
-			Key<TeamModel> team004 = Key.create(TeamModel.class, teammod004.getTeam_id());
-			
-			ScheduleModel schedmod001 = new ScheduleModel("sched001",team001,team004,new Date(2013,12,10,20,20,00));
+			ScheduleModel schedmod001 = new ScheduleModel("sched001",teammod001.getTeam_id(),teammod004.getTeam_id(),new Date(2013,12,10,20,20,00));
 			schedmod001.setSched_isFinish(true);
-			ScheduleModel schedmod002 = new ScheduleModel("sched002",team002,team003,new Date(2013,12,10,20,20,00));
+			ScheduleModel schedmod002 = new ScheduleModel("sched002",teammod002.getTeam_id(),teammod003.getTeam_id(),new Date(2013,12,10,20,20,00));
 			schedmod002.setSched_isFinish(true);
-			ScheduleModel schedmod003 = new ScheduleModel("sched003",team003,team004,new Date(2013,12,31,20,20,00));
-			ScheduleModel schedmod004 = new ScheduleModel("sched004",team003,team001,new Date(2013,1,5,20,00,00));
-			ScheduleModel schedmod005 = new ScheduleModel("sched005",team004,team001,new Date());
+			ScheduleModel schedmod003 = new ScheduleModel("sched003",teammod003.getTeam_id(),teammod004.getTeam_id(),new Date(2013,12,31,20,20,00));
+			ScheduleModel schedmod004 = new ScheduleModel("sched004",teammod003.getTeam_id(),teammod001.getTeam_id(),new Date(2013,1,5,20,00,00));
+			ScheduleModel schedmod005 = new ScheduleModel("sched005",teammod004.getTeam_id(),teammod001.getTeam_id(),new Date());
 			DataStore.storeSchedule(schedmod001);
 			DataStore.storeSchedule(schedmod002);
 			DataStore.storeSchedule(schedmod003);
@@ -81,23 +72,22 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeSchedule(schedmod005);
 			
 			// Results
-			/*Key<ScheduleModel> sched001 = Key.create(ScheduleModel.class, schedmod001.getSched_id());
-			ScoreResultModel score001 = new ScoreResultModel(sched001,SCORE_TEAM.HOME);
-			score001.setScore_res_score_home(4);
-			ScoreResultModel score002 = new ScoreResultModel(sched001,SCORE_TEAM.AWAY);
-			score002.setScore_res_score_away(2);
+			ScoreResultModel score001 = new ScoreResultModel(schedmod001.getSched_id(),RES_TEAM.ALL);
+			score001.setScore_res_score_home(95);
+			score001.setScore_res_score_away(84);
 			DataStore.storeResult(score001);
-			DataStore.storeResult(score002);*/
+			ScoreResultModel score002 = new ScoreResultModel(schedmod002.getSched_id(),RES_TEAM.ALL);
+			score002.setScore_res_score_home(97);
+			score002.setScore_res_score_away(114);
+			DataStore.storeResult(score002);
 			
 			// Paris
-			/*Key<ScheduleModel> sched003 = Key.create(ScheduleModel.class, schedmod003.getSched_id());
-			Key<UserModel> user001 = Key.create(UserModel.class, usermod003.getUser_id());
-			ScoreResultModel scoremod003 = new ScoreResultModel(sched003,SCORE_TEAM.HOME);
+			ScoreResultModel scoremod003 = new ScoreResultModel(schedmod003.getSched_id(),RES_TEAM.HOME);
 			scoremod003.setScore_res_score_home(4);
 			DataStore.storeResult(scoremod003);
-			Key<ResultModel> score003 = Key.create(ResultModel.class, scoremod003.getRes_id());
-			ParisModel paris001 = new ParisModel(user001,score003, 2);
-			DataStore.storeParis(paris001);*/
+			
+			ParisModel paris001 = new ParisModel(usermod003.getUser_id(),scoremod003.getRes_id(), 2);
+			DataStore.storeParis(paris001);
 		} 
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();

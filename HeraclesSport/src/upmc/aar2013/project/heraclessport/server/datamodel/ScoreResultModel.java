@@ -1,21 +1,19 @@
 package upmc.aar2013.project.heraclessport.server.datamodel;
 
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
 @Entity
 public class ScoreResultModel extends ResultModel {
 	int score_res_score_home;
 	int score_res_score_away;
-	SCORE_TEAM score_res_team;
 	
 	@SuppressWarnings("unused")
 	private ScoreResultModel() {}
 	
-	public ScoreResultModel(Key<ScheduleModel> res_sched, SCORE_TEAM score_team) {
-		super(res_sched);
+	public ScoreResultModel(String res_sched, RES_TEAM res_team) {
+		super(res_sched, res_team);
 		this.score_res_score_home = -1;
-		this.score_res_team = score_team;
+		this.score_res_score_away = -1;
 	}
 	
 	/**
@@ -45,19 +43,4 @@ public class ScoreResultModel extends ResultModel {
 	public void setScore_res_score_away(int score_res_score_away) {
 		this.score_res_score_away = score_res_score_away;
 	}
-
-	/**
-	 * @return the score_res_team
-	 */
-	public SCORE_TEAM getScore_res_team() {
-		return score_res_team;
-	}
-
-	/**
-	 * @param score_res_team the score_res_team to set
-	 */
-	public void setScore_res_team(SCORE_TEAM score_res_team) {
-		this.score_res_team = score_res_team;
-	}
-	
 }

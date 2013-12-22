@@ -22,7 +22,7 @@ public class ParisPageServlet extends HttpServlet {
 	private static final long serialVersionUID = -4541267725137249836L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		List<ScheduleModel> schedules = DataStore.getAllSchedulesNotFinish("sched_date");
+		List<ScheduleModel> schedules = DataStore.getAllSchedulesByFinish("sched_date", false);
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if(user != null) {
