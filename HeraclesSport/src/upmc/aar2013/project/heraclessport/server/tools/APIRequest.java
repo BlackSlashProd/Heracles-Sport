@@ -21,7 +21,7 @@ public class APIRequest {
 	}
 
 	private long lastRequestTime = 0;
-	private final long timeBetweenRequest = 1050; // un peu plus de 1 seconde, on sait jamais
+	private final long timeBetweenRequest = 1500; // un peu plus de 1 seconde, on sait jamais
 	
 	private final char access_level = 't';
 	private final int season = 2013;
@@ -68,7 +68,7 @@ public class APIRequest {
 				}
 			}
 		} catch (Exception e) {
-System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getLeagueHierarchyRequest()");
+			System.out.println("@ erreur lors du parcours du fichier xml dans getLeagueHierarchyRequest()");
 		}
 		return element;
 	}
@@ -102,7 +102,7 @@ System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getLeagueH
 				System.out.println("country="+node.getNodeValue());
 			}
 		} catch (Exception e) {
-System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getTeamProfileRequest()");
+			System.out.println("@ erreur lors du parcours du fichier xml dans getTeamProfileRequest()");
 		}
 		return element;
 	}
@@ -134,7 +134,7 @@ System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getTeamPro
 				System.out.println("scheduled="+node.getNodeValue());
 			}
 		} catch (Exception e) {
-System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
+			System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
 		}
 		return element;
 	}
@@ -175,15 +175,15 @@ System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getSchedul
 				System.out.println("points="+node.getNodeValue());
 			}
 		} catch (Exception e) {
-System.out.println("@@@@@ erreur lors du parcours du fichier xml dans getGameBoxscore()");
+			System.out.println("@ erreur lors du parcours du fichier xml dans getGameBoxscore()");
 		}
 		return element;
 	}
 		
 	private synchronized Element send(String request) {
+System.out.println(request);
 System.out.println("Thread:"+Thread.currentThread().getName());
 System.out.println("Thread:"+Thread.currentThread().toString());
-System.out.println(request);
 		if (request!=null ) {
 			long current = System.currentTimeMillis();
 			long past = current - this.lastRequestTime;
@@ -195,8 +195,7 @@ System.out.println("to wait:"+ (this.timeBetweenRequest - past));
 					Thread.sleep(this.timeBetweenRequest - past);
 System.out.println("really wait:"+(System.currentTimeMillis()-current));
 				} catch (InterruptedException e) {
-					System.out.println("##################################### Thread.sleep()");
-					//e.printStackTrace();
+					System.out.println("# erreur : Thread.sleep()");
 					return null;
 				}
 			}
@@ -211,15 +210,14 @@ System.out.println("really wait:"+(System.currentTimeMillis()-current));
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				document = builder.parse(is);
 			} catch (Exception e) {
-				System.out.println("##################################### new URL(), openStream() and parse()");
-				//e.printStackTrace();
+				System.out.println("# erreur : dans new URL(), openStream() ou parse()");
 				return null;
 			} finally {
 	            try {
 	                is.close();
 	            } catch (IOException e) {
-	            	System.out.println("##################################### is.close()");
-	               //e.printStackTrace();
+	            	System.out.println("# erreur : is.close()");
+	            	return null;
 	            }
 			}
 			return document.getDocumentElement();
