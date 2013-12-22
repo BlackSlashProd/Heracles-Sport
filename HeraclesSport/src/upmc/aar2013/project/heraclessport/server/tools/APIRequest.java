@@ -139,11 +139,11 @@ public class APIRequest {
 		return element;
 	}
 	
-	public Element getGameBoxscore(Sport sport, String teamID) {
+	public Element getGameBoxscore(Sport sport, String scheduleID) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
-				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + teamID + "/boxscore.xml?api_key=" + sport.getKey();
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + scheduleID + "/boxscore.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
 		}
