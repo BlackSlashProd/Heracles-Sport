@@ -15,6 +15,8 @@ import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
+import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
+import upmc.aar2013.project.heraclessport.server.tools.Sport;
 
 /**
  * Servlet implementation class MaServletaar
@@ -54,7 +56,7 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod001);
 			DataStore.storeTeam(teammod002);
 			DataStore.storeTeam(teammod003);
-			DataStore.storeTeam(teammod004);
+			DataStore.storeTeam(teammod004);			
 			// Schedules
 			Key<TeamModel> team001 = Key.create(TeamModel.class, teammod001.getTeam_id());
 			Key<TeamModel> team002 = Key.create(TeamModel.class, teammod002.getTeam_id());
