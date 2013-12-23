@@ -10,6 +10,7 @@ public class ParisModel {
 	@Index Key<ResultModel> paris_result;
 	int bet;
 	
+	@SuppressWarnings("unused")
 	private ParisModel() {}
 
 	/**

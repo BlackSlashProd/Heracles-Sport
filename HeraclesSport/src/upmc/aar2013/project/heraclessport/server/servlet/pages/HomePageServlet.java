@@ -6,9 +6,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
-import upmc.aar2013.project.heraclessport.server.tools.Sport;
-
 public class HomePageServlet extends HttpServlet {
 
 	/**

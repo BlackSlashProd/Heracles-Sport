@@ -9,8 +9,7 @@ public class TeamModel {
 	String team_town;
 	String team_country;
 	
-	@SuppressWarnings("unused")
-	private TeamModel() {}
+	public TeamModel() {}
 	
 	/**
 	 * @param team_id

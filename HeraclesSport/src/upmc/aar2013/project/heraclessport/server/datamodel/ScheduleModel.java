@@ -17,8 +17,7 @@ public class ScheduleModel {
 	@Ignore String sched_home_team_name;
 	@Ignore String sched_away_team_name;
 	
-	@SuppressWarnings("unused")
-	private ScheduleModel() {}
+	public ScheduleModel() {}
 	
 	/**
 	 * @param sched_id

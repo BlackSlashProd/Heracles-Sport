@@ -9,8 +9,7 @@ public class ScoreResultModel extends ResultModel {
 	int score_res_score_away;
 	SCORE_TEAM score_res_team;
 	
-	@SuppressWarnings("unused")
-	private ScoreResultModel() {}
+	public ScoreResultModel() {}
 	
 	public ScoreResultModel(Key<ScheduleModel> res_sched, SCORE_TEAM score_team) {
 		super(res_sched);

@@ -1,9 +1,7 @@
 package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,11 +12,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 
 import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.ParisModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.SCORE_TEAM;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
@@ -100,6 +94,11 @@ public class DataTestServlet extends HttpServlet {
 			Key<ResultModel> score003 = Key.create(ResultModel.class, scoremod003.getRes_id());
 			ParisModel paris001 = new ParisModel(user001,score003, 2);
 			DataStore.storeParis(paris001);*/
+
+			APIRequest.getInstance().getLeagueHierarchyRequest(Sport.NBA);
+			//APIRequest.getInstance().getTeamProfileRequest(Sport.NBA, "583ec8d4-fb46-11e1-82cb-f4ce4684ea4c");
+			APIRequest.getInstance().getScheduleRequest(Sport.NBA);
+			//APIRequest.getInstance().getGameBoxscore(Sport.NBA, "0b3d21c7-c13f-4ee8-8d9d-4f334754c7e4");
 		} 
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();
