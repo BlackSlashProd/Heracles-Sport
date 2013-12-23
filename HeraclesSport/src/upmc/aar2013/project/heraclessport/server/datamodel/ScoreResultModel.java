@@ -7,8 +7,7 @@ public class ScoreResultModel extends ResultModel {
 	int score_res_score_home;
 	int score_res_score_away;
 	
-	@SuppressWarnings("unused")
-	private ScoreResultModel() {}
+	public ScoreResultModel() {}
 	
 	public ScoreResultModel(String res_sched, RES_TEAM res_team) {
 		super(res_sched, res_team);

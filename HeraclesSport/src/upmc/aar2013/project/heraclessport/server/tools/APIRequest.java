@@ -1,15 +1,41 @@
 package upmc.aar2013.project.heraclessport.server.tools;
 
+import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.googlecode.objectify.Key;
+
 public class APIRequest {
+	private static APIRequest instance= new APIRequest();
+	
+	public APIRequest() {}
+	
+	public static APIRequest getInstance(){
+		return instance;
+	}
+
 	private long lastRequestTime = 0;
-	private final long timeBetweenRequest = 1010; // un peu plus de 1 seconde, on sait jamais
+	private final long timeBetweenRequest = 1500; // un peu plus de 1 seconde, on sait jamais
 	
 	private final char access_level = 't';
 	private final int season = 2013;
 	private String season2 = "reg"; // pre, reg ou pst ???
-	
-	public APIRequest() {}
-	
+		
 	public String getSeason2() {
 		return season2;
 	}
@@ -19,19 +45,50 @@ public class APIRequest {
 			this.season2 = season2;
 	}
 
-	public void getScheduleRequest(Sport sport) {
+	public boolean getLeagueHierarchyRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
-				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + season + "/" + season2 + "/schedule.xml?api_key=" + sport.getKey();
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/league/hierarchy.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
 		}
-		send(request);
+
+		Element element = send(request);
+		try {
+			Node node = null;
+			NodeList TeamNodes = element.getElementsByTagName("team");
+			for (int i=0;i<TeamNodes.getLength();i++) {
+				TeamModel team = new TeamModel();
+				
+				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
+				node = nodeMapTeamAttributes.getNamedItem("id");
+				team.setTeam_id(node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("name");
+				team.setTeam_name(node.getNodeValue());
+				
+				NodeList nodeInTeam  = TeamNodes.item(i).getChildNodes();
+				for (int j=0;j<nodeInTeam.getLength();j++) {
+					if (nodeInTeam.item(j).getNodeName().equals("venue")) {
+						NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
+						node = nodeMapVenueAttributes.getNamedItem("city");
+						team.setTeam_town(node.getNodeValue());
+						node = nodeMapVenueAttributes.getNamedItem("country");
+						team.setTeam_country(node.getNodeValue());
+					}
+				}
+				
+				DataStore.storeTeam(team);
+			}
+		} catch (Exception e) {
+			System.out.println("@ erreur lors du parcours du fichier xml dans getLeagueHierarchyRequest()");
+			return false;
+		}
+		return true;
 	}
 
-	// pas sur que se soit très utile ça
-	public void getTeamProfileRequest(Sport sport, String teamID) {
+	// pas sur cette requête soit utile, mais si l'on veut plus de renseignements sur l'équipe, on peut les avoir.
+	public boolean getTeamProfileRequest(Sport sport, String teamID) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -39,30 +96,150 @@ public class APIRequest {
 				break;
 			// à compléter si besoin
 		}
-		send(request);
+		
+		Element element = send(request);
+		try {
+			TeamModel team = DataStore.getTeam(teamID);
+			// si besoin de choses, les récupérer ici
+			DataStore.storeTeam(team);
+		} catch (Exception e) {
+			System.out.println("@ erreur lors du parcours du fichier xml dans getTeamProfileRequest()");
+			return false;
+		}
+		return true;
 	}
 	
-	public void getLeagueHierarchyRequest(Sport sport) {
+	public boolean getScheduleRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
-				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/league/" + "/hierarchy.xml?api_key=" + sport.getKey();
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + season + "/" + season2 + "/schedule.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
 		}
-		send(request);
-	}
+		
+		Element element = send(request);
+		try {
+			Node node = null;
+			NodeList TeamNodes = element.getElementsByTagName("game");
+			for (int i=0;i<TeamNodes.getLength();i++) {
+				ScheduleModel schedule = new ScheduleModel();
+				
+				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
+				node = nodeMapTeamAttributes.getNamedItem("id");
+				schedule.setSched_id(node.getNodeValue());
+				node = nodeMapTeamAttributes.getNamedItem("home_team");
+				//schedule.setSched_home_team_id(Key.create(TeamModel.class, node.getNodeValue()));
+				node = nodeMapTeamAttributes.getNamedItem("away_team");
+				//schedule.setSched_away_team_id(Key.create(TeamModel.class, node.getNodeValue()));
+				// status : closed, inprogress, scheduled, postponed
+				node = nodeMapTeamAttributes.getNamedItem("status");
+				//schedule.setSched_isStart(node.getNodeValue().equals("inprogress"));
+				schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
+				node = nodeMapTeamAttributes.getNamedItem("scheduled");
+				schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
 
-	private void send(String request) {
+				DataStore.storeSchedule(schedule);
+			}
+		} catch (Exception e) {
+			System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean getGameBoxscore(Sport sport, String scheduleID) {
+		String request = null;
+		switch(sport) {
+			case NBA: case NHL:
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + scheduleID + "/boxscore.xml?api_key=" + sport.getKey();
+				break;
+			// à compléter si besoin
+		}
+		
+		Element element = send(request);
+		try {
+			//ScheduleModel schedule = DataStore.getSchedule(scheduleID);
+			ScoreResultModel result = new ScoreResultModel();	
+
+			Node node = null;
+			NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
+			node = nodeMapTeamAttributes.getNamedItem("id");
+			//result.setRes_sched(Key.create(ScheduleModel.class, node.getNodeValue()));
+
+			NodeList venueNodes = element.getElementsByTagName("team");
+			for (int j=0;j<venueNodes.getLength();j++) {
+				NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
+				//node = nodeMapVenueAttributes.getNamedItem("id");
+				node = nodeMapVenueAttributes.getNamedItem("points");
+				if (j==0) {
+					result.setScore_res_score_home(Integer.parseInt(node.getNodeValue()));
+				} else {
+					result.setScore_res_score_away(Integer.parseInt(node.getNodeValue()));
+				}
+			}
+			
+			DataStore.storeResult(result);
+		} catch (Exception e) {
+			System.out.println("@ erreur lors du parcours du fichier xml dans getGameBoxscore()");
+			return false;
+		}
+		return true;
+	}
+		
+	private synchronized Element send(String request) {
+System.out.println(request);
 		if (request!=null ) {
 			long current = System.currentTimeMillis();
-			if (current - this.lastRequestTime > this.timeBetweenRequest) {
-				this.lastRequestTime = current;
-				// envoie de la requete a faire !!!
-				// mettre en retour le fichier reçu
+			long past = current - this.lastRequestTime;
+			if (past < this.timeBetweenRequest) {
+				try {
+					Thread.sleep(this.timeBetweenRequest - past);
+				} catch (InterruptedException e) {
+					System.out.println("# erreur : Thread.sleep()");
+					return null;
+				}
 			}
+			this.lastRequestTime = current;
+			
+			InputStream is = null;
+			Document document = null;
+			try {
+				URL address = new URL(request);
+				is = address.openStream();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				document = builder.parse(is);
+			} catch (Exception e) {
+				System.out.println("# erreur : dans new URL(), openStream() ou parse()");
+				return null;
+			} finally {
+	            try {
+	                is.close();
+	            } catch (Exception e) {
+	            	System.out.println("# erreur : is.close()");
+	            	return null;
+	            }
+			}
+			return document.getDocumentElement();
 		}
+		return null;
 	}
-	// eventuelement completer avec les MAJ des schema (xsd) si necessaire, 
-	// dans ce cas préciser : pour chaque sport, pour chaque requete : un champ en plus concernant la version du schema
+	
+	private Date toJavaDate(String date) throws ParseException {
+	    //Calendar calendar = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	    //calendar.setTime(sdf.parse(date));
+	    //sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+		return sdf.parse(date);
+	    /*
+	    DateFormat indf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	    indf.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
+	    Date purchaseDate = indf.parse(date);
+	    
+	    DateFormat outdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	    outdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+	    //csvfile.println(outdf.format(purchaseDate) +" GMT");
+	    */
+	}
 }

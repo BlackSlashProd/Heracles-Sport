@@ -20,8 +20,7 @@ public class ScheduleModel {
 	@Ignore TeamModel sched_away_team;
 	@Ignore List<ResultModel> sched_res;
 	
-	@SuppressWarnings("unused")
-	private ScheduleModel() {}
+	public ScheduleModel() {}
 	
 	/**
 	 * @param sched_id

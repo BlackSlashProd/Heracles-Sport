@@ -1,4 +1,4 @@
-<%@page import="umpc.aar2013.project.heraclessport.server.front.forms.AccountForm"%>
+<%@page import="upmc.aar2013.project.heraclessport.server.front.forms.AccountForm"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.UserModel" %>

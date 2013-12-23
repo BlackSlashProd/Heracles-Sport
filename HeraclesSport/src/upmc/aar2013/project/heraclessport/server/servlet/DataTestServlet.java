@@ -85,9 +85,6 @@ public class DataTestServlet extends HttpServlet {
 			ScoreResultModel scoremod003 = new ScoreResultModel(schedmod003.getSched_id(),RES_TEAM.HOME);
 			scoremod003.setScore_res_score_home(4);
 			DataStore.storeResult(scoremod003);
-			
-			ParisModel paris001 = new ParisModel(usermod003.getUser_id(),scoremod003.getRes_id(), 2);
-			DataStore.storeParis(paris001);
 		} 
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();

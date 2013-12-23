@@ -13,6 +13,7 @@ public class ParisModel {
 	@Ignore UserModel paris_user;
 	@Ignore ResultModel paris_result;
 	
+	@SuppressWarnings("unused")
 	private ParisModel() {}
 
 	/**
