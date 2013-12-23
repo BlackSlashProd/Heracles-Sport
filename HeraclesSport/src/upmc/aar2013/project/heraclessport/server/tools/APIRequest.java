@@ -4,7 +4,6 @@ import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
