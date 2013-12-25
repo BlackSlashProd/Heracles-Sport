@@ -17,6 +17,8 @@ import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
+import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
+import upmc.aar2013.project.heraclessport.server.tools.Sport;
 
 /**
  * Servlet implementation class MaServletaar
@@ -85,6 +87,13 @@ public class DataTestServlet extends HttpServlet {
 			ScoreResultModel scoremod003 = new ScoreResultModel(schedmod003.getSched_id(),RES_TEAM.HOME);
 			scoremod003.setScore_res_score_home(4);
 			DataStore.storeResult(scoremod003);
+
+			// temp
+			//APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
+			//APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
+			//APIRequest.getInstance().updateTeamProfileRequest(Sport.NBA, "583ec7cd-fb46-11e1-82cb-f4ce4684ea4c");
+			//APIRequest.getInstance().updateGameBoxscore(Sport.NBA, "0b3d21c7-c13f-4ee8-8d9d-4f334754c7e4");
+			//APIRequest.getInstance().updateDailyScheduleRequest(Sport.NBA);
 		} 
 		else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();

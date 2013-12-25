@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -45,7 +46,7 @@ public class APIRequest {
 			this.season2 = season2;
 	}
 
-	public boolean getLeagueHierarchyRequest(Sport sport) {
+	public boolean updateLeagueHierarchyRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -57,17 +58,17 @@ public class APIRequest {
 		Element element = send(request);
 		try {
 			Node node = null;
-			NodeList TeamNodes = element.getElementsByTagName("team");
-			for (int i=0;i<TeamNodes.getLength();i++) {
+			NodeList teamNodes = element.getElementsByTagName("team");
+			for (int i=0;i<teamNodes.getLength();i++) {
 				TeamModel team = new TeamModel();
 				
-				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
+				NamedNodeMap nodeMapTeamAttributes = teamNodes.item(i).getAttributes();
 				node = nodeMapTeamAttributes.getNamedItem("id");
 				team.setTeam_id(node.getNodeValue());
 				node = nodeMapTeamAttributes.getNamedItem("name");
 				team.setTeam_name(node.getNodeValue());
 				
-				NodeList nodeInTeam  = TeamNodes.item(i).getChildNodes();
+				NodeList nodeInTeam  = teamNodes.item(i).getChildNodes();
 				for (int j=0;j<nodeInTeam.getLength();j++) {
 					if (nodeInTeam.item(j).getNodeName().equals("venue")) {
 						NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
@@ -88,7 +89,7 @@ public class APIRequest {
 	}
 
 	// pas sur cette requête soit utile, mais si l'on veut plus de renseignements sur l'équipe, on peut les avoir.
-	public boolean getTeamProfileRequest(Sport sport, String teamID) {
+	public boolean updateTeamProfileRequest(Sport sport, String teamID) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -109,7 +110,7 @@ public class APIRequest {
 		return true;
 	}
 	
-	public boolean getScheduleRequest(Sport sport) {
+	public boolean updateScheduleRequest(Sport sport) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -121,22 +122,22 @@ public class APIRequest {
 		Element element = send(request);
 		try {
 			Node node = null;
-			NodeList TeamNodes = element.getElementsByTagName("game");
-			for (int i=0;i<TeamNodes.getLength();i++) {
+			NodeList gameNodes = element.getElementsByTagName("game");
+			for (int i=0;i<gameNodes.getLength();i++) {
 				ScheduleModel schedule = new ScheduleModel();
 				
-				NamedNodeMap nodeMapTeamAttributes = TeamNodes.item(i).getAttributes();
-				node = nodeMapTeamAttributes.getNamedItem("id");
+				NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
+				node = nodeMapGameAttributes.getNamedItem("id");
 				schedule.setSched_id(node.getNodeValue());
-				node = nodeMapTeamAttributes.getNamedItem("home_team");
+				node = nodeMapGameAttributes.getNamedItem("home_team");
 				//schedule.setSched_home_team_id(Key.create(TeamModel.class, node.getNodeValue()));
-				node = nodeMapTeamAttributes.getNamedItem("away_team");
+				node = nodeMapGameAttributes.getNamedItem("away_team");
 				//schedule.setSched_away_team_id(Key.create(TeamModel.class, node.getNodeValue()));
 				// status : closed, inprogress, scheduled, postponed
-				node = nodeMapTeamAttributes.getNamedItem("status");
+				node = nodeMapGameAttributes.getNamedItem("status");
 				//schedule.setSched_isStart(node.getNodeValue().equals("inprogress"));
 				schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
-				node = nodeMapTeamAttributes.getNamedItem("scheduled");
+				node = nodeMapGameAttributes.getNamedItem("scheduled");
 				schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
 
 				DataStore.storeSchedule(schedule);
@@ -148,7 +149,60 @@ public class APIRequest {
 		return true;
 	}
 	
-	public boolean getGameBoxscore(Sport sport, String scheduleID) {
+	public boolean updateDailyScheduleRequest(Sport sport) {
+		String monthS = "", dayS = "";
+		Calendar calendar = Calendar.getInstance();
+		
+		int year = calendar.get(Calendar.YEAR);
+		
+		int monthI = calendar.get(Calendar.MONTH);
+		monthI++; // commence à zero
+		if (monthI<10) monthS+="0";
+		monthS+=monthI;
+		
+		int dayI = calendar.get(Calendar.DAY_OF_MONTH);
+		if (dayI<10) dayS+="0";
+		dayS+=dayI;
+
+		String request = null;
+		switch(sport) {
+			case NBA: case NHL:
+				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + year + "/" + monthS + "/" + dayS + "/schedule.xml?api_key=" + sport.getKey();
+				break;
+			// à compléter si besoin
+		}
+		
+		Element element = send(request);
+		try {
+			Node node = null;
+			NodeList gameNodes = element.getElementsByTagName("game");
+			for (int i=0;i<gameNodes.getLength();i++) {
+				ScheduleModel schedule = new ScheduleModel();
+				
+				NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
+				node = nodeMapGameAttributes.getNamedItem("id");
+				schedule.setSched_id(node.getNodeValue());
+				node = nodeMapGameAttributes.getNamedItem("home_team");
+				//schedule.setSched_home_team_id(Key.create(TeamModel.class, node.getNodeValue()));
+				node = nodeMapGameAttributes.getNamedItem("away_team");
+				//schedule.setSched_away_team_id(Key.create(TeamModel.class, node.getNodeValue()));
+				// status : closed, inprogress, scheduled, postponed
+				node = nodeMapGameAttributes.getNamedItem("status");
+				//schedule.setSched_isStart(node.getNodeValue().equals("inprogress"));
+				schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
+				//node = nodeMapGameAttributes.getNamedItem("scheduled");
+				//schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
+
+				DataStore.storeSchedule(schedule);
+			}
+		} catch (Exception e) {
+			System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean updateGameBoxscore(Sport sport, String scheduleID) {
 		String request = null;
 		switch(sport) {
 			case NBA: case NHL:
@@ -163,15 +217,15 @@ public class APIRequest {
 			ScoreResultModel result = new ScoreResultModel();	
 
 			Node node = null;
-			NamedNodeMap nodeMapTeamAttributes = element.getAttributes();
-			node = nodeMapTeamAttributes.getNamedItem("id");
+			NamedNodeMap nodeMapGameAttributes = element.getAttributes();
+			node = nodeMapGameAttributes.getNamedItem("id");
 			//result.setRes_sched(Key.create(ScheduleModel.class, node.getNodeValue()));
 
-			NodeList venueNodes = element.getElementsByTagName("team");
-			for (int j=0;j<venueNodes.getLength();j++) {
-				NamedNodeMap nodeMapVenueAttributes = venueNodes.item(j).getAttributes();
-				//node = nodeMapVenueAttributes.getNamedItem("id");
-				node = nodeMapVenueAttributes.getNamedItem("points");
+			NodeList teamNodes = element.getElementsByTagName("team");
+			for (int j=0;j<teamNodes.getLength();j++) {
+				NamedNodeMap nodeMapTeamAttributes = teamNodes.item(j).getAttributes();
+				//node = nodeMapTeamAttributes.getNamedItem("id");
+				node = nodeMapTeamAttributes.getNamedItem("points");
 				if (j==0) {
 					result.setScore_res_score_home(Integer.parseInt(node.getNodeValue()));
 				} else {
@@ -186,9 +240,9 @@ public class APIRequest {
 		}
 		return true;
 	}
-		
+
 	private synchronized Element send(String request) {
-System.out.println(request);
+		System.out.println(request);
 		if (request!=null ) {
 			long current = System.currentTimeMillis();
 			long past = current - this.lastRequestTime;
