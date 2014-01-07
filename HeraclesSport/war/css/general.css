@@ -181,6 +181,12 @@ p.form_clear {
     font-weight:bold;
     text-align:center;
 }  
+.paris_form .fiel_clear {
+    float:left; clear:both;
+    width:100%;
+    padding:5px;
+    border-bottom:1px solid gray;
+}
 /**
 * Ranking
 */
@@ -277,6 +283,12 @@ p.form_clear {
 }
 .schedules div.sched {
 	min-height:80px;
+}
+.schedules div.sched h2 {
+	margin: 0 0 5px; padding: 0 0 5px;
+	font-size:20px;
+    border-bottom: 2px solid orange;
+    color: orange;
 }
 .schedules div.nosched {   
     color: orange;

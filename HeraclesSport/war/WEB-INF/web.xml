@@ -34,7 +34,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.DataTestServlet</servlet-class>
     </servlet>
     <!-- Servlets Cron -->
-    <servlet>
+    <!-- <servlet>
         <servlet-name>TeamCronServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.cron.TeamCronServlet</servlet-class>
     </servlet>
@@ -45,7 +45,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet>
         <servlet-name>ScoreCronServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.cron.ScoreCronServlet</servlet-class>
-    </servlet>
+    </servlet>-->
     <!-- 
     Mapping the servlets list 
     -->
@@ -76,7 +76,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <url-pattern>/datatest</url-pattern>
     </servlet-mapping> 
     <!-- Servlets Cron -->
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>TeamCronServlet</servlet-name>
         <url-pattern>/cron/team</url-pattern>
     </servlet-mapping> 
@@ -87,7 +87,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>ScoreCronServlet</servlet-name>
         <url-pattern>/cron/score</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <!-- Security -->
     <security-constraint>
         <!-- Need to be logged -->
@@ -111,14 +111,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- cron -->
-	<security-constraint>
+	<!-- <security-constraint>
 		<web-resource-collection>
 			<url-pattern>/cron/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
 		</auth-constraint>
-	</security-constraint>
+	</security-constraint>  -->
     <!-- Default Welcome File -->
     <welcome-file-list>
         <welcome-file>jsp/pages/HomePage.jsp</welcome-file>

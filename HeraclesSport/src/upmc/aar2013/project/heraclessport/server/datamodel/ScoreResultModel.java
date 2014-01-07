@@ -9,10 +9,10 @@ public class ScoreResultModel extends ResultModel {
 	
 	public ScoreResultModel() {}
 	
-	public ScoreResultModel(String res_sched, RES_TEAM res_team) {
-		super(res_sched, res_team);
-		this.score_res_score_home = -1;
-		this.score_res_score_away = -1;
+	public ScoreResultModel(String res_sched, int score_home, int score_away) {
+		super(res_sched);
+		this.score_res_score_home = score_home;
+		this.score_res_score_away = score_away;
 	}
 	
 	/**

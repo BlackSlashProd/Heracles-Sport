@@ -1,11 +1,7 @@
 package upmc.aar2013.project.heraclessport.server.datamodel;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
-
 import java.util.List;
-
-import upmc.aar2013.project.heraclessport.server.datamodel.ResultModel.RES_TEAM;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -15,6 +11,7 @@ public class DataStore {
         ObjectifyService.register(UserModel.class);
         ObjectifyService.register(TeamModel.class);
         ObjectifyService.register(ScheduleModel.class);
+        ObjectifyService.register(ScheduleTeamModel.class);
         ObjectifyService.register(ScoreResultModel.class);
         ObjectifyService.register(ParisModel.class);
     }
@@ -25,7 +22,7 @@ public class DataStore {
     	// Teams
     	ofy().delete().entities(getAllTeams());
     	// Schedules
-    	ofy().delete().entities(getAllSchedules());
+    	ofy().delete().entities(getAllTeamSchedules());
     	// Results
     	ofy().delete().entities(getAllScoreResults());
     	// Paris
@@ -85,14 +82,17 @@ public class DataStore {
 		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
 		return ofy().load().key(schedKey).now();
 	}	
-	public static List<ScheduleModel> getAllSchedules() {
-		return ofy().load().type(ScheduleModel.class).list();
+	public static List<ScheduleTeamModel> getAllTeamSchedules() {
+		return ofy().load().type(ScheduleTeamModel.class).list();
 	}
-	public static List<ScheduleModel> getAllSchedulesOrderBy(String order) {
-		return ofy().load().type(ScheduleModel.class).order("-"+order).list();
+	public static List<ScheduleTeamModel> getAllTeamSchedules(String sport) {
+		return ofy().load().type(ScheduleTeamModel.class).filter("sched_sport",sport).list();
 	}
-	public static List<ScheduleModel> getAllSchedulesByFinish(String order, boolean isFinish) {
-		return (List<ScheduleModel>)ofy().load().type(ScheduleModel.class).filter("sched_isFinish", isFinish).order("-"+order).list();
+	public static List<ScheduleTeamModel> getAllTeamSchedulesOrderBy(String order) {
+		return ofy().load().type(ScheduleTeamModel.class).order("-"+order).list();
+	}
+	public static List<ScheduleTeamModel> getAllTeamSchedulesByFinish(String order, boolean isFinish) {
+		return (List<ScheduleTeamModel>)ofy().load().type(ScheduleTeamModel.class).filter("sched_isFinish", isFinish).order("-"+order).list();
 	}
 	public static void storeSchedule(ScheduleModel sched) {
 		ofy().save().entity(sched).now();
@@ -103,16 +103,12 @@ public class DataStore {
     public static Key<ResultModel> createResultKey(Long resId) {
     	return Key.create(ResultModel.class,resId);
     }
-    public static ResultModel getResult(Long resId) {
-    	Key<ResultModel> result = createResultKey(resId);
-    	return ofy().load().key(result).now();
-    }
 	public static List<ScoreResultModel> getAllScoreResults() {
 		return ofy().load().type(ScoreResultModel.class).list();
 	}
 	public static List<ScoreResultModel> getScoreResultsBySchedule(String schedId) {
 		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
-		return (List<ScoreResultModel>)(ofy().load().type(ScoreResultModel.class).filter("res_sched_key", schedKey).filter("res_team", RES_TEAM.ALL).list());
+		return (List<ScoreResultModel>)(ofy().load().type(ScoreResultModel.class).filter("res_sched_key", schedKey).list());
 	}
 	public static void storeResult(ResultModel res) {
 		ofy().save().entity(res).now();

@@ -4,14 +4,15 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
 @Entity
-public class ParisModel {
+public abstract class ParisModel {
 	@Id Long paris_id;
 	@Index Key<UserModel> paris_user_key;
-	@Index Key<ResultModel> paris_result_key;
+	@Index Key<ScheduleModel> paris_sched_key;
+	@Index boolean finish;
 	int bet;
 	
 	@Ignore UserModel paris_user;
-	@Ignore ResultModel paris_result;
+	@Ignore ScheduleModel paris_sched;
 	
 	@SuppressWarnings("unused")
 	private ParisModel() {}
@@ -20,32 +21,44 @@ public class ParisModel {
 	 * @param paris_user
 	 * @param bet
 	 */
-	public ParisModel(String paris_user, Long paris_result, int bet) {
+	public ParisModel(String paris_user, String paris_sched, int bet) {
 		this.paris_user_key = DataStore.createUserKey(paris_user);
-		this.paris_result_key = DataStore.createResultKey(paris_result);
+		this.paris_sched_key = DataStore.createScheduleKey(paris_sched);
 		this.bet = bet;
+		this.finish = false;
 	}
 	
 	@OnLoad 
 	public void onLoad() {
 		UserModel user = DataStore.getUser(getParis_user());
 		if(user!=null) this.paris_user = user;
-		ResultModel result = DataStore.getResult(getParis_result());
-		if(result!=null) this.paris_result = result;
+		ScheduleModel sched = DataStore.getSchedule(getParis_sched());
+		if(sched!=null) this.paris_sched = sched;
 	}
 	
+	/**
+	 * @return the finish
+	 */
+	public boolean isFinish() {
+		return finish;
+	}
+
+	/**
+	 * @param finish the finish to set
+	 */
+	public void setFinish(boolean finish) {
+		this.finish = finish;
+	}
+
+	private String getParis_sched() {
+		return paris_sched_key.getRaw().getName();
+	}
+
 	/**
 	 * @return the paris_id
 	 */
 	public Long getParis_id() {
 		return paris_id;
-	}
-	
-	/**
-	 * @return the paris_result
-	 */
-	public Long getParis_result() {
-		return paris_result_key.getRaw().getId();
 	}
 
 	/**

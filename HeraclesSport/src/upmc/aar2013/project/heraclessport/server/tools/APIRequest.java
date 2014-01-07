@@ -1,9 +1,11 @@
 package upmc.aar2013.project.heraclessport.server.tools;
 
+import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
@@ -13,13 +15,12 @@ import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.googlecode.objectify.Key;
 
 public class APIRequest {
 	private static APIRequest instance= new APIRequest();
@@ -53,6 +54,8 @@ public class APIRequest {
 				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/league/hierarchy.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
+		default:
+			break;
 		}
 
 		Element element = send(request);
@@ -96,6 +99,8 @@ public class APIRequest {
 				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/teams/" + teamID + "/profile.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
+		default:
+			break;
 		}
 		
 		Element element = send(request);
@@ -117,6 +122,8 @@ public class APIRequest {
 				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + season + "/" + season2 + "/schedule.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
+		default:
+			break;
 		}
 		
 		Element element = send(request);
@@ -124,7 +131,7 @@ public class APIRequest {
 			Node node = null;
 			NodeList gameNodes = element.getElementsByTagName("game");
 			for (int i=0;i<gameNodes.getLength();i++) {
-				ScheduleModel schedule = new ScheduleModel();
+				/*ScheduleModel schedule = new ScheduleModel();
 				
 				NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
 				node = nodeMapGameAttributes.getNamedItem("id");
@@ -140,7 +147,7 @@ public class APIRequest {
 				node = nodeMapGameAttributes.getNamedItem("scheduled");
 				schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
 
-				DataStore.storeSchedule(schedule);
+				DataStore.storeSchedule(schedule);*/
 			}
 		} catch (Exception e) {
 			System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
@@ -170,6 +177,8 @@ public class APIRequest {
 				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + year + "/" + monthS + "/" + dayS + "/schedule.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
+		default:
+			break;
 		}
 		
 		Element element = send(request);
@@ -177,11 +186,10 @@ public class APIRequest {
 			Node node = null;
 			NodeList gameNodes = element.getElementsByTagName("game");
 			for (int i=0;i<gameNodes.getLength();i++) {
-				ScheduleModel schedule = new ScheduleModel();
+				/*ScheduleModel schedule = new ScheduleTeamModel();
 				
 				NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
-				node = nodeMapGameAttributes.getNamedItem("id");
-				schedule.setSched_id(node.getNodeValue());
+
 				node = nodeMapGameAttributes.getNamedItem("home_team");
 				//schedule.setSched_home_team_id(Key.create(TeamModel.class, node.getNodeValue()));
 				node = nodeMapGameAttributes.getNamedItem("away_team");
@@ -193,7 +201,7 @@ public class APIRequest {
 				//node = nodeMapGameAttributes.getNamedItem("scheduled");
 				//schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
 
-				DataStore.storeSchedule(schedule);
+				DataStore.storeSchedule(schedule);*/
 			}
 		} catch (Exception e) {
 			System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
@@ -209,6 +217,8 @@ public class APIRequest {
 				request = "http://api.sportsdatallc.org/" + sport.getName() + "-" + access_level + sport.getVersion() + "/games/" + scheduleID + "/boxscore.xml?api_key=" + sport.getKey();
 				break;
 			// à compléter si besoin
+		default:
+			break;
 		}
 		
 		Element element = send(request);

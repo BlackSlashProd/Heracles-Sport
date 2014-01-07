@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.UserModel" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScheduleTeamModel" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ResultModel" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel" %>
 <jsp:include page="/jsp/general/HeaderSection.jsp" />
@@ -15,10 +15,11 @@
     </p>
     <div class="schedules">
         <%
-        List<ScheduleModel> scheds = (List<ScheduleModel>) request.getAttribute("schedules");
-        for (ScheduleModel sched : scheds) {
+        List<ScheduleTeamModel> scheds = (List<ScheduleTeamModel>) request.getAttribute("schedules");
+        for (ScheduleTeamModel sched : scheds) {
         %>
         <div class="sched">
+            <h2> <%= sched.getSched_sportName() %> </h2>
             <h3>
                 <%= sched.getSched_home_team().getTeam_name() %> 
                 <span class="orange">VS</span> 
@@ -42,6 +43,9 @@
 	                       - 
 	                       <%= ((ScoreResultModel)res).getScore_res_score_away() %>             
 	                       <br/><br/>
+	                       <form >
+	                       
+	                       </form>
 	                <%
 	                	} else {
 	                		%>
