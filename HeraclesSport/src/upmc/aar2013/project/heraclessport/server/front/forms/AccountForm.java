@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
 public class AccountForm {
     private static final String FIELD_PSEUDO  = "pseudo";

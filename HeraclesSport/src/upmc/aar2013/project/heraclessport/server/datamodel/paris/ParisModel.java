@@ -1,4 +1,8 @@
-package upmc.aar2013.project.heraclessport.server.datamodel;
+package upmc.aar2013.project.heraclessport.server.datamodel.paris;
+
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
@@ -15,7 +19,7 @@ public abstract class ParisModel {
 	@Ignore ScheduleModel paris_sched;
 	
 	@SuppressWarnings("unused")
-	private ParisModel() {}
+	protected ParisModel() {}
 
 	/**
 	 * @param paris_user
@@ -28,11 +32,18 @@ public abstract class ParisModel {
 		this.finish = false;
 	}
 	
+	@OnSave
+	public void onSave() {
+		UserModel user = DataStore.getUser(this.getParis_userId());
+		user.setUser_point(user.getUser_point()-this.bet);
+		DataStore.storeUser(user);
+	}
+	
 	@OnLoad 
 	public void onLoad() {
-		UserModel user = DataStore.getUser(getParis_user());
+		UserModel user = DataStore.getUser(getParis_userId());
 		if(user!=null) this.paris_user = user;
-		ScheduleModel sched = DataStore.getSchedule(getParis_sched());
+		ScheduleModel sched = DataStore.getSchedule(getParis_schedId());
 		if(sched!=null) this.paris_sched = sched;
 	}
 	
@@ -50,8 +61,22 @@ public abstract class ParisModel {
 		this.finish = finish;
 	}
 
-	private String getParis_sched() {
+	private String getParis_schedId() {
 		return paris_sched_key.getRaw().getName();
+	}
+
+	/**
+	 * @return the paris_sched
+	 */
+	public ScheduleModel getParis_sched() {
+		return paris_sched;
+	}
+
+	/**
+	 * @param paris_sched the paris_sched to set
+	 */
+	public void setParis_sched(ScheduleModel paris_sched) {
+		this.paris_sched = paris_sched;
 	}
 
 	/**
@@ -64,8 +89,15 @@ public abstract class ParisModel {
 	/**
 	 * @return the paris_user
 	 */
-	public String getParis_user() {
+	public String getParis_userId() {
 		return paris_user_key.getRaw().getName();
+	}
+
+	/**
+	 * @return the paris_user
+	 */
+	public UserModel getParis_user() {
+		return paris_user;
 	}
 
 	/**

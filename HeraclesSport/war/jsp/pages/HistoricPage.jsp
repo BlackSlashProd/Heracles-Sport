@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.UserModel" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScheduleTeamModel" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ResultModel" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel" %>
 <jsp:include page="/jsp/general/HeaderSection.jsp" />
 <jsp:include page="/jsp/general/NavigationSection.jsp" />
 <section>
@@ -15,45 +16,36 @@
     </p>
     <div class="schedules">
         <%
-        List<ScheduleTeamModel> scheds = (List<ScheduleTeamModel>) request.getAttribute("schedules");
-        for (ScheduleTeamModel sched : scheds) {
+        	List<ScheduleTeamModel> scheds = (List<ScheduleTeamModel>) request.getAttribute("schedules");
+                for (ScheduleTeamModel sched : scheds) {
         %>
         <div class="sched">
-            <h2> <%= sched.getSched_sportName() %> </h2>
+            <h2> <%=sched.getSched_sportName()%> </h2>
             <h3>
-                <%= sched.getSched_home_team().getTeam_name() %> 
+                <%=sched.getSched_home_team().getTeam_name()%> 
                 <span class="orange">VS</span> 
-                <%= sched.getSched_away_team().getTeam_name() %>
+                <%=sched.getSched_away_team().getTeam_name()%>
             </h3>
             <p>
-                <b>Date : </b><%= sched.getSched_date() %><br/><br/>
+                <b>Date : </b><%=sched.getSched_date()%><br/><br/>
             </p>
             <p>
                 <%
-                List<ResultModel> results = sched.getSched_res();
-                if(results != null) {
-                	%>
+                	ResultScoreModel score = sched.getSched_res_score();
+                    if(score != null) {
+                %>
                 	<b><u>Résultats :</u></b><br/>
-                	<%
-	                for(ResultModel res : results){
-	                	if(res instanceof ScoreResultModel) {
-	                %>
+                <%
+                    }
+                    if(score != null) {
+                %>
 	                       <b>Scores :</b> 
-	                       <%= ((ScoreResultModel)res).getScore_res_score_home() %> 
+	                       <%=score.getScore_res_score_home()%> 
 	                       - 
-	                       <%= ((ScoreResultModel)res).getScore_res_score_away() %>             
+	                       <%=score.getScore_res_score_away()%>             
 	                       <br/><br/>
-	                       <form >
-	                       
-	                       </form>
-	                <%
-	                	} else {
-	                		%>
-	                	   <b>Résultat non géré :</b> <%= res.getClass().getSimpleName() %>
-	                		<%
-	                	}
+	            <%
 	                }
-                }
                 %>
             </p>
         </div>
@@ -67,6 +59,33 @@
         <%
         }
         %>
+    </div>
+    <h2>DEBUG : Tous les paris</h2>
+    <p>
+        Liste des paris en cours (Juste pour debug).<br/> 
+        <br/>
+    </p>
+    <div class="allparis">
+        <table>
+           <tr>
+               <td>Joueur</td>
+               <td>Mise</td>
+           </tr>
+          <%
+            List<ParisModel> paris = (List<ParisModel>) request.getAttribute("paris");
+          if(paris!=null)
+          {
+            for (ParisModel par : paris) {
+           %>
+           <tr>
+               <td><%= par.getParis_user().getUser_pseudo() %></td>
+               <td><%= par.getBet() %></td>
+           </tr>
+           <% 
+            } 
+          }
+            %>
+        </table>    
     </div>
 </section>
 <jsp:include page="/jsp/general/FooterSection.jsp" />

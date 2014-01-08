@@ -11,8 +11,8 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
 public class RankingPageServlet extends HttpServlet {
 

@@ -9,13 +9,6 @@ import javax.servlet.http.*;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.ParisModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 

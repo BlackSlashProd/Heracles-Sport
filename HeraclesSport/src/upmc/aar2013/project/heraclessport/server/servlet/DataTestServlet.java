@@ -12,6 +12,15 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.*;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisScoreModel;
+import upmc.aar2013.project.heraclessport.server.configs.Teams;
+import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisVictoryModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 
 /**
@@ -54,26 +63,37 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod003);
 			DataStore.storeTeam(teammod004);
 			// Schedules
-			ScheduleModel schedmod001 = new ScheduleTeamModel("sched001",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod001.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod001 = new ScheduleTeamModel("sched001",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod001.getTeam_id(),teammod004.getTeam_id());
 			schedmod001.setSched_isFinish(true);
-			ScheduleModel schedmod002 = new ScheduleTeamModel("sched002",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod002.getTeam_id(),teammod003.getTeam_id());
+			ScheduleTeamModel schedmod002 = new ScheduleTeamModel("sched002",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod002.getTeam_id(),teammod003.getTeam_id());
 			schedmod002.setSched_isFinish(true);
-			ScheduleModel schedmod003 = new ScheduleTeamModel("sched003",Sport.NBA.getName(),new Date(2013,12,31,20,20,00),teammod003.getTeam_id(),teammod004.getTeam_id());
-			ScheduleModel schedmod004 = new ScheduleTeamModel("sched004",Sport.NBA.getName(),new Date(2013,1,5,20,00,00),teammod003.getTeam_id(),teammod001.getTeam_id());
-			ScheduleModel schedmod005 = new ScheduleTeamModel("sched005",Sport.NBA.getName(),new Date(),teammod004.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod003 = new ScheduleTeamModel("sched003",Sport.NBA.getName(),new Date(2013,12,31,20,20,00),teammod003.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod004 = new ScheduleTeamModel("sched004",Sport.NBA.getName(),new Date(2013,1,5,20,00,00),teammod003.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod005 = new ScheduleTeamModel("sched005",Sport.NBA.getName(),new Date(),teammod004.getTeam_id(),teammod001.getTeam_id());
 			DataStore.storeSchedule(schedmod001);
 			DataStore.storeSchedule(schedmod002);
 			DataStore.storeSchedule(schedmod003);
 			DataStore.storeSchedule(schedmod004);
 			DataStore.storeSchedule(schedmod005);
 			
+			// Paris
+			ParisVictoryModel paris001 = new ParisVictoryModel(usermod005.getUser_id(), schedmod001.getSched_id(), 5, Teams.HOME);
+			ParisVictoryModel paris002 = new ParisVictoryModel(usermod001.getUser_id(), schedmod001.getSched_id(), 2, Teams.AWAY);
+			ParisScoreModel paris003 = new ParisScoreModel(usermod004.getUser_id(), schedmod001.getSched_id(), 2, Teams.ALL);
+			paris003.setScore_team_home(97);
+			paris003.setScore_team_away(84);
+			DataStore.storeParis(paris001);
+			DataStore.storeParis(paris002);
+			DataStore.storeParis(paris003);
+			
 			// Results
-			ScoreResultModel score001 = new ScoreResultModel(schedmod001.getSched_id(), 95, 84);
+			ResultScoreModel score001 = new ResultScoreModel(schedmod001.getSched_id(), 95, 84);
 			DataStore.storeResult(score001);
-			ScoreResultModel score002 = new ScoreResultModel(schedmod002.getSched_id(), 97, 114);
+			ResultScoreModel score002 = new ResultScoreModel(schedmod002.getSched_id(), 97, 114);
 			DataStore.storeResult(score002);
 			
-			// Paris
+			
+
 			//ScoreResultModel scoremod003 = new ScoreResultModel(schedmod003.getSched_id());
 			//scoremod003.setScore_res_score_home(4);
 			//DataStore.storeResult(scoremod003);

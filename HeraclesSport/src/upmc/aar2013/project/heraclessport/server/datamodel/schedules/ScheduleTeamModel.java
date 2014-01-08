@@ -1,6 +1,8 @@
-package upmc.aar2013.project.heraclessport.server.datamodel;
+package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import java.util.Date;
+
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
@@ -11,6 +13,7 @@ public class ScheduleTeamModel extends ScheduleModel {
 	Key<TeamModel> sched_away_team_id;
 	@Ignore TeamModel sched_home_team;
 	@Ignore TeamModel sched_away_team;
+	@Ignore ResultScoreModel sched_res_score;
 	
 	private ScheduleTeamModel() {}
 	
@@ -29,8 +32,17 @@ public class ScheduleTeamModel extends ScheduleModel {
 		if(teamHome!=null) this.sched_home_team = teamHome;
 		TeamModel teamAway = DataStore.getTeam(getSched_away_team_id());
 		if(teamAway!=null) this.sched_away_team = teamAway;
+		ResultScoreModel resultScor = DataStore.getScoreResultsBySchedule(sched_id);
+		if(resultScor!=null) this.sched_res_score = resultScor; 
 	}
 	
+	/**
+	 * @return the sched_res_score
+	 */
+	public ResultScoreModel getSched_res_score() {
+		return sched_res_score;
+	}
+
 	/**
 	 * @return the sched_home_team_id
 	 */

@@ -1,15 +1,15 @@
-package upmc.aar2013.project.heraclessport.server.datamodel;
+package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import com.googlecode.objectify.annotation.*;
 
 @Entity
-public class ScoreResultModel extends ResultModel {
+public class ResultScoreModel extends ResultModel {
 	int score_res_score_home;
 	int score_res_score_away;
 	
-	public ScoreResultModel() {}
+	public ResultScoreModel() {}
 	
-	public ScoreResultModel(String res_sched, int score_home, int score_away) {
+	public ResultScoreModel(String res_sched, int score_home, int score_away) {
 		super(res_sched);
 		this.score_res_score_home = score_home;
 		this.score_res_score_away = score_away;
@@ -41,5 +41,13 @@ public class ScoreResultModel extends ResultModel {
 	 */
 	public void setScore_res_score_away(int score_res_score_away) {
 		this.score_res_score_away = score_res_score_away;
+	}
+	
+	public TeamModel getWinner() {
+		if(this.getScore_res_score_home()>this.getScore_res_score_away()) 
+			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
+		else if(this.getScore_res_score_home()<this.getScore_res_score_away())
+			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
+		return null;
 	}
 }

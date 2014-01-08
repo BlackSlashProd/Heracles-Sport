@@ -7,9 +7,10 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleTeamModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -24,12 +25,14 @@ public class HistoricPageServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		List<ScheduleTeamModel> schedules = DataStore.getAllTeamSchedulesByFinish("sched_date", true);
+		List<ParisModel> paris = DataStore.getAllTeamParisByFinish(false);
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if(user != null) {
 			//request.setAttribute("user",DataStore.getUser(user.getUserId()));
 		}
 		request.setAttribute("schedules", schedules);
+		request.setAttribute("paris", paris);
 		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HistoricPage.jsp");  
         dispatch.forward(request, response);
 	}

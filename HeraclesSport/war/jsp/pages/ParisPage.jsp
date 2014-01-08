@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.UserModel" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.ScheduleTeamModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel" %>
 <jsp:include page="/jsp/general/HeaderSection.jsp" />
 <jsp:include page="/jsp/general/NavigationSection.jsp" />
 <section>

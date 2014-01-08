@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.UserModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <jsp:include page="/jsp/general/HeaderSection.jsp" />
 <jsp:include page="/jsp/general/NavigationSection.jsp" />
@@ -22,6 +22,7 @@
 	           <td>Place</td>
 	           <td>Joueur</td>
 	           <td>Points</td>
+	           <td>En jeu</td>
 	       </tr>
            <%
             List<UserModel> players = (List<UserModel>) request.getAttribute("players");
@@ -37,6 +38,7 @@
 	           <td><%= place++ %></td>
 	           <td><%= player.getUser_pseudo() %></td>
 	           <td><%= player.getUser_point() %></td>
+	           <td><%= player.getUser_ingame_point() %></td>
 	       </tr>
 	       <% 
 	        } 

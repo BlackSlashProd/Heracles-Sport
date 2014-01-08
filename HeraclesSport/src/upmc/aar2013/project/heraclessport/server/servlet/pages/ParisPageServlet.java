@@ -7,9 +7,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleTeamModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;

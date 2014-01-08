@@ -1,10 +1,10 @@
 package upmc.aar2013.project.heraclessport.server.tools;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
-import upmc.aar2013.project.heraclessport.server.datamodel.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScoreResultModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.ScheduleModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.TeamModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel;
+import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -224,7 +224,7 @@ public class APIRequest {
 		Element element = send(request);
 		try {
 			//ScheduleModel schedule = DataStore.getSchedule(scheduleID);
-			ScoreResultModel result = new ScoreResultModel();	
+			ResultScoreModel result = new ResultScoreModel();	
 
 			Node node = null;
 			NamedNodeMap nodeMapGameAttributes = element.getAttributes();

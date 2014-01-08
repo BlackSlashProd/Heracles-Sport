@@ -1,10 +1,11 @@
-package upmc.aar2013.project.heraclessport.server.datamodel;
+package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 
 import com.googlecode.objectify.annotation.*;
 
@@ -16,7 +17,6 @@ public abstract class ScheduleModel {
 	@Index Date sched_date;
 	@Index boolean sched_isFinish;
 	@Ignore boolean sched_isStart;
-	@Ignore List<ResultModel> sched_res;
 	
 	protected ScheduleModel() {}
 	
@@ -34,14 +34,14 @@ public abstract class ScheduleModel {
 	
 	@OnLoad 
 	public void onLoad() {
-	
-		List<ScoreResultModel> results = (List<ScoreResultModel>)DataStore.getScoreResultsBySchedule(sched_id);
+		/*DataStore.getScoreResultsBySchedule(sched_id);
+		List<ResultScoreModel> results = (List<ResultScoreModel>)DataStore.getScoreResultsBySchedule(sched_id);
 		this.sched_res = new ArrayList<ResultModel>();
 		if(results!=null) {
-			for(ScoreResultModel res : results) {
+			for(ResultScoreModel res : results) {
 				this.sched_res.add(res);
 			}
-		}
+		}*/
 	}
 	
 	public Date computeTimeLeft() {
@@ -110,12 +110,5 @@ public abstract class ScheduleModel {
 	 */
 	public boolean isSched_isStart() {
 		return sched_isStart;
-	}
-
-	/**
-	 * @return the sched_res
-	 */
-	public List<ResultModel> getSched_res() {
-		return sched_res;
 	}
 }

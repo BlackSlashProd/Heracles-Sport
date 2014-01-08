@@ -1,4 +1,6 @@
-package upmc.aar2013.project.heraclessport.server.datamodel;
+package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
+
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
