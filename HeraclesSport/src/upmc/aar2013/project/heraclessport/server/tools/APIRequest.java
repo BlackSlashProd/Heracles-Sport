@@ -59,25 +59,30 @@ public class APIRequest {
 					Node node = null;
 					NodeList teamNodes = element.getElementsByTagName("team");
 					for (int i=0;i<teamNodes.getLength();i++) {
-						TeamModel team = new TeamModel();
+						//TeamModel team = new TeamModel();
 						
 						NamedNodeMap nodeMapTeamAttributes = teamNodes.item(i).getAttributes();
 						node = nodeMapTeamAttributes.getNamedItem("id");
-						team.setTeam_id(node.getNodeValue());
+						String team_id = node.getNodeValue();
+						//team.setTeam_id(node.getNodeValue());
 						node = nodeMapTeamAttributes.getNamedItem("name");
-						team.setTeam_name(node.getNodeValue());
-						
+						String team_name = node.getNodeValue();
+						//team.setTeam_name(node.getNodeValue());
+						String team_city = "";
+						String team_country = "";
 						NodeList nodeInTeam  = teamNodes.item(i).getChildNodes();
 						for (int j=0;j<nodeInTeam.getLength();j++) {
 							if (nodeInTeam.item(j).getNodeName().equals("venue")) {
 								NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
 								node = nodeMapVenueAttributes.getNamedItem("city");
-								team.setTeam_town(node.getNodeValue());
+								team_city = node.getNodeValue();
+								//team.setTeam_town(node.getNodeValue());
 								node = nodeMapVenueAttributes.getNamedItem("country");
-								team.setTeam_country(node.getNodeValue());
+								team_country = node.getNodeValue();
+								//team.setTeam_country(node.getNodeValue());
 							}
 						}
-						
+						TeamModel team = new TeamModel(team_id,team_name,team_city,team_country);
 						DataStore.storeTeam(team);
 					}
 				} catch (Exception e) {
@@ -103,22 +108,28 @@ public class APIRequest {
 					Node node = null;
 					NodeList gameNodes = element.getElementsByTagName("game");
 					for (int i=0;i<gameNodes.getLength();i++) {
-						ScheduleTeamModel schedule = new ScheduleTeamModel();
-						
+						//ScheduleTeamModel schedule = new ScheduleTeamModel();
 						NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
 						node = nodeMapGameAttributes.getNamedItem("id");
-						schedule.setSched_id(node.getNodeValue());
+						String sched_id = node.getNodeValue();
 						node = nodeMapGameAttributes.getNamedItem("home_team");
-						schedule.setSched_home_team_id(node.getNodeValue());
+						String sched_home_team_id = node.getNodeValue();
 						node = nodeMapGameAttributes.getNamedItem("away_team");
-						schedule.setSched_away_team_id(node.getNodeValue());
-						// status : closed, inprogress, scheduled, postponed
+						String sched_away_team_id = node.getNodeValue();
 						node = nodeMapGameAttributes.getNamedItem("status");
-						schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
+						boolean isFinish = node.getNodeValue().equals("closed");
 						node = nodeMapGameAttributes.getNamedItem("scheduled");
-						schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
-
+						Date sched_date = this.toJavaDate(node.getNodeValue());
+						ScheduleTeamModel schedule = new ScheduleTeamModel(sport,sched_id,sched_date,isFinish,sched_home_team_id,sched_away_team_id);
 						DataStore.storeSchedule(schedule);
+						//schedule.setSched_id(node.getNodeValue());
+						//schedule.setSched_home_team_id(node.getNodeValue());
+						//schedule.setSched_away_team_id(node.getNodeValue());
+						// status : closed, inprogress, scheduled, postponed
+						//schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
+						//schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
+
+						
 					}
 				} catch (Exception e) {
 					System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");

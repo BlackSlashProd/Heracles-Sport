@@ -1,0 +1,80 @@
+/**
+* Ranking Page Css
+**/
+/**
+* Ranking
+*/
+.ranking {
+    margin:0px;padding:0px;
+    width:100%;
+    border:1px solid #000000;
+}
+.ranking table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width:100%; height:100%;
+    margin:0px;padding:0px;
+}
+.ranking tr:hover td{
+    
+}
+.ranking tr:nth-child(odd) { 
+    background-color:#ffaa56; 
+}
+.ranking tr:nth-child(even) { 
+    background-color:#ffffaa; 
+}
+.ranking td{
+    vertical-align:middle;
+    border:1px solid #000000;
+    border-width:0px 1px 1px 0px;
+    text-align:center;
+    padding:10px;
+    font-size:16px;
+    font-family:Arial;
+    font-weight:normal;
+    color:#000000;
+}
+.ranking tr#me td {
+    color:orangered;
+    font-weight:bold;
+}
+.ranking tr:last-child td{
+    border-width:0px 1px 0px 0px;
+}
+.ranking tr td:last-child{
+    border-width:0px 0px 1px 0px;
+}
+.ranking tr:last-child td:last-child{
+    border-width:0px 0px 0px 0px;
+}
+/* Header of table */
+.ranking tr:first-child td{
+    background:-o-linear-gradient(bottom, #ff7f00 5%, #684014 100%);    
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #684014) );
+    background:-moz-linear-gradient( center top, #ff7f00 5%, #684014 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#684014");  
+    background: -o-linear-gradient(top,#ff7f00,684014);
+    background-color:#ff7f00;
+    border:0px solid #000000;
+    text-align:center;
+    border-width:0px 0px 1px 1px;
+    font-size:18px;
+    font-family:Arial;
+    font-weight:bold;
+    color:#ffffff;
+}
+.ranking tr:first-child:hover td{
+    background:-o-linear-gradient(bottom, #ff7f00 5%, #684014 100%);    
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #684014) );
+    background:-moz-linear-gradient( center top, #ff7f00 5%, #684014 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#684014");  
+    background: -o-linear-gradient(top,#ff7f00,684014);
+    background-color:#ff7f00;
+}
+.ranking tr:first-child td:first-child{
+    border-width:0px 0px 1px 0px;
+}
+.ranking tr:first-child td:last-child{
+    border-width:0px 0px 1px 1px;
+}

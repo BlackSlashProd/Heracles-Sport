@@ -40,10 +40,12 @@ public enum Sport {
 	}
 	
 	public static String getClean(String sport) {
-		List<Sport> sports = getAllSport();
-		for(Sport sp : sports) {
-			if(sp.name.compareTo(sport)==0)
-				return sp.getCleanName();
+		if(sport!=null) {
+			List<Sport> sports = getAllSport();
+			for(Sport sp : sports) {
+				if(sp.name!=null && sp.name.compareTo(sport)==0)
+					return sp.getCleanName();
+			}
 		}
 		return null;
 	}

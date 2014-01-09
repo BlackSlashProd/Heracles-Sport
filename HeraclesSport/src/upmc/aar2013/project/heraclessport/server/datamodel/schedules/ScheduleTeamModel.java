@@ -2,6 +2,7 @@ package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import java.util.Date;
 
+import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 
 import com.googlecode.objectify.Key;
@@ -15,9 +16,9 @@ public class ScheduleTeamModel extends ScheduleModel {
 	@Ignore TeamModel sched_away_team;
 	@Ignore ResultScoreModel sched_res_score;
 	
-	public ScheduleTeamModel() {}
+	private ScheduleTeamModel() {}
 	
-	public ScheduleTeamModel(String sched_sport, String sched_id, Date sched_date, boolean sched_isFinish,
+	public ScheduleTeamModel(Sport sched_sport, String sched_id, Date sched_date, boolean sched_isFinish,
 			String home_team_id, String away_team_id) {
 		super(sched_sport, sched_id, sched_date, sched_isFinish);
 		this.sched_home_team_id = DataStore.createTeamKey(home_team_id);

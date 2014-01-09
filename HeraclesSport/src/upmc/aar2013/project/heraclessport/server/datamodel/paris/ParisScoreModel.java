@@ -10,6 +10,7 @@ public class ParisScoreModel extends ParisModel {
 	int score_team_home;
 	int score_team_away;
 	
+	@SuppressWarnings("unused")
 	private ParisScoreModel() {
 		super();
 	}
@@ -24,6 +25,11 @@ public class ParisScoreModel extends ParisModel {
 		score_team_home = -1;
 		score_team_away = -1;
 		this.paris_team = paris_score_team;
+	}
+	
+	@OnLoad
+	public void onLoad() {
+		super.onLoad();
 	}
 
 	/**

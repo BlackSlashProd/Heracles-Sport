@@ -21,7 +21,6 @@ import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Result;
 
 public class DataStore {
 	

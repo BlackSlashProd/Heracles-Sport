@@ -1,0 +1,32 @@
+/**
+* Account Page Css
+*/
+.log_form label {
+    float:left; clear:both;
+    width:500px; height:20px;
+    font-weight:bold;
+    color:#FF6600;
+}
+.log_form input {
+    float:left; clear:left;
+    width:250px; height:20px;
+}
+.log_form .button {
+    width:200px; height:30px;
+    font-size:20px;
+    font-weight:bold;
+    border-radius:5px;
+    border:2px solid #FFFFFF;
+    color:black;
+    cursor:pointer;
+}
+.log_form .button:hover {
+    background-image:linear-gradient(#67AE55, #578843);
+}
+.log_form span {
+    float:left;
+    width:650px;
+    margin-left:20px; padding:5px 0;
+    font-style:italic;
+    font-size:14px;
+} 

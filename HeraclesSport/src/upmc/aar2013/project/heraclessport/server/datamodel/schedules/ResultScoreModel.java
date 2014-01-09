@@ -9,7 +9,8 @@ public class ResultScoreModel extends ResultModel {
 	int score_res_score_home;
 	int score_res_score_away;
 	
-	public ResultScoreModel() {}
+	@SuppressWarnings("unused")
+	private ResultScoreModel() {}
 	
 	public ResultScoreModel(String res_sched, int score_home, int score_away) {
 		super(res_sched);

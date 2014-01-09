@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
     <%@ page import="com.google.appengine.api.users.*" %>
     <% UserService userService = UserServiceFactory.getUserService(); %>
+    
+    <header class="bg_gradient_green">
+        <h1>Bienvenue sur Heracles Sport</h1>
+    </header>
     <nav>
         <ul>
             <li><a href="/">Accueil</a></li>

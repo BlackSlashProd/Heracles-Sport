@@ -12,8 +12,8 @@ import com.googlecode.objectify.annotation.*;
 @Entity
 public abstract class ScheduleModel {
 	@Id String sched_id;
+	
 	@Index String sched_sport; 
-
 	@Index Date sched_date;
 	@Index boolean sched_isFinish;
 	@Ignore boolean sched_isStart;
@@ -24,14 +24,13 @@ public abstract class ScheduleModel {
 	 * @param sched_id
 	 * @param sched_date
 	 */
-	public ScheduleModel(String sched_id, String sched_sport, Date sched_date, boolean sched_isFinish) {
+	public ScheduleModel(Sport sched_sport, String sched_id, Date sched_date, boolean sched_isFinish) {
 		this.sched_id = sched_id;
-		this.sched_sport = sched_sport;
+		this.sched_sport = sched_sport.getName();
 		this.sched_date = sched_date;
 		this.sched_isFinish = sched_isFinish;
 		if(sched_date.before(new Date()))
 			this.sched_isStart = true;
-		// manque sched_isFinish 
 	}
 	
 	@OnLoad 

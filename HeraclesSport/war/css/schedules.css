@@ -1,0 +1,39 @@
+/**
+* Schedules Css
+**/
+/**
+* Schedules
+**/
+.schedules {
+    float:left; clear:both; 
+    width:100%;
+}
+.schedules h3 {
+    text-decoration:none;
+}
+.schedules div.sched, .schedules div.nosched {
+    float:left; clear:both;
+    width:956px;
+    padding: 10px;  
+    border: 2px solid #FFFFFF;
+    border-radius: 30px 30px 30px 30px;
+}
+.schedules div.sched {
+    min-height:80px;
+    margin-bottom:10px;
+}
+.schedules div.sched h2 {
+    margin: 0 0 5px; padding: 0 0 5px;
+    font-size:20px;
+    border-bottom: 2px solid orange;
+    color: orange;
+}
+.schedules div.nosched {   
+    color: orange;
+    font-weight: bold;   
+    text-align: center;
+    border-color: orangered;
+}
+.schedules div.allready {   
+    border-color: orange;
+}

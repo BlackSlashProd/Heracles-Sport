@@ -66,13 +66,13 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod003);
 			DataStore.storeTeam(teammod004);
 			// Schedules
-			ScheduleTeamModel schedmod001 = new ScheduleTeamModel("sched001",Sport.NBA.getName(),new Date(2013,12,10,20,20,00), false, teammod001.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod001 = new ScheduleTeamModel(Sport.NBA,"sched001",new Date(2013,12,10,20,20,00), false, teammod001.getTeam_id(),teammod004.getTeam_id());
 			schedmod001.setSched_isFinish(true);
-			ScheduleTeamModel schedmod002 = new ScheduleTeamModel("sched002",Sport.NBA.getName(),new Date(2013,12,10,20,20,00), false, teammod002.getTeam_id(),teammod003.getTeam_id());
+			ScheduleTeamModel schedmod002 = new ScheduleTeamModel(Sport.NBA,"sched002",new Date(2013,12,10,20,20,00), false, teammod002.getTeam_id(),teammod003.getTeam_id());
 			schedmod002.setSched_isFinish(true);
-			ScheduleTeamModel schedmod003 = new ScheduleTeamModel("sched003",Sport.NBA.getName(),new Date(2013,12,31,20,20,00), false, teammod003.getTeam_id(),teammod004.getTeam_id());
-			ScheduleTeamModel schedmod004 = new ScheduleTeamModel("sched004",Sport.NBA.getName(),new Date(2013,1,5,20,00,00), false, teammod003.getTeam_id(),teammod001.getTeam_id());
-			ScheduleTeamModel schedmod005 = new ScheduleTeamModel("sched005",Sport.NBA.getName(),new Date(), false, teammod004.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod003 = new ScheduleTeamModel(Sport.NBA,"sched003",new Date(2013,12,31,20,20,00), false, teammod003.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod004 = new ScheduleTeamModel(Sport.NBA,"sched004",new Date(2013,1,5,20,00,00), false, teammod003.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod005 = new ScheduleTeamModel(Sport.NBA,"sched005",new Date(), false, teammod004.getTeam_id(),teammod001.getTeam_id());
 			DataStore.storeSchedule(schedmod001);
 			DataStore.storeSchedule(schedmod002);
 			DataStore.storeSchedule(schedmod003);
@@ -102,8 +102,8 @@ public class DataTestServlet extends HttpServlet {
 			//DataStore.storeResult(scoremod003);
 
 			// temp
-			//APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
-			//APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
+			APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
+			APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
 /*
 			// pour le jour meme
 			Calendar calendar = Calendar.getInstance();
