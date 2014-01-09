@@ -1,6 +1,7 @@
 package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -29,6 +30,8 @@ import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 public class DataTestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
+	private final int tries = 3;
+
 	/**
 	 * @throws ServletException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -63,13 +66,13 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod003);
 			DataStore.storeTeam(teammod004);
 			// Schedules
-			ScheduleTeamModel schedmod001 = new ScheduleTeamModel("sched001",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod001.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod001 = new ScheduleTeamModel("sched001",Sport.NBA.getName(),new Date(2013,12,10,20,20,00), false, teammod001.getTeam_id(),teammod004.getTeam_id());
 			schedmod001.setSched_isFinish(true);
-			ScheduleTeamModel schedmod002 = new ScheduleTeamModel("sched002",Sport.NBA.getName(),new Date(2013,12,10,20,20,00),teammod002.getTeam_id(),teammod003.getTeam_id());
+			ScheduleTeamModel schedmod002 = new ScheduleTeamModel("sched002",Sport.NBA.getName(),new Date(2013,12,10,20,20,00), false, teammod002.getTeam_id(),teammod003.getTeam_id());
 			schedmod002.setSched_isFinish(true);
-			ScheduleTeamModel schedmod003 = new ScheduleTeamModel("sched003",Sport.NBA.getName(),new Date(2013,12,31,20,20,00),teammod003.getTeam_id(),teammod004.getTeam_id());
-			ScheduleTeamModel schedmod004 = new ScheduleTeamModel("sched004",Sport.NBA.getName(),new Date(2013,1,5,20,00,00),teammod003.getTeam_id(),teammod001.getTeam_id());
-			ScheduleTeamModel schedmod005 = new ScheduleTeamModel("sched005",Sport.NBA.getName(),new Date(),teammod004.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod003 = new ScheduleTeamModel("sched003",Sport.NBA.getName(),new Date(2013,12,31,20,20,00), false, teammod003.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod004 = new ScheduleTeamModel("sched004",Sport.NBA.getName(),new Date(2013,1,5,20,00,00), false, teammod003.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod005 = new ScheduleTeamModel("sched005",Sport.NBA.getName(),new Date(), false, teammod004.getTeam_id(),teammod001.getTeam_id());
 			DataStore.storeSchedule(schedmod001);
 			DataStore.storeSchedule(schedmod002);
 			DataStore.storeSchedule(schedmod003);
@@ -101,17 +104,53 @@ public class DataTestServlet extends HttpServlet {
 			// temp
 			//APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
 			//APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
-			//APIRequest.getInstance().updateTeamProfileRequest(Sport.NBA, "583ec7cd-fb46-11e1-82cb-f4ce4684ea4c");
-			//APIRequest.getInstance().updateGameBoxscore(Sport.NBA, "0b3d21c7-c13f-4ee8-8d9d-4f334754c7e4");
-			//APIRequest.getInstance().updateDailyScheduleRequest(Sport.NBA);
-		} 
-		else if(fct.compareTo("remove")==0) {
+/*
+			// pour le jour meme
+			Calendar calendar = Calendar.getInstance();
+			String monthS = "", dayS = "";
+
+			int year = calendar.get(Calendar.YEAR);
+			
+			int monthI = calendar.get(Calendar.MONTH);
+			monthI++; // commence à zero
+			if (monthI<10) monthS+="0";
+			monthS+=monthI;
+			
+			int dayI = calendar.get(Calendar.DAY_OF_MONTH);
+			if (dayI<10) dayS+="0";
+			dayS+=dayI;
+			
+			String scheduleID1 = null;
+			boolean day = false;
+			int n = 0;
+			do {
+				n++;
+				if (!day) {
+					scheduleID1 = APIRequest.getInstance().updateDailyScheduleRequest(Sport.NBA, year, monthS, "05");
+					day = callUpdateScore(scheduleID1);
+				}
+			} while (scheduleID1==null && n <= tries);
+*/
+
+		} else if(fct.compareTo("remove")==0) {
 			DataStore.cleanAll();
 			UserService userService = UserServiceFactory.getUserService();
 			response.sendRedirect(userService.createLogoutURL("/")); 
 		}   
 		
         dispatch.forward(request, response);
+	}
+	
+	private boolean callUpdateScore(String scheduleID) {
+		if (scheduleID==null) return false;
+		
+		boolean result = false;
+		int m=0;
+		do {
+			m++;
+			result = APIRequest.getInstance().updateGameBoxscore(Sport.NBA, scheduleID);
+		} while (!result && m <= tries);
+		return result;
 	}
 	
 	@Override

@@ -3,19 +3,25 @@
 	<cron>
 		<url>/cron/team</url>
 		<description>récupérations et mise à jour des équipes</description>
-		<schedule>every week 02:30</schedule>
+		<schedule>every sunday 03:30</schedule>
 		<timezone>Europe/Paris</timezone>
 	</cron>
 	<cron>
 		<url>/cron/schedule</url>
 		<description>récupérations et mise à jour des rencontres</description>
-		<schedule>every day 03:00</schedule>
+		<schedule>every sunday 03:45</schedule>
 		<timezone>Europe/Paris</timezone>
 	</cron>
 	<cron>
 		<url>/cron/score</url>
-		<description>récupérations et mise à jour des scores</description>
-		<schedule>22 of month 03:30</schedule> <!-- every 10 minutes -->
+		<description>récupérations et mise à jour des scores et paris</description>
+		<schedule>every 10 minutes</schedule>
+		<timezone>Europe/Paris</timezone>
+	</cron>
+	<cron>
+		<url>/cron/bonus</url>
+		<description>ajout de 5 points bonus par jour à tous les utilisateurs</description>
+		<schedule>every day 03:00</schedule>
 		<timezone>Europe/Paris</timezone>
 	</cron>
 </cronentries>

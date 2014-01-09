@@ -39,6 +39,13 @@ public class ParisVictoryModel extends ParisModel {
 	}
 
 	/**
+	 * @return the paris_team_select
+	 */
+	public Teams getTeam() {
+		return paris_team_select;
+	}
+	
+	/**
 	 * @return the paris_team
 	 */
 	public TeamModel getParis_team() {

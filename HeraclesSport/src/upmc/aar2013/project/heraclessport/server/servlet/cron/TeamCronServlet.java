@@ -28,6 +28,6 @@ public class TeamCronServlet extends HttpServlet {
 		int n = 0;
 		do {
 			n++;
-		} while (!APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA) || n <= tries);
+		} while (!APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA) && n <= tries);
 	}
 }

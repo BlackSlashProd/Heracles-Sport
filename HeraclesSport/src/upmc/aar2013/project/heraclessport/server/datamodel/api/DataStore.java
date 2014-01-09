@@ -3,7 +3,9 @@ package upmc.aar2013.project.heraclessport.server.datamodel.api;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import upmc.aar2013.project.heraclessport.server.configs.Configs;
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
@@ -202,68 +204,139 @@ public class DataStore {
 		return result;
 	}
 	
-	
 	/*
 	 * Tools Methods
 	 */
-	public static void updateSchedule(String schedId) {
-		ScheduleModel sched = DataStore.getSchedule(schedId);
-		sched.isSched_isFinish();
-		DataStore.storeSchedule(sched);
-		if(sched instanceof ScheduleTeamModel) {
+	public static void updateSchedule(String schedId, ResultScoreModel score) {
+		ScheduleModel schedule = DataStore.getSchedule(schedId);
+
+		if(schedule instanceof ScheduleTeamModel) {
 			List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
 			List<UserModel> winnersParis = new ArrayList<UserModel>();
-			int cumulLoosers = 0;
+			Map<String, Integer> winnerBetValues = new HashMap<String, Integer>();
+			int cumulLoosers = 0, cumulWinners = 0, benefitMult = 0;
+			
 			for(ParisModel paris : teamParis) {
-				if(checkParis(paris)) {
-					winnersParis.add(paris.getParis_user());
-				}
-				else
-					cumulLoosers += paris.getBet();
-				paris.isFinish();
+				benefitMult = checkParis(paris, score);
+				int bet = paris.getBet();
+				if(benefitMult!=0) {
+					UserModel user = paris.getParis_user();
+					winnersParis.add(user);
+					winnerBetValues.put(user.getUser_id(), bet);
+					cumulWinners += bet;
+				} else
+					cumulLoosers += bet;
+				
+				paris.setFinish(true); // peut etre inutile
 				DataStore.storeParis(paris);
 			}
-			int part = cumulLoosers/winnersParis.size();
+
 			for(UserModel user : winnersParis) {
-				user.addUser_point(part);
+				int bet = winnerBetValues.get(user.getUser_id());
+				int winnerBetsPartPercent = bet/cumulWinners;
+				int winnerPart = winnerBetsPartPercent*cumulLoosers;
+				user.addUser_point(2*bet + benefitMult*winnerPart);
 				DataStore.storeUser(user);
 			}
+			
+			schedule.setSched_isFinish(true); // peut etre inutile
+			DataStore.storeSchedule(schedule);
+		} else { // pour debug, à supprimer
+			System.out.println("ERROR updateSchedule!!!");
 		}
-		else {
+	}
+	
+	public static int checkParis(ParisModel paris, ResultScoreModel score) {
+		if(paris instanceof ParisVictoryModel) {
+			Teams winner = score.getWinner2(); // attention au nom de methode pourri !!!
+			Teams bet = ((ParisVictoryModel)paris).getTeam();
+			if (winner==bet)
+				return Configs.getMultTeamVict();
+		} else if(paris instanceof ParisScoreModel) {
+			ParisScoreModel parisScore = ((ParisScoreModel) paris);
+			int paris_home = parisScore.getScore_team_home();
+			int paris_away = parisScore.getScore_team_away();
+			int score_home = score.getScore_res_score_home();
+			int score_away = score.getScore_res_score_away();
+			if (paris_home == score_home && paris_away == score_away)
+				return Configs.getMultTeamScorBoth();
+			if (paris_home == score_home || paris_away == score_away)
+				return Configs.getMultTeamScorOne();
+		} else { // pour debug, à supprimer
+			System.out.println("ERROR checkParis !!!");
+		}
+		return 0;
+	}
+	/*
+	public static void updateSchedule(String schedId, ResultScoreModel score) {
+		ScheduleModel schedule = DataStore.getSchedule(schedId);
+
+		if(schedule instanceof ScheduleTeamModel) {
+			List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
+			List<UserModel> winnersParis = new ArrayList<UserModel>();
+			Map<String, Integer> winnerBetValues = new HashMap<String, Integer>();
+			int cumulLoosers = 0, cumulWinners = 0;
+			for(ParisModel paris : teamParis) {
+				if(checkParis(paris, score)) {
+					UserModel user = paris.getParis_user();
+					int bet = paris.getBet();
+					winnersParis.add(user);
+					winnerBetValues.put(user.getUser_id(), bet);
+					cumulWinners += bet;
+				} else
+					cumulLoosers += paris.getBet();
+				
+				paris.setFinish(true);
+				DataStore.storeParis(paris);
+			}
+
+			for(UserModel user : winnersParis) {
+				int bet = winnerBetValues.get(user.getUser_id());
+				int winnerBetsPartPercent = bet/cumulWinners;
+				int winnerPart = winnerBetsPartPercent*cumulLoosers;
+				user.addUser_point(bet + winnerPart);
+				DataStore.storeUser(user);
+			}
+			
+			schedule.setSched_isFinish(true);
+			DataStore.storeSchedule(schedule);
+		} else { // pour debug, à supprimer
 			System.out.println("ERROR !!!");
 		}
 	}
 	
-	public static boolean checkParis(ParisModel paris) {
+	public static boolean checkParis(ParisModel paris, ResultScoreModel score) {
 		boolean win = false;
 		if(paris instanceof ParisVictoryModel) {
-			ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
+			//ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
+			//ResultScoreModel score = DataStore.getScoreResultsBySchedule(scheduleID); // verif si equivalent a au dessus mais normalement oui
 			TeamModel vict = score.getWinner();
 			if(((ParisVictoryModel)paris).getParis_team()==vict) {
 				win = true;
 				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamVict());
 			}
-		}
-		else if(paris instanceof ParisScoreModel) {
-			ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
+		} else if(paris instanceof ParisScoreModel) {
+			//ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
+			//ResultScoreModel score = DataStore.getScoreResultsBySchedule(scheduleID); // verif si equivalent a au dessus mais normalement oui
 			int paris_home = ((ParisScoreModel) paris).getScore_team_home();
 			int paris_away = ((ParisScoreModel) paris).getScore_team_away();
 			if((((ParisScoreModel)paris).getParis_team()==Teams.HOME)
 					&& paris_home==score.getScore_res_score_home()) {
 				win = true;
 				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorOne());
-			}
-			else if((((ParisScoreModel)paris).getParis_team()==Teams.AWAY)
+			} else if((((ParisScoreModel)paris).getParis_team()==Teams.AWAY)
 					&& paris_away==score.getScore_res_score_away()) {
 				win = true;
 				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorOne());
-			}
-			else if((((ParisScoreModel)paris).getParis_team()==Teams.ALL)
+			} else if((((ParisScoreModel)paris).getParis_team()==Teams.ALL)
 					&& paris_home==score.getScore_res_score_home()
 					&& paris_away==score.getScore_res_score_away())
 				win = true;
 			paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorAll());
+		} else { // pour debug, à supprimer
+			System.out.println("ERROR !!!");
 		}
 		return win;
 	}
+	*/
 }

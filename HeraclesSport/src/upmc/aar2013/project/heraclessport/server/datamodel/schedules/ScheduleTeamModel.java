@@ -15,11 +15,11 @@ public class ScheduleTeamModel extends ScheduleModel {
 	@Ignore TeamModel sched_away_team;
 	@Ignore ResultScoreModel sched_res_score;
 	
-	private ScheduleTeamModel() {}
+	public ScheduleTeamModel() {}
 	
-	public ScheduleTeamModel(String sched_sport, String sched_id, Date sched_date, String home_team_id,
-			String away_team_id) {
-		super(sched_sport, sched_id, sched_date);
+	public ScheduleTeamModel(String sched_sport, String sched_id, Date sched_date, boolean sched_isFinish,
+			String home_team_id, String away_team_id) {
+		super(sched_sport, sched_id, sched_date, sched_isFinish);
 		this.sched_home_team_id = DataStore.createTeamKey(home_team_id);
 		this.sched_away_team_id = DataStore.createTeamKey(away_team_id);
 		this.sched_home_team = null;
@@ -51,10 +51,24 @@ public class ScheduleTeamModel extends ScheduleModel {
 	}
 
 	/**
+	 * @param sched_home_team_id the sched_home_team_id to set
+	 */
+	public void setSched_home_team_id(String sched_home_team_id) {
+		this.sched_home_team_id = DataStore.createTeamKey(sched_home_team_id);
+	}
+	
+	/**
 	 * @return the sched_away_team_id
 	 */
 	public String getSched_away_team_id() {
 		return sched_away_team_id.getRaw().getName();
+	}
+	
+	/**
+	 * @param sched_away_team_id the sched_away_team_id to set
+	 */
+	public void setSched_away_team_id(String sched_away_team_id) {
+		this.sched_away_team_id = DataStore.createTeamKey(sched_away_team_id);
 	}
 	
 	/**

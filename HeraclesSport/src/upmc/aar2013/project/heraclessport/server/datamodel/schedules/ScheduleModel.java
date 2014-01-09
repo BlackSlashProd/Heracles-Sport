@@ -24,12 +24,14 @@ public abstract class ScheduleModel {
 	 * @param sched_id
 	 * @param sched_date
 	 */
-	public ScheduleModel(String sched_id, String sched_sport, Date sched_date) {
+	public ScheduleModel(String sched_id, String sched_sport, Date sched_date, boolean sched_isFinish) {
 		this.sched_id = sched_id;
 		this.sched_sport = sched_sport;
 		this.sched_date = sched_date;
+		this.sched_isFinish = sched_isFinish;
 		if(sched_date.before(new Date()))
-			this.sched_isStart = true;		
+			this.sched_isStart = true;
+		// manque sched_isFinish 
 	}
 	
 	@OnLoad 
@@ -73,6 +75,9 @@ public abstract class ScheduleModel {
 		return sched_sport;
 	}
 	
+	/**
+	 * @return the real sched_sport name
+	 */
 	public String getSched_sportName() {
 		return Sport.getClean(sched_sport);
 	}

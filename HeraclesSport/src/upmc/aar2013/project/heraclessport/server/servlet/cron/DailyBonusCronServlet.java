@@ -2,6 +2,7 @@ package upmc.aar2013.project.heraclessport.server.servlet.cron;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,24 +11,29 @@ import javax.servlet.http.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
+import upmc.aar2013.project.heraclessport.server.configs.Configs;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
+import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
 /**
- * Servlet implementation class ScheduleCronServlet
+ * Servlet implementation class TeamCronServlet
  */
-public class ScheduleCronServlet extends HttpServlet {
+public class DailyBonusCronServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private final int tries = 3;
     
+	private final int tries = 3;
+
 	/**
 	 * @throws ServletException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		int n = 0;
-		do {
-			n++;
-		} while (!APIRequest.getInstance().updateScheduleRequest(Sport.NBA) && n <= tries);
+		System.out.println("appel de la servlet cron DailyBonus");
+		List<UserModel> users = DataStore.getAllUsers();
+		for (UserModel user : users) {
+			user.addUser_point(Configs.getDailyPoint());
+			DataStore.storeUser(user);
+		}
 	}
 }

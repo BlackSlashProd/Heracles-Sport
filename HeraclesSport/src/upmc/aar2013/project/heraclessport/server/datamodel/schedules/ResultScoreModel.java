@@ -1,5 +1,7 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
+import upmc.aar2013.project.heraclessport.server.configs.Teams;
+
 import com.googlecode.objectify.annotation.*;
 
 @Entity
@@ -43,11 +45,26 @@ public class ResultScoreModel extends ResultModel {
 		this.score_res_score_away = score_res_score_away;
 	}
 	
+	/**
+	 * @return the winner team object
+	 */
 	public TeamModel getWinner() {
 		if(this.getScore_res_score_home()>this.getScore_res_score_away()) 
 			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
 		else if(this.getScore_res_score_home()<this.getScore_res_score_away())
 			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
 		return null;
+	}
+	
+	/**
+	 * @return the winner team enum
+	 */
+	public Teams getWinner2() {
+		if(this.getScore_res_score_home()>this.getScore_res_score_away()) 
+			return Teams.HOME;
+		else if(this.getScore_res_score_home()<this.getScore_res_score_away())
+			return Teams.AWAY;
+		else 
+			return Teams.ALL;
 	}
 }
