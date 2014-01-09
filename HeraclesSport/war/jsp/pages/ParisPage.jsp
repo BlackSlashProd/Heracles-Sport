@@ -45,6 +45,7 @@
 			                <b>Date : </b><%= sched.getSched_date() %><br/><br/>
 			            </p>
 			            <% 
+			            if(user != null) {
 			                String active = (String)request.getAttribute("active"); 
 			                if(active!=null && active.compareTo(sched.getSched_id())==0) {
 			            %>
@@ -105,6 +106,7 @@
 					            </fieldset>
 				            </form>
 			            </div>
+			        <% } %>
 			        </div>
 			        <%
 			        }
