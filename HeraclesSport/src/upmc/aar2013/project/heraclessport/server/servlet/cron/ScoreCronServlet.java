@@ -2,15 +2,10 @@ package upmc.aar2013.project.heraclessport.server.servlet.cron;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 
@@ -61,7 +56,6 @@ public class ScoreCronServlet extends HttpServlet {
 		boolean day = false, previousDay = false;
 		int n = 0;
 		do {
-			n++;
 			if (!day) {
 				scheduleID1 = APIRequest.getInstance().updateDailyScheduleRequest(Sport.NBA, year, monthS, dayS);
 				day = callUpdateScore(scheduleID1);
@@ -70,7 +64,8 @@ public class ScoreCronServlet extends HttpServlet {
 				scheduleID2 = APIRequest.getInstance().updateDailyScheduleRequest(Sport.NBA, year2, monthS2, dayS2);
 				previousDay = callUpdateScore(scheduleID2);
 			}
-		} while ( (scheduleID1==null || scheduleID2==null) && n <= tries);
+			System.out.println("n:"+n+",scheduleID1:"+scheduleID1+",scheduleID2:"+scheduleID2+",day:"+day+",previousDay:"+previousDay);
+		} while ( (scheduleID1==null || scheduleID2==null) && ++n < tries);
 	}
 	
 	private boolean callUpdateScore(String scheduleID) {
@@ -79,9 +74,8 @@ public class ScoreCronServlet extends HttpServlet {
 		boolean result = false;
 		int m=0;
 		do {
-			m++;
 			result = APIRequest.getInstance().updateGameBoxscore(Sport.NBA, scheduleID);
-		} while (!result && m <= tries);
+		} while (!result && ++m < tries);
 		return result;
 	}
 }

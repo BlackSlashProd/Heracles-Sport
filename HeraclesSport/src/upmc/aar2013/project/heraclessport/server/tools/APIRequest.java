@@ -59,27 +59,21 @@ public class APIRequest {
 					Node node = null;
 					NodeList teamNodes = element.getElementsByTagName("team");
 					for (int i=0;i<teamNodes.getLength();i++) {
-						//TeamModel team = new TeamModel();
 						
 						NamedNodeMap nodeMapTeamAttributes = teamNodes.item(i).getAttributes();
 						node = nodeMapTeamAttributes.getNamedItem("id");
 						String team_id = node.getNodeValue();
-						//team.setTeam_id(node.getNodeValue());
 						node = nodeMapTeamAttributes.getNamedItem("name");
 						String team_name = node.getNodeValue();
-						//team.setTeam_name(node.getNodeValue());
-						String team_city = "";
-						String team_country = "";
+						String team_city = "", team_country = "";
 						NodeList nodeInTeam  = teamNodes.item(i).getChildNodes();
 						for (int j=0;j<nodeInTeam.getLength();j++) {
 							if (nodeInTeam.item(j).getNodeName().equals("venue")) {
 								NamedNodeMap nodeMapVenueAttributes = nodeInTeam.item(j).getAttributes();
 								node = nodeMapVenueAttributes.getNamedItem("city");
 								team_city = node.getNodeValue();
-								//team.setTeam_town(node.getNodeValue());
 								node = nodeMapVenueAttributes.getNamedItem("country");
 								team_country = node.getNodeValue();
-								//team.setTeam_country(node.getNodeValue());
 							}
 						}
 						TeamModel team = new TeamModel(team_id,team_name,team_city,team_country);
@@ -108,7 +102,6 @@ public class APIRequest {
 					Node node = null;
 					NodeList gameNodes = element.getElementsByTagName("game");
 					for (int i=0;i<gameNodes.getLength();i++) {
-						//ScheduleTeamModel schedule = new ScheduleTeamModel();
 						NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
 						node = nodeMapGameAttributes.getNamedItem("id");
 						String sched_id = node.getNodeValue();
@@ -116,20 +109,13 @@ public class APIRequest {
 						String sched_home_team_id = node.getNodeValue();
 						node = nodeMapGameAttributes.getNamedItem("away_team");
 						String sched_away_team_id = node.getNodeValue();
+						// status : closed, inprogress, scheduled, postponed
 						node = nodeMapGameAttributes.getNamedItem("status");
 						boolean isFinish = node.getNodeValue().equals("closed");
 						node = nodeMapGameAttributes.getNamedItem("scheduled");
 						Date sched_date = this.toJavaDate(node.getNodeValue());
 						ScheduleTeamModel schedule = new ScheduleTeamModel(sport,sched_id,sched_date,isFinish,sched_home_team_id,sched_away_team_id);
 						DataStore.storeSchedule(schedule);
-						//schedule.setSched_id(node.getNodeValue());
-						//schedule.setSched_home_team_id(node.getNodeValue());
-						//schedule.setSched_away_team_id(node.getNodeValue());
-						// status : closed, inprogress, scheduled, postponed
-						//schedule.setSched_isFinish(node.getNodeValue().equals("closed"));
-						//schedule.setSched_date(this.toJavaDate(node.getNodeValue()));
-
-						
 					}
 				} catch (Exception e) {
 					System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
@@ -158,19 +144,15 @@ public class APIRequest {
 						NamedNodeMap nodeMapGameAttributes = gameNodes.item(i).getAttributes();
 						node = nodeMapGameAttributes.getNamedItem("id");
 						scheduleID = node.getNodeValue();
-						
 						// status : closed, inprogress, scheduled, postponed
 						node = nodeMapGameAttributes.getNamedItem("status");
 						scheduleStatus = node.getNodeValue();
 						ResultScoreModel resultScoreModel = DataStore.getScoreResultsBySchedule(scheduleID);
-if (resultScoreModel==null)
-	System.out.println("aucune resultat pour la rencontre : " + scheduleID);
 						if ( scheduleStatus.equals("closed") && resultScoreModel==null) { // à verif si ca renvoie bien null s'il n'y a pas de resultat
 							return scheduleID;
 						}
 					}
 				} catch (Exception e) {
-e.printStackTrace();
 					System.out.println("@ erreur lors du parcours du fichier xml dans getScheduleRequest()");
 					return null;
 				}
@@ -226,9 +208,11 @@ e.printStackTrace();
 
 	private synchronized Element send(String request) {
 		System.out.println(request);
+		
 		if (request!=null ) {
 			long current = System.currentTimeMillis();
 			long past = current - this.lastRequestTime;
+			System.out.println("current:"+current+",past:"+past+ ((past < this.timeBetweenRequest) ? ",wait:"+(this.timeBetweenRequest - past) : "") );
 			if (past < this.timeBetweenRequest) {
 				try {
 					Thread.sleep(this.timeBetweenRequest - past);

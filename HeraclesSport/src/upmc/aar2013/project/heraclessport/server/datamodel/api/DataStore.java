@@ -234,7 +234,7 @@ public class DataStore {
 				int bet = winnerBetValues.get(user.getUser_id());
 				int winnerBetsPartPercent = bet/cumulWinners;
 				int winnerPart = winnerBetsPartPercent*cumulLoosers;
-				user.addUser_point(2*bet + benefitMult*winnerPart);
+				user.addUser_point(benefitMult*(bet + winnerPart));
 				DataStore.storeUser(user);
 			}
 			

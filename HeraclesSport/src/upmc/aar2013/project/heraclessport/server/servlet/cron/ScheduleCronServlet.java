@@ -1,14 +1,10 @@
 package upmc.aar2013.project.heraclessport.server.servlet.cron;
 
 import java.io.IOException;
-import java.util.Date;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 
@@ -27,7 +23,6 @@ public class ScheduleCronServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		int n = 0;
 		do {
-			n++;
-		} while (!APIRequest.getInstance().updateScheduleRequest(Sport.NBA) && n <= tries);
+		} while (!APIRequest.getInstance().updateScheduleRequest(Sport.NBA) && ++n < tries);
 	}
 }

@@ -1,18 +1,12 @@
 package upmc.aar2013.project.heraclessport.server.servlet.cron;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 import upmc.aar2013.project.heraclessport.server.configs.Configs;
-import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
@@ -22,8 +16,6 @@ import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 public class DailyBonusCronServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	private final int tries = 3;
-
 	/**
 	 * @throws ServletException 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
