@@ -29,9 +29,7 @@ public class HistoricPageServlet extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if(user != null) {
-			System.out.println(user.getUserId()); // à supprimer
-			List<ParisModel> paris = DataStore.getAllTeamParisByUser(user.getUserId(), false); // devrait etre true mais pour essaie, car mis a faux par defaut
-			System.out.println("nombre de paris : " + paris.size()); // à supprimer
+			List<ParisModel> paris = DataStore.getAllTeamParisByUser(user.getUserId(), false);
 			request.setAttribute("user", DataStore.getUser(user.getUserId()));
 			request.setAttribute("paris", paris);
 		}

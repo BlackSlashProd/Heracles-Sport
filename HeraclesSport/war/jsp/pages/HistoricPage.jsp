@@ -1,3 +1,4 @@
+<%@page import="upmc.aar2013.project.heraclessport.server.configs.Teams"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
@@ -31,8 +32,6 @@
 			        List<ParisModel> paris = (List<ParisModel>) request.getAttribute("paris");
 			        for (ParisModel pari : paris) {
 			        	ScheduleTeamModel schedule = (ScheduleTeamModel) pari.getParis_sched();
-			        	if (schedule==null) // oups
-			        		System.out.println("schedule est a null");
 				        %>
 				        <div class="sched">
 				            <h2> <%=schedule.getSched_sportName()%> </h2>
@@ -59,19 +58,35 @@
 					                }
 				                %>
 				            </p>
-				        </div>
-				        <div class="???">
-				        	<% if (pari instanceof ParisScoreModel) { %>
-				           		<b>Pari sur le score : </b> <br/>
-			                        <%=((ParisScoreModel)pari).getScore_team_home()%> 
-			                        - 
-			                        <%=((ParisScoreModel)pari).getScore_team_away()%>           
-			                        <br/><br/>
-				        	<% } else if (pari instanceof ParisVictoryModel) { %>
-				        		<b>Pari sur l'équipe : </b> <br/>
-			                        <%=((ParisVictoryModel)pari).getParis_team().getTeam_name()%>         
-			                        <br/><br/>
-				        	<% } %>
+				            <p>
+                            <% if (pari instanceof ParisScoreModel) { %>
+                                <b>Pari sur le score : </b> <br/>
+                                    <% 
+                                    if(((ParisScoreModel)pari).getParis_team()==Teams.ALL) {
+                                    %>
+                                        <%=((ParisScoreModel)pari).getScore_team_home()%> 
+                                        - 
+                                        <%=((ParisScoreModel)pari).getScore_team_away()%>   
+                                    <% } else if(((ParisScoreModel)pari).getParis_team()==Teams.HOME) { %> 
+                                        <%= ((ScheduleTeamModel)pari.getParis_sched()).getSched_home_team().getTeam_name() %>
+                                        : 
+                                        <%=((ParisScoreModel)pari).getScore_team_home()%>
+                                    <% } else { %>       
+                                        <%= ((ScheduleTeamModel)pari.getParis_sched()).getSched_away_team().getTeam_name() %>
+                                        : 
+                                        <%=((ParisScoreModel)pari).getScore_team_away()%>                                   
+                                    <% } %>
+                                    <br/><br/>
+                            <% } else if (pari instanceof ParisVictoryModel) { 
+                            	   if(((ParisVictoryModel)pari).getParis_team()!=null){ %>
+                            	        <b>Pari sur l'équipe : </b> <br/>
+                                       <%=((ParisVictoryModel)pari).getParis_team().getTeam_name()%>  
+                                <% } else { %>  
+                                        <b>Pari sur l'égalité des deux équipes. </b> <br/>
+                                <% } %>     
+                                    <br/><br/>
+                            <% } %>				            
+				            </p>
 				        </div>
 			        <%
 			        }

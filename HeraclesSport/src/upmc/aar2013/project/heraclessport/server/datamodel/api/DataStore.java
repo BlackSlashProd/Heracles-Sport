@@ -97,8 +97,11 @@ public class DataStore {
     public static Key<ScheduleModel> createScheduleKey(String schedId) {
     	return Key.create(ScheduleModel.class,schedId);
     }
+    public static Key<ScheduleTeamModel> createScheduleTeamKey(String schedId) {
+    	return Key.create(ScheduleTeamModel.class,schedId);
+    }
 	public static ScheduleModel getSchedule(String schedId) {
-		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
+		Key<ScheduleTeamModel> schedKey = createScheduleTeamKey(schedId);
 		return ofy().load().key(schedKey).now();
 	}	
 	public static List<ScheduleTeamModel> getAllTeamSchedules() {
