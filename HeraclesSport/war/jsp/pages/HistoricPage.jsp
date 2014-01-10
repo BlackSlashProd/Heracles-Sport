@@ -6,6 +6,8 @@
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultModel" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisScoreModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisVictoryModel" %>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -19,83 +21,61 @@
         <div id="page">
 			<jsp:include page="/jsp/general/NavigationSection.jsp" />
 			<section>
-			    <h2>DEBUG : Rencontres terminées</h2>
+			    <h2>Paris effectués et terminés</h2>
 			    <p>
-			        Liste des rencontres terminées avec leurs résultats (Juste pour debug).<br/> 
+			        Liste des paris terminés avec leurs résultats.<br/> 
 			        <br/>
 			    </p>
 			    <div class="schedules">
-			        <%
-			        	List<ScheduleTeamModel> scheds = (List<ScheduleTeamModel>) request.getAttribute("schedules");
-			                for (ScheduleTeamModel sched : scheds) {
-			        %>
-			        <div class="sched">
-			            <h2> <%=sched.getSched_sportName()%> </h2>
-			            <h3>
-			                <%=sched.getSched_home_team().getTeam_name()%> 
-			                <span class="orange">VS</span> 
-			                <%=sched.getSched_away_team().getTeam_name()%>
-			            </h3>
-			            <p>
-			                <b>Date : </b><%=sched.getSched_date()%><br/><br/>
-			            </p>
-			            <p>
-			                <%
-			                	ResultScoreModel score = sched.getSched_res_score();
-			                    if(score != null) {
-			                %>
-			                	<b><u>Résultats :</u></b><br/>
-			                <%
-			                    }
-			                    if(score != null) {
-			                %>
-				                       <b>Scores :</b> 
-				                       <%=score.getScore_res_score_home()%> 
-				                       - 
-				                       <%=score.getScore_res_score_away()%>             
-				                       <br/><br/>
-				            <%
-				                }
-			                %>
-			            </p>
-			        </div>
+			    	<%
+			        List<ParisModel> paris = (List<ParisModel>) request.getAttribute("paris");
+			        for (ParisModel pari : paris) {
+			        	ScheduleTeamModel schedule = (ScheduleTeamModel) pari.getParis_sched();
+			        	if (schedule==null) // oups
+			        		System.out.println("schedule est a null");
+				        %>
+				        <div class="sched">
+				            <h2> <%=schedule.getSched_sportName()%> </h2>
+				            <h3>
+				                <%=schedule.getSched_home_team().getTeam_name()%> 
+				                <span class="orange">VS</span> 
+				                <%=schedule.getSched_away_team().getTeam_name()%>
+				            </h3>
+				            <p>
+				                <b>Date : </b><%=schedule.getSched_date()%><br/><br/>
+				            </p>
+				            <p>
+				                <%
+				                	ResultScoreModel score = schedule.getSched_res_score();
+				                    if(score != null) {
+				                %>
+				                	<b><u>Résultats :</u></b><br/>
+					                       <b>Scores :</b> 
+					                       <%=score.getScore_res_score_home()%> 
+					                       - 
+					                       <%=score.getScore_res_score_away()%>             
+					                       <br/><br/>
+					            <%
+					                }
+				                %>
+				            </p>
+				        </div>
+				        <div class="???">
+				        	<% if (pari instanceof ParisScoreModel) { %>
+				           		<b>Pari sur le score : </b> <br/>
+			                        <%=((ParisScoreModel)pari).getScore_team_home()%> 
+			                        - 
+			                        <%=((ParisScoreModel)pari).getScore_team_away()%>           
+			                        <br/><br/>
+				        	<% } else if (pari instanceof ParisVictoryModel) { %>
+				        		<b>Pari sur l'équipe : </b> <br/>
+			                        <%=((ParisVictoryModel)pari).getParis_team().getTeam_name()%>         
+			                        <br/><br/>
+				        	<% } %>
+				        </div>
 			        <%
 			        }
-			        if(scheds.size()==0) {
 			        %>
-			            <div class="nosched">
-			               Aucune rencontre sportive terminée.<br/>
-			            </div>
-			        <%
-			        }
-			        %>
-			    </div>
-			    <h2>DEBUG : Tous les paris</h2>
-			    <p>
-			        Liste des paris en cours (Juste pour debug).<br/> 
-			        <br/>
-			    </p>
-			    <div class="allparis">
-			        <table>
-			           <tr>
-			               <td>Joueur</td>
-			               <td>Mise</td>
-			           </tr>
-			          <%
-			            List<ParisModel> paris = (List<ParisModel>) request.getAttribute("paris");
-			          if(paris!=null)
-			          {
-			            for (ParisModel par : paris) {
-			           %>
-			           <tr>
-			               <td><%= par.getParis_user().getUser_pseudo() %></td>
-			               <td><%= par.getBet() %></td>
-			           </tr>
-			           <% 
-			            } 
-			          }
-			            %>
-			        </table>    
 			    </div>
 			</section>
         </div>

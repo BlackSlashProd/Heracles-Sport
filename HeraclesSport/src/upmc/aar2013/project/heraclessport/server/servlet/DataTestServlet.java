@@ -89,6 +89,14 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeParis(paris002);
 			DataStore.storeParis(paris003);
 			
+			String therryID = "16276155431332483922"; // pas bien ca lol
+			ParisVictoryModel paris004 = new ParisVictoryModel(therryID, schedmod001.getSched_id(), 5, Teams.HOME);
+			ParisVictoryModel paris005 = new ParisVictoryModel(therryID, schedmod001.getSched_id(), 2, Teams.AWAY);
+			ParisScoreModel paris006 = new ParisScoreModel(therryID, schedmod001.getSched_id(), 2, Teams.ALL);
+			DataStore.storeParis(paris004);
+			DataStore.storeParis(paris005);
+			DataStore.storeParis(paris006);
+			
 			// Results
 			ResultScoreModel score001 = new ResultScoreModel(schedmod001.getSched_id(), 95, 84);
 			DataStore.storeResult(score001);

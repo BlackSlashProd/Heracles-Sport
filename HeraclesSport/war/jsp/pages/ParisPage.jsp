@@ -74,6 +74,7 @@
 				                    <div class="paris_type_vict fiel_clear">
 				                        <label for="paris_vict">Equipe victorieuse</label>
 				                        <select class="paris_vict" name="paris_vict">
+				                           <option value="all" selected="selected">égalité</option>
 				                           <option value="teamhome"><%= sched.getSched_home_team().getTeam_name() %></option>
 				                           <option value="teamaway"><%= sched.getSched_away_team().getTeam_name() %></option>
 				                        </select>
@@ -88,10 +89,12 @@
 	                                        </select>
                                         </div>
                                         <div class="scor_eqp_home">
-					                        <label for="paris_scor_teamhome"><%= sched.getSched_home_team().getTeam_name() %></label><input type="text" id="paris_scor_teamhome" name="paris_scor_teamhome" value="0" size="5" maxlength="5" />
+					                        <label for="paris_scor_teamhome"><%= sched.getSched_home_team().getTeam_name() %></label>
+					                        <input type="text" id="paris_scor_teamhome" name="paris_scor_teamhome" value="0" size="5" maxlength="5" />
 					                    </div>
 					                    <div class="scor_eqp_away"> 
-					                        <label for="paris_scor_teamaway"><%= sched.getSched_away_team().getTeam_name() %></label><input type="text" id="paris_scor_teamaway" name="paris_scor_teamaway" value="0" size="5" maxlength="5" />
+					                        <label for="paris_scor_teamaway"><%= sched.getSched_away_team().getTeam_name() %></label>
+					                        <input type="text" id="paris_scor_teamaway" name="paris_scor_teamaway" value="0" size="5" maxlength="5" />
 				                        </div>
 				                    </div>
 					                <div class="fiel_cleear">
