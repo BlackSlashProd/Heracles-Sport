@@ -1,6 +1,8 @@
 package upmc.aar2013.project.heraclessport.server.servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,13 +68,30 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeTeam(teammod003);
 			DataStore.storeTeam(teammod004);
 			// Schedules
-			ScheduleTeamModel schedmod001 = new ScheduleTeamModel(Sport.NBA,"sched001",new Date(2013,12,10,20,20,00), false, teammod001.getTeam_id(),teammod004.getTeam_id());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			Date date001 = null;
+			Date date002 = null;
+			Date date003 = null;
+			Date date004 = null;
+			Date date005 = null;
+			try {
+				date001 = sdf.parse("2014-01-15T20:15:00");
+				date002 = sdf.parse("2014-02-10T20:20:00");
+				date003 = sdf.parse("2014-03-25T20:00:00");
+				date004 = sdf.parse("2014-10-01T20:25:00");
+				date005 = sdf.parse("2014-02-29T20:45:00");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ScheduleTeamModel schedmod001 = new ScheduleTeamModel(Sport.NBA,"sched001",date001, false, teammod001.getTeam_id(),teammod004.getTeam_id());
 			schedmod001.setSched_isFinish(true);
-			ScheduleTeamModel schedmod002 = new ScheduleTeamModel(Sport.NBA,"sched002",new Date(2013,12,10,20,20,00), false, teammod002.getTeam_id(),teammod003.getTeam_id());
+			ScheduleTeamModel schedmod002 = new ScheduleTeamModel(Sport.NBA,"sched002",date002, false, teammod002.getTeam_id(),teammod003.getTeam_id());
 			schedmod002.setSched_isFinish(true);
-			ScheduleTeamModel schedmod003 = new ScheduleTeamModel(Sport.NBA,"sched003",new Date(2013,12,31,20,20,00), false, teammod003.getTeam_id(),teammod004.getTeam_id());
-			ScheduleTeamModel schedmod004 = new ScheduleTeamModel(Sport.NBA,"sched004",new Date(2013,1,5,20,00,00), false, teammod003.getTeam_id(),teammod001.getTeam_id());
-			ScheduleTeamModel schedmod005 = new ScheduleTeamModel(Sport.NBA,"sched005",new Date(), false, teammod004.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod003 = new ScheduleTeamModel(Sport.NBA,"sched003",date003, false, teammod003.getTeam_id(),teammod004.getTeam_id());
+			ScheduleTeamModel schedmod004 = new ScheduleTeamModel(Sport.NBA,"sched004",date004, false, teammod003.getTeam_id(),teammod001.getTeam_id());
+			ScheduleTeamModel schedmod005 = new ScheduleTeamModel(Sport.NBA,"sched005",date005, false, teammod004.getTeam_id(),teammod001.getTeam_id());
 			DataStore.storeSchedule(schedmod001);
 			DataStore.storeSchedule(schedmod002);
 			DataStore.storeSchedule(schedmod003);
@@ -89,25 +108,11 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeParis(paris002);
 			DataStore.storeParis(paris003);
 			
-			String therryID = "16276155431332483922"; // pas bien ca lol
-			ParisVictoryModel paris004 = new ParisVictoryModel(therryID, schedmod001.getSched_id(), 5, Teams.HOME);
-			ParisVictoryModel paris005 = new ParisVictoryModel(therryID, schedmod001.getSched_id(), 2, Teams.AWAY);
-			ParisScoreModel paris006 = new ParisScoreModel(therryID, schedmod001.getSched_id(), 2, Teams.ALL);
-			DataStore.storeParis(paris004);
-			DataStore.storeParis(paris005);
-			DataStore.storeParis(paris006);
-			
 			// Results
-			ResultScoreModel score001 = new ResultScoreModel(schedmod001.getSched_id(), 95, 84);
+			/*ResultScoreModel score001 = new ResultScoreModel(schedmod001.getSched_id(), 95, 84);
 			DataStore.storeResult(score001);
 			ResultScoreModel score002 = new ResultScoreModel(schedmod002.getSched_id(), 97, 114);
-			DataStore.storeResult(score002);
-			
-			
-
-			//ScoreResultModel scoremod003 = new ScoreResultModel(schedmod003.getSched_id());
-			//scoremod003.setScore_res_score_home(4);
-			//DataStore.storeResult(scoremod003);
+			DataStore.storeResult(score002);*/
 
 			// temp
 			APIRequest.getInstance().updateScheduleRequest(Sport.NBA);

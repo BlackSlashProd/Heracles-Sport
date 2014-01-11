@@ -14,6 +14,7 @@ import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisVictoryMod
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import upmc.aar2013.project.heraclessport.server.front.forms.AccountForm;
+import upmc.aar2013.project.heraclessport.server.front.forms.ParisForm;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -52,42 +53,9 @@ public class ParisPageServlet extends HttpServlet {
 		
 		if(user != null) {
 			request.setAttribute("user",DataStore.getUser(user.getUserId()));
-			
-			String sched_id = request.getParameter("sched_id");
-			String paris_type = request.getParameter("paris_type");
-			String paris_vict = request.getParameter("paris_vict");
-			String paris_scor_eqp = request.getParameter("paris_scor_eqp");
-			String paris_scor_teamhome = request.getParameter("paris_scor_teamhome");
-			String paris_scor_teamaway = request.getParameter("paris_scor_teamaway");
-			String paris_bet = request.getParameter("paris_bet");
-			
-			if (paris_type.equals("vict")) {
-				Teams team = Teams.ALL;
-				if (paris_vict.equals("teamhome")) team = Teams.HOME;
-				if (paris_vict.equals("teamaway")) team = Teams.AWAY;
-				try {
-					int paris_bet_int = Integer.parseInt(paris_bet);
-					ParisVictoryModel parisVictoryModel = new ParisVictoryModel(user.getUserId(), sched_id, paris_bet_int, team);
-					DataStore.storeParis(parisVictoryModel);
-					System.out.println("parisVictoryModel stocké");
-				} catch (NumberFormatException e) {} // Integer.parseInt
-			}
-			
-			if (paris_type.equals("scor")) {
-				Teams team = Teams.ALL;
-				if (paris_scor_eqp.equals("home")) team = Teams.HOME;
-				if (paris_scor_eqp.equals("away")) team = Teams.AWAY;
-				try {
-					int paris_bet_int = Integer.parseInt(paris_bet);
-					int paris_scor_teamhome_int = Integer.parseInt(paris_scor_teamhome);
-					int paris_scor_teamaway_int = Integer.parseInt(paris_scor_teamaway);
-					ParisScoreModel parisScoreModel = new ParisScoreModel(user.getUserId(), active, paris_bet_int, team);
-					parisScoreModel.setScore_team_home(paris_scor_teamhome_int);
-					parisScoreModel.setScore_team_away(paris_scor_teamaway_int);
-					DataStore.storeParis(parisScoreModel);
-					System.out.println("ParisScoreModel stocké");
-				} catch (NumberFormatException e) {} // Integer.parseInt
-			}
+			ParisForm parisform = new ParisForm();
+			parisform.createParis(request, user.getUserId());
+			request.setAttribute(JSP_VAR_FORM, parisform);
 		}
 
 		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/ParisPage.jsp");  

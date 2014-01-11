@@ -148,7 +148,7 @@ form p {
     font-style:italic;
     font-size:14px;
 }
-form p.error, .log_form p.succes {
+form p.error, form p.succes, form p.orange {
     font-weight:bold;
     text-align:center;
 } 

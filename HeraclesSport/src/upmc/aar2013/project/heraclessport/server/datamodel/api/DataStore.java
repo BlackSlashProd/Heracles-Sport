@@ -3,6 +3,7 @@ package upmc.aar2013.project.heraclessport.server.datamodel.api;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,9 @@ public class DataStore {
 		return ofy().load().type(ScheduleTeamModel.class).order("-"+order).list();
 	}
 	public static List<ScheduleTeamModel> getAllTeamSchedulesByFinish(String order, boolean isFinish) {
-		return (List<ScheduleTeamModel>)ofy().load().type(ScheduleTeamModel.class).filter("sched_isFinish", isFinish).order("-"+order).list();
+		List<ScheduleTeamModel> res = (List<ScheduleTeamModel>)ofy().load().type(ScheduleTeamModel.class).filter("sched_isFinish", isFinish).order("-"+order).list();
+		Collections.reverse(res);
+		return res;
 	}
 	public static void storeSchedule(ScheduleModel sched) {
 		ofy().save().entity(sched).now();
@@ -168,6 +171,14 @@ public class DataStore {
 	public static List<ParisVictoryModel> getAllVictoryParisByUser(String userId, boolean finish) {
 		Key<UserModel> userKey = createUserKey(userId);
 		return ofy().load().type(ParisVictoryModel.class).filter("paris_user_key", userKey).filter("finish", finish).list();
+	}
+	public static boolean hasParisForUserAndSchedule(String userId, String schedId) {
+		Key<UserModel> userKey = createUserKey(userId);
+		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
+		int nbscore = ofy().load().type(ParisScoreModel.class).filter("paris_user_key", userKey).filter("paris_sched_key", schedKey).count();
+		if(nbscore==0) nbscore += ofy().load().type(ParisVictoryModel.class).filter("paris_user_key", userKey).filter("paris_sched_key", schedKey).count();
+		if(nbscore>0) return true;
+		return false;
 	}
 	public static List<ParisModel> getAllTeamParisByFinish(boolean finish) {
 		List<ParisModel> result = new ArrayList<ParisModel>();

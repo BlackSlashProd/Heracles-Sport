@@ -35,22 +35,18 @@ public abstract class ScheduleModel {
 	
 	@OnLoad 
 	public void onLoad() {
-		/*DataStore.getScoreResultsBySchedule(sched_id);
-		List<ResultScoreModel> results = (List<ResultScoreModel>)DataStore.getScoreResultsBySchedule(sched_id);
-		this.sched_res = new ArrayList<ResultModel>();
-		if(results!=null) {
-			for(ResultScoreModel res : results) {
-				this.sched_res.add(res);
-			}
-		}*/
+		
 	}
 	
-	public Date computeTimeLeft() {
-		if(sched_date.after(new Date())) {
-			long diff = sched_date.getTime() - (new Date()).getTime();
-			return new Date(diff);
-		}
-		return null;
+	public String computeTimeLeft() {
+		long diff = Math.abs(sched_date.getTime()-(new Date()).getTime());
+		String res = "";
+		res += (diff/(1000*60*60*24))+" <b>J</b> ";
+		diff = diff%(1000*60*60*24);
+		res += (diff/(1000*60*60))+" <b>H</b> ";
+		diff = diff%(1000*60*60);
+		res += (diff/(1000*60))+" <b>M</b>.";
+		return res;
 	}
 
 	/**

@@ -1,26 +1,11 @@
 package upmc.aar2013.project.heraclessport.server.front.forms;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
-public class AccountForm {
+public class AccountForm extends GeneralForm {
     private static final String FIELD_PSEUDO  = "pseudo";
-
-    private String result;
-    private Map<String,String> errors = new HashMap<String,String>();
-
-    public String getResult() {
-        return result;
-    }
-
-    public Map<String, String> getErrors() {
-        return errors;
-    }
     
     public UserModel modifyAccount(HttpServletRequest request, String userId) {
         String pseudo = getFieldValue(request, FIELD_PSEUDO);
@@ -37,10 +22,10 @@ public class AccountForm {
         if(noError && user!=null) {
     		user.setUser_pseudo(pseudo);
     		DataStore.storeUser(user);
-    		result = "Modification réussite.";
+    		setResult("Modification réussite.");
     	}
 		else {
-			result = "La modification a échoué.";
+			setResult("La modification a échoué.");
 		}
         return user;
     }
@@ -62,18 +47,5 @@ public class AccountForm {
     	if(user !=null) {
     		throw new Exception( "Ce pseudo n'est pas disponible." );
     	}
-    }
-    
-    private void setError(String field, String message) {
-        errors.put(field,message);
-    }
-
-    private static String getFieldValue(HttpServletRequest request, String fieldName) {
-        String value = request.getParameter(fieldName);
-        if(value == null || value.trim().length() == 0) {
-            return null;
-        } else {
-            return value;
-        }
     }
 }

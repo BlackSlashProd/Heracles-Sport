@@ -1,3 +1,4 @@
+<%@page import="upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
@@ -43,6 +44,7 @@
 			            </h3>
 			            <p>
 			                <b>Date : </b><%= sched.getSched_date() %><br/><br/>
+			                <b>Temps restant : </b><%= sched.computeTimeLeft() %><br/><br/>
 			            </p>
 			            <% 
 			            if(user != null) {
@@ -58,8 +60,18 @@
 					            <fieldset>
 					                <input id="<%= sched.getSched_id() %>" type="hidden" name="sched_id" value="<%= sched.getSched_id() %>" />
 					                <legend>Parier sur cette rencontre</legend>
-					                <% if (request.getAttribute("form") != null && sched.getSched_id().compareTo(request.getAttribute("form_id").toString())==0) { 
-					                %>  
+					                <% if(DataStore.hasParisForUserAndSchedule(user.getUser_id(), sched.getSched_id())) { %>
+					                    <div class="fiel_clear">
+					                    <% if(request.getAttribute("form") != null && (active!=null && active.compareTo(sched.getSched_id())==0)) { %>
+                                            <p class="succes">${form.result}</p>
+                                        <% } else { %>
+                                            <p class="orange">Vous avez déjà parié sur cette rencontre.</p>
+                                        <% } %>
+                                        </div>
+					                <% } else { %>
+					                 <% if(active!=null && active.compareTo(sched.getSched_id())==0
+					                		  && request.getAttribute("form") != null) {
+                                       %>
 					                    <div class="fiel_clear">
 					                        <p class="${empty form.errors ? 'succes' : 'error'}">${form.result}</p>
 					                    </div>
@@ -105,7 +117,8 @@
 				                        <div>
 				                            <input type="submit" value="Parier" class="button bg_gradient_green" />
 				                        </div>
-				                    </div>                
+				                    </div>              
+				                    <% } %>  
 					            </fieldset>
 				            </form>
 			            </div>
