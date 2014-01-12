@@ -99,8 +99,8 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeNewParis(paris002);
 			DataStore.storeNewParis(paris003);
 
-			//APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
-			//APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
+			APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
+			APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
 			}
 
 		} else if(fct.compareTo("remove")==0) {
