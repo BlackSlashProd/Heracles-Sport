@@ -8,8 +8,8 @@
         <meta charset="UTF-8">
         <title>Heracles Sport - Classement</title>
         <link rel="icon" type="image/png" href="images/style/favicon.png" />
-        <link rel="stylesheet" href="css/general.css" type="text/css" />
-        <link rel="stylesheet" href="css/ranking.css" type="text/css" />
+        <link rel="stylesheet" href="css/general.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/ranking.min.css" type="text/css" />
     </head>
     <body>
         <div id="page">

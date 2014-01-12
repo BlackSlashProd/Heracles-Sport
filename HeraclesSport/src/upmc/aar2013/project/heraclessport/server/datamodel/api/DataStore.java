@@ -19,6 +19,7 @@ import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTea
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
+import upmc.aar2013.project.heraclessport.server.tools.ServerMail;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
@@ -255,7 +256,7 @@ public class DataStore {
 						cumulLoosers += bet;
 					}
 				}
-	
+				ServerMail mail = new ServerMail();
 				for(ParisModel paris : winnersParis) {
 					int bet = paris.getBet();
 					int winnerBetsPartPercent = bet/cumulWinners;
@@ -263,11 +264,13 @@ public class DataStore {
 					int res = (benefitMult*(bet + winnerPart));
 					paris.addResult(res);
 					DataStore.storeParis(paris);
+					mail.sendResult(paris);
 				}
 				
 				for(ParisModel paris : loosersParis) {
 					paris.addResult(0);
 					DataStore.storeParis(paris);
+					mail.sendResult(paris);
 				}
 				
 				schedule.setSched_isFinish(true);

@@ -15,8 +15,8 @@
         <meta charset="UTF-8">
         <title>Heracles Sport - Historique</title>
         <link rel="icon" type="image/png" href="images/style/favicon.png" />
-        <link rel="stylesheet" href="css/general.css" type="text/css" />
-        <link rel="stylesheet" href="css/schedules.css" type="text/css" />
+        <link rel="stylesheet" href="css/general.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/schedules.min.css" type="text/css" />
     </head>
     <body>
         <div id="page">

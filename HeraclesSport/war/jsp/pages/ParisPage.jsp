@@ -11,11 +11,11 @@
         <meta charset="UTF-8">
         <title>Heracles Sport - Paris</title>
         <link rel="icon" type="image/png" href="images/style/favicon.png" />
-        <link rel="stylesheet" href="css/general.css" type="text/css" />
-        <link rel="stylesheet" href="css/schedules.css" type="text/css" />
-        <link rel="stylesheet" href="css/paris.css" type="text/css" />
+        <link rel="stylesheet" href="css/general.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/schedules.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/paris.min.css" type="text/css" />
         <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="js/script_paris.js"></script>
+        <script type="text/javascript" src="js/script_paris.min.js"></script>
     </head>
     <body>
         <div id="page">

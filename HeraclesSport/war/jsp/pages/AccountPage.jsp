@@ -9,10 +9,10 @@
         <meta charset="UTF-8">
         <title>Heracles Sport - Compte</title>
         <link rel="icon" type="image/png" href="images/style/favicon.png" />
-        <link rel="stylesheet" href="css/general.css" type="text/css" />
-        <link rel="stylesheet" href="css/account.css" type="text/css" />
+        <link rel="stylesheet" href="css/general.min.css" type="text/css" />
+        <link rel="stylesheet" href="css/account.min.css" type="text/css" />
         <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="js/script_account.js"></script>
+        <script type="text/javascript" src="js/script_account.min.js"></script>
     </head>
     <body>
         <div id="page">

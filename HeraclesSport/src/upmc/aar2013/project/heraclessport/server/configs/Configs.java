@@ -27,9 +27,4 @@ public class Configs {
 	public static int getMultTeamScorBoth() {
 		return CONFIG_RULES_PARIS_MULT_TEAM_SCOR_BOTH;
 	}
-	/*
-	public static int getMultTeamScorAll() {
-		return CONFIG_RULES_PARIS_MULT_TEAM_SCOR_ALL;
-	}
-	*/
 }
