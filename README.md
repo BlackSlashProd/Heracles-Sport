@@ -3,7 +3,7 @@
 <h2>Authors</h2>
 
 <b>Barbier Clément (3061254)</b><br/>
-<b>Suau Therry ()</b><br/>
+<b>Suau Therry (2405893)</b><br/>
 
 <h2>URL</h2>
 
