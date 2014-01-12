@@ -49,6 +49,7 @@
 			            <p>
 			                <b>Date : </b><%= sched.getSched_dateClean() %><br/><br/>
 			                <b>Temps restant : </b><%= sched.computeTimeLeft() %><br/><br/>
+			                <b>A se partager : </b><b class="orange"><%= sched.getTotalBets() %></b><br/><br/>
 			            </p>
 			            <% 
 			            if(user != null) {

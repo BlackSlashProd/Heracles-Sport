@@ -73,7 +73,7 @@ public class DataTestServlet extends HttpServlet {
 			Date date004 = null;
 			Date date005 = null;
 			try {
-				date001 = sdf.parse("2014-01-10T20:15:00");
+				date001 = sdf.parse("2014-01-22T20:15:00");
 				date002 = sdf.parse("2014-02-10T20:20:00");
 				date003 = sdf.parse("2014-03-25T20:00:00");
 				date004 = sdf.parse("2014-10-01T20:25:00");

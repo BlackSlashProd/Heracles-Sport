@@ -7,6 +7,7 @@ import java.util.List;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
+import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel;
 
 import com.googlecode.objectify.annotation.*;
 
@@ -37,6 +38,15 @@ public abstract class ScheduleModel {
 	public void onLoad() {
 		if(sched_date.before(new Date()))
 			this.sched_isStart = true;
+	}
+	
+	public int getTotalBets() {
+		List<ParisModel> paris = DataStore.getAllTeamParisBySchedule(this.sched_id);
+		int total = 0;
+		for(ParisModel par : paris){
+			total += par.getBet();
+		}
+		return total;
 	}
 	
 	public String computeTimeLeft() {
