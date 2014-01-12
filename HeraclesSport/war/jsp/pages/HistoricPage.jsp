@@ -48,7 +48,9 @@
 	                            <% } else { %>
 	                            <b>Statut : </b> En cours.
 	                            <% } %>
-	                            <br/><br/>				                
+	                            <br/>
+	                            <b>A se partager : </b><b class="orange"><%= schedule.getTotalBets() %></b>
+	                            <br/><br/>			                
 				            </p>
 				            <p>
                             <% if (pari instanceof ParisScoreModel) { %>
@@ -106,7 +108,10 @@
                                 <%=schedule.getSched_away_team().getTeam_name()%>
                             </h3>
                             <p>
-                                <b>Date : </b><%=schedule.getSched_dateClean() %><br/><br/>
+                                <b>Date : </b><%=schedule.getSched_dateClean() %>
+                                <br/>
+                                <b>Bonus partagé : </b><b class="orange"><%= schedule.getTotalBets() %></b>
+                                <br/><br/>
                             </p>
                             <p>
                                 <%
