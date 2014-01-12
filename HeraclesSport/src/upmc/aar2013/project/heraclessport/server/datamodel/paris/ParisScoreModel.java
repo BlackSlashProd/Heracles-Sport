@@ -1,14 +1,19 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.paris;
 
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
-
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ParisScoreModel stocke les informations d'un paris sur le score concernant 
+ * une rencontre par équipe.
+ * ParisScoreModel constitue un type de paris et implémente ParisModel.
+ */
 @Entity
 public class ParisScoreModel extends ParisModel {
-	@Index Teams paris_team;
-	int score_team_home;
-	int score_team_away;
+	@Index Teams paris_team;	// Equipe(s) choisit pour le paris (ALL, HOME, AWAY)
+	int score_team_home;		// Score parié équipe domicile
+	int score_team_away;		// Score parié équipe extérieur
 	
 	@SuppressWarnings("unused")
 	private ParisScoreModel() {

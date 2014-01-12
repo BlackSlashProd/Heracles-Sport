@@ -7,19 +7,24 @@ import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ParisModel stocke les informations générales sur tout type de paris.
+ * ParisModel est abstraite, implémentée par plusieurs types de paris.
+ * Au chargement, ParisModel instancie la rencontre et l'utilisateur concerné.
+ */
 @Entity
 public abstract class ParisModel {
 	@Id Long paris_id;
-	@Index Key<UserModel> paris_user_key;
-	@Index Key<ScheduleModel> paris_sched_key;
-	@Index boolean finish;
-	@Index int result;
-	int bet;
+	@Index Key<UserModel> paris_user_key;		// Utilisateur Clé
+	@Index Key<ScheduleModel> paris_sched_key;	// Rencontre Clé
+	@Index boolean finish;						// Paris terminé (pris en compte)
+	@Index int result;							// Résultat du paris (gain/perte)
+	int bet;									// Mise
 	
 	@Ignore UserModel paris_user;
 	@Ignore ScheduleModel paris_sched;
 	
-	@SuppressWarnings("unused")
 	protected ParisModel() {}
 
 	/**
@@ -57,15 +62,14 @@ public abstract class ParisModel {
 	}
 
 	/**
-	 * @param iswin the iswin to set
-	 * @throws Exception 
+	 * Stocke le résultat d'un paris pour l'utilisateur.
 	 */
 	public void addResult(int res) {
 		if(!isFinish()) {
-			this.result -= this.bet;
+			this.result = -this.bet;
 			if(res>0) this.result = res;
 			UserModel user = DataStore.getUser(getParis_userId());
-			if(res>0) user.addUserPoint(res+this.bet);
+			if(res>0) user.addUserPoint(res);
 			user.addUserPointsResult(this.result);
 			DataStore.storeUser(user);
 			setFinish(true);

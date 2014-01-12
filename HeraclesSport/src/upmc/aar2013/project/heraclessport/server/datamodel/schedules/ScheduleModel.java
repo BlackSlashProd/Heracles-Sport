@@ -1,31 +1,31 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel;
-
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ScheduleModel stocke les informations générales sur tout type de rencontre.
+ * ScheduleModel est abstraite, implémentée par plusieurs types de rencontres.
+ * Au chargement, ScheduleModel vérifie si la rencontre a commencé.
+ */
 @Entity
 public abstract class ScheduleModel {
-	@Id String sched_id;
 	
-	@Index String sched_sport; 
-	@Index Date sched_date;
-	@Index boolean sched_isFinish;
-	@Ignore boolean sched_isStart;
+	@Id String sched_id;
+	@Index String sched_sport; 		// Nom du sport
+	@Index Date sched_date;			// Date de la rencontre
+	@Index boolean sched_isFinish;	// Rencontre terminée (résultats et paris calculés)
+	@Ignore boolean sched_isStart;  // Rencontre commencée
 	
 	protected ScheduleModel() {}
 	
-	/**
-	 * @param sched_id
-	 * @param sched_date
-	 */
 	public ScheduleModel(Sport sched_sport, String sched_id, Date sched_date, boolean sched_isFinish) {
 		this.sched_id = sched_id;
 		this.sched_sport = sched_sport.getName();
@@ -40,6 +40,10 @@ public abstract class ScheduleModel {
 			this.sched_isStart = true;
 	}
 	
+	/**
+	 * @return Nombre total de points pariés par tous les utilisateurs sur
+	 * cette rencontre.
+	 */
 	public int getTotalBets() {
 		List<ParisModel> paris = DataStore.getAllTeamParisBySchedule(this.sched_id);
 		int total = 0;
@@ -49,6 +53,9 @@ public abstract class ScheduleModel {
 		return total;
 	}
 	
+	/**
+	 * @return Temps restant avant le début de la rencontre.
+	 */
 	public String computeTimeLeft() {
 		long diff = Math.abs(sched_date.getTime()-(new Date()).getTime());
 		String res = "";
@@ -95,8 +102,11 @@ public abstract class ScheduleModel {
 		return sched_date;
 	}
 	
+	/**
+	 * Date de la rencontre en format francais.
+	 */
 	public String getSched_dateClean() {
-		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
+		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL,new Locale("fr", "FR"));
         return dfl.format(getSched_date());
 	}
 

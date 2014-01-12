@@ -1,19 +1,20 @@
 package upmc.aar2013.project.heraclessport.server.servlet.pages;
 
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import upmc.aar2013.project.heraclessport.server.front.forms.AccountForm;
 
+/**
+ * Servlet associée à la page Compte permettant d'afficher les informations sur 
+ * le compte et de modifier son pseudo.
+ */
 public class AccountPageServlet extends HttpServlet {
 
 	public static final String JSP_VAR_FORM = "form";

@@ -1,13 +1,17 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
-
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ResultScoreModel stocke les scores comme résultat d'une rencontre par équipe. 
+ * ResultScoreModel constitue un type de résultat et implémente ResultModel.
+ */
 @Entity
 public class ResultScoreModel extends ResultModel {
-	int score_res_score_home;
-	int score_res_score_away;
+	int score_res_score_home;		// Score Equipe Domicile
+	int score_res_score_away;		// Score Equipe Exterieur
 	
 	@SuppressWarnings("unused")
 	private ResultScoreModel() {}

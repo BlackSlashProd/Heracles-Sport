@@ -2,9 +2,11 @@ package upmc.aar2013.project.heraclessport.server.front.forms;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * GeneralForm regroupe les fonctions utiles à tout formulaire.
+ */
 public class GeneralForm {
     private String result;
     private Map<String,String> errors = new HashMap<String,String>();

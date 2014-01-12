@@ -1,9 +1,14 @@
 package upmc.aar2013.project.heraclessport.server.front.forms;
 
 import javax.servlet.http.HttpServletRequest;
+
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
+/**
+ * Formulaire de modification du profil.
+ * AccountForm hérite des méthodes générales aux formulaires de GeneralForm.
+ */
 public class AccountForm extends GeneralForm {
     private static final String FIELD_PSEUDO  = "pseudo";
     
@@ -30,7 +35,8 @@ public class AccountForm extends GeneralForm {
         return user;
     }
     
-    private void checkMail(String mail) throws Exception {
+    @SuppressWarnings("unused")
+	private void checkMail(String mail) throws Exception {
         if(mail != null && !mail.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
             throw new Exception("Adresse mail non valide.");
         }

@@ -3,6 +3,7 @@ package upmc.aar2013.project.heraclessport.server.datamodel.users;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import upmc.aar2013.project.heraclessport.server.configs.Configs;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
@@ -10,6 +11,10 @@ import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel;
 
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * UserModel stocke les informations générales sur les joueurs.
+ */
 @Entity
 public class UserModel {
 	@Id String user_id;
@@ -38,11 +43,6 @@ public class UserModel {
     	this.user_point = Configs.getStartPoint();	
     	this.user_point_win = 0;
     	this.user_point_lost = 0;
-	}
-	
-	@OnLoad
-	public void onLoad() {
-
 	}
 	
 	/**
@@ -87,18 +87,27 @@ public class UserModel {
 	private Date getUser_creation() {
 		return user_creation;
 	}
+	/**
+	 * Nombre de jour depuis l'inscription.
+	 */
 	private int getUser_numberOfDay() {
 		long diff = getUser_creation().getTime()-(new Date()).getTime();
 		return (int)(diff/(1000*60*60*24));
 	}
+	/**
+	 * Calcul le ratio points/jour
+	 */
 	public float getUser_dailyRatio() {
 		float ratio = (float)getUser_point_win()-(float)getUser_point_lost();
 		int nbdays = getUser_numberOfDay();
 		if(nbdays>0) ratio /= (float)nbdays;
 		return ratio;
 	}
+	/**
+	 * Date de création de compte format francais.
+	 */
 	public String getUser_creationDateClean() {
-		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
+		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL,new Locale("fr", "FR"));
         return dfl.format(getUser_creation());
 	}
 	/**
@@ -113,13 +122,18 @@ public class UserModel {
 	public int getUser_point() {
 		return user_point;
 	}
+	/**
+	 * Ajout/Suppresion de point
+	 */
 	public void addUserPoint(int points) {
 		if(points<0 && -points>this.user_point) points = -this.user_point;
 		this.user_point += points;
 	}
-	
+	/**
+	 * Modifications statistiques points
+	 */
 	public void addUserPointsResult(int points) {
-		if(points<0) this.user_point_lost += -points;
+		if(points<0) this.user_point_lost -= points;
 		else this.user_point_win += points;
 	}
     /**

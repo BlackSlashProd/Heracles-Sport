@@ -1,15 +1,20 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ResultModel stocke les informations générales sur tout type de résultat de rencontre.
+ * ResultModel est abstraite, implémentée par plusieurs types de résultats.
+ * Au chargement, ParisModel instancie la rencontre concernée.
+ */
 @Entity
 public abstract class ResultModel {
 	@Id Long res_id;
-	@Index Key<ScheduleModel> res_sched_key;
-	@Ignore ScheduleModel res_sched;
+	@Index Key<ScheduleModel> res_sched_key;	// Rencontre Clée
+	@Ignore ScheduleModel res_sched;			// Rencontre concernée
 	
 	protected ResultModel() {}
 	

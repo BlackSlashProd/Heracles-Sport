@@ -4,15 +4,22 @@ import upmc.aar2013.project.heraclessport.server.configs.Teams;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
-
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ParisVictoryModel stocke les informations d'un paris sur la victoire 
+ * concernant une rencontre par équipe.
+ * ParisVictoryModel constitue un type de paris et implémente ParisModel.
+ * Au chargement ParisVictoryModel instancie l'équipe concernée par le paris
+ * si celui ci ne concerne qu'une seule équipe.
+ */
 @Entity
 public class ParisVictoryModel extends ParisModel {
 
-	@Index Teams paris_team_select;
+	@Index Teams paris_team_select;		// Equipe(s) choisit pour le paris (ALL, HOME, AWAY)
 	
-	@Ignore TeamModel paris_team;
+	@Ignore TeamModel paris_team;		// Instance Equipe si home ou away
 	
 	@SuppressWarnings("unused")
 	private ParisVictoryModel() {

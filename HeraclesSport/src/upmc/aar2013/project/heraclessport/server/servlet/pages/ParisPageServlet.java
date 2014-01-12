@@ -2,31 +2,25 @@ package upmc.aar2013.project.heraclessport.server.servlet.pages;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
-import upmc.aar2013.project.heraclessport.server.configs.Teams;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisScoreModel;
-import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisVictoryModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
-import upmc.aar2013.project.heraclessport.server.front.forms.AccountForm;
 import upmc.aar2013.project.heraclessport.server.front.forms.ParisForm;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Servlet associée à la page des paris permettant de parier sur les résultats
+ * d'une rencontre.
+ */
 public class ParisPageServlet extends HttpServlet {
 
 	public static final String JSP_VAR_FORM = "form";
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4541267725137249836L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

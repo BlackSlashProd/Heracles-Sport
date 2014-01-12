@@ -3,7 +3,10 @@ package upmc.aar2013.project.heraclessport.server.configs;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Liste des sports de l'API utilisée.
+ *
+ */
 public enum Sport {
     NBA ("nba", 3, "yfbaukzz9pw855mccyut56j8","BASKET"),
     BASKET ("ncaamb", 3, "j2kzkn2g3rfv2twqqmeh7s3c","BASKET"),
@@ -35,6 +38,9 @@ public enum Sport {
 		this.cleanName = clean;
 	}
 	
+	/**
+	 * @return la liste de tous les sports de l'API.
+	 */
 	private static List<Sport> getAllSport() {
 		return Arrays.asList(
 				Sport.NBA,
@@ -48,6 +54,9 @@ public enum Sport {
 			);
 	}
 	
+	/**
+	 * @return le nom propre d'un sport pour un nom donné.
+	 */
 	public static String getClean(String sport) {
 		if(sport!=null) {
 			List<Sport> sports = getAllSport();
@@ -59,14 +68,23 @@ public enum Sport {
 		return null;
 	}
 	
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return this.name;
 	}
 	
+	/**
+	 * @return the version
+	 */
 	public int getVersion() {
 		return this.version;
 	}
 	
+	/**
+	 * @return the key
+	 */
 	public String getKey() {
 		return this.key;
 	}

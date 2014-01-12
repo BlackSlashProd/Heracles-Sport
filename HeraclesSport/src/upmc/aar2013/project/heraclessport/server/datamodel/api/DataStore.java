@@ -4,10 +4,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import upmc.aar2013.project.heraclessport.server.configs.Configs;
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
 import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisModel;
@@ -20,10 +17,12 @@ import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScore
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.ServerMail;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
+/**
+ * API des méthodes sur le DataStore (lecture, ajout, suppression, mis à jours, calculs,...);
+ */
 public class DataStore {
 	
     static {
@@ -37,6 +36,9 @@ public class DataStore {
         ObjectifyService.register(ParisVictoryModel.class);
     }
     
+    /**
+     * Supprime toutes les objets du DataStore
+     */
     public static void cleanAll() {
     	// Users
     	ofy().delete().entities(getAllUsers());
@@ -65,15 +67,12 @@ public class DataStore {
 	public static UserModel getUserByPseudo(String userPsd) {
 		return ofy().load().type(UserModel.class).filter("user_pseudo", userPsd).first().now();
 	}
-	
 	public static void storeUser(UserModel um) {
 		ofy().save().entity(um).now();
 	}
-	
 	public static List<UserModel> getAllUsers() {
 		return (List<UserModel>)ofy().load().type(UserModel.class).list();
 	}
-	
 	public static List<UserModel> getAllUsersOrderBy(String order) {
 		return ofy().load().type(UserModel.class).order("-"+order).list();
 	}
@@ -241,27 +240,53 @@ public class DataStore {
 		if(!schedule.isSched_isFinish()) {
 			if(schedule instanceof ScheduleTeamModel) {
 				List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
-				List<ParisModel> winnersParis = new ArrayList<ParisModel>();
+				List<ParisModel> winnersVictoryParis = new ArrayList<ParisModel>();
+				List<ParisModel> winnersScoreParis = new ArrayList<ParisModel>();
 				List<ParisModel> loosersParis = new ArrayList<ParisModel>();
-				int cumulLoosers = 0, cumulWinners = 0, benefitMult = 0;
+				float cumulVictoryWinners = 0, cumulVictoryLoosers = 0, cumulScoreWinners = 0, cumulScoreLoosers = 0, benefitMult = 0;
 				
 				for(ParisModel paris : teamParis) {
 					benefitMult = checkParis(paris, score);
 					int bet = paris.getBet();
-					if(benefitMult!=0) {
-						winnersParis.add(paris);
-						cumulWinners += bet;
-					} else {
-						loosersParis.add(paris);
-						cumulLoosers += bet;
+					if(paris instanceof ParisVictoryModel) {
+						if(benefitMult!=0) {
+							winnersVictoryParis.add(paris);
+							cumulVictoryWinners += bet;
+						} else {
+							loosersParis.add(paris);
+							cumulVictoryLoosers += bet;
+						}
+					} else if(paris instanceof ParisScoreModel) {
+						if(benefitMult!=0) {
+							winnersScoreParis.add(paris);
+							cumulScoreWinners += bet;
+						} else {
+							loosersParis.add(paris);
+							cumulScoreLoosers += bet;
+						}
 					}
 				}
 				ServerMail mail = new ServerMail();
-				for(ParisModel paris : winnersParis) {
-					int bet = paris.getBet();
-					int winnerBetsPartPercent = bet/cumulWinners;
-					int winnerPart = winnerBetsPartPercent*cumulLoosers;
-					int res = (benefitMult*(bet + winnerPart));
+				for(ParisModel paris : winnersVictoryParis) {
+					benefitMult = checkParis(paris, score);
+					float bet = paris.getBet();
+					float winnerBetsPartPercent = 100f;
+					if (cumulVictoryWinners!=0f)
+						winnerBetsPartPercent = bet/cumulVictoryWinners;
+					float winnerPart = winnerBetsPartPercent*cumulVictoryLoosers;
+					int res = (int) (benefitMult*(bet + winnerPart));
+					paris.addResult(res);
+					DataStore.storeParis(paris);
+					mail.sendResult(paris);
+				}
+				for(ParisModel paris : winnersScoreParis) {
+					benefitMult = checkParis(paris, score);
+					float bet = paris.getBet();
+					float winnerBetsPartPercent = 100f;
+					if (cumulScoreWinners!=0f)
+						winnerBetsPartPercent = bet/cumulScoreWinners;
+					float winnerPart = winnerBetsPartPercent*cumulScoreLoosers;
+					int res = (int) (benefitMult*(bet + winnerPart));
 					paris.addResult(res);
 					DataStore.storeParis(paris);
 					mail.sendResult(paris);
@@ -288,7 +313,7 @@ public class DataStore {
 		if(paris instanceof ParisVictoryModel) {
 			Teams winner = score.getWinner();
 			Teams bet = ((ParisVictoryModel)paris).getTeam();
-			if (winner==bet)
+			if (winner==bet) 
 				return Configs.getMultTeamVict();
 		} else if(paris instanceof ParisScoreModel) {
 			ParisScoreModel parisScore = ((ParisScoreModel) paris);
@@ -305,76 +330,4 @@ public class DataStore {
 		}
 		return 0;
 	}
-	/*
-	public static void updateSchedule(String schedId, ResultScoreModel score) {
-		ScheduleModel schedule = DataStore.getSchedule(schedId);
-
-		if(schedule instanceof ScheduleTeamModel) {
-			List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
-			List<UserModel> winnersParis = new ArrayList<UserModel>();
-			Map<String, Integer> winnerBetValues = new HashMap<String, Integer>();
-			int cumulLoosers = 0, cumulWinners = 0;
-			for(ParisModel paris : teamParis) {
-				if(checkParis(paris, score)) {
-					UserModel user = paris.getParis_user();
-					int bet = paris.getBet();
-					winnersParis.add(user);
-					winnerBetValues.put(user.getUser_id(), bet);
-					cumulWinners += bet;
-				} else
-					cumulLoosers += paris.getBet();
-				
-				paris.setFinish(true);
-				DataStore.storeParis(paris);
-			}
-
-			for(UserModel user : winnersParis) {
-				int bet = winnerBetValues.get(user.getUser_id());
-				int winnerBetsPartPercent = bet/cumulWinners;
-				int winnerPart = winnerBetsPartPercent*cumulLoosers;
-				user.addUser_point(bet + winnerPart);
-				DataStore.storeUser(user);
-			}
-			
-			schedule.setSched_isFinish(true);
-			DataStore.storeSchedule(schedule);
-		} else { // pour debug, à supprimer
-			System.out.println("ERROR !!!");
-		}
-	}
-	
-	public static boolean checkParis(ParisModel paris, ResultScoreModel score) {
-		boolean win = false;
-		if(paris instanceof ParisVictoryModel) {
-			//ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
-			//ResultScoreModel score = DataStore.getScoreResultsBySchedule(scheduleID); // verif si equivalent a au dessus mais normalement oui
-			TeamModel vict = score.getWinner();
-			if(((ParisVictoryModel)paris).getParis_team()==vict) {
-				win = true;
-				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamVict());
-			}
-		} else if(paris instanceof ParisScoreModel) {
-			//ResultScoreModel score = ((ScheduleTeamModel)paris.getParis_sched()).getSched_res_score();
-			//ResultScoreModel score = DataStore.getScoreResultsBySchedule(scheduleID); // verif si equivalent a au dessus mais normalement oui
-			int paris_home = ((ParisScoreModel) paris).getScore_team_home();
-			int paris_away = ((ParisScoreModel) paris).getScore_team_away();
-			if((((ParisScoreModel)paris).getParis_team()==Teams.HOME)
-					&& paris_home==score.getScore_res_score_home()) {
-				win = true;
-				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorOne());
-			} else if((((ParisScoreModel)paris).getParis_team()==Teams.AWAY)
-					&& paris_away==score.getScore_res_score_away()) {
-				win = true;
-				paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorOne());
-			} else if((((ParisScoreModel)paris).getParis_team()==Teams.ALL)
-					&& paris_home==score.getScore_res_score_home()
-					&& paris_away==score.getScore_res_score_away())
-				win = true;
-			paris.getParis_user().addUser_point(paris.getBet()*Configs.getMultTeamScorAll());
-		} else { // pour debug, à supprimer
-			System.out.println("ERROR !!!");
-		}
-		return win;
-	}
-	*/
 }

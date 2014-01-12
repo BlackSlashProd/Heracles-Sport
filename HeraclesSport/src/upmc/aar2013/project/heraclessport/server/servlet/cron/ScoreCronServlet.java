@@ -10,7 +10,7 @@ import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 
 /**
- * Servlet implementation class ScoreCronServlet
+ * Servlet Cron : Récupération des scores.
  */
 public class ScoreCronServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,23 +1,21 @@
 package upmc.aar2013.project.heraclessport.server.servlet.pages;
 
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Servlet associée à la page d'Accueil permettant d'afficher les informations sur 
+ * le compte et de modifier son pseudo.
+ */
 public class HomePageServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4541267725137249836L;
 
 	@Override

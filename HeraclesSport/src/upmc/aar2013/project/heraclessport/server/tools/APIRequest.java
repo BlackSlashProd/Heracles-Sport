@@ -2,42 +2,38 @@ package upmc.aar2013.project.heraclessport.server.tools;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
-import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ResultScoreModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.TeamModel;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * APIRequest regroupe les méthodes utiles pour interroger l'API de données sportives.
+ */
 public class APIRequest {
 	private static APIRequest instance= new APIRequest();
+	private long lastRequestTime = 0;
+	private final long timeBetweenRequest = 1600;
+	private final char access_level = 't';
+	private final int season = 2013;
+	private String season2 = "reg"; 
 	
 	public APIRequest() {}
 	
 	public static APIRequest getInstance(){
 		return instance;
 	}
-
-	private long lastRequestTime = 0;
-	private final long timeBetweenRequest = 1600; // un peu plus de 1 seconde, on sait jamais
-	
-	private final char access_level = 't';
-	private final int season = 2013;
-	private String season2 = "reg"; // pre, reg ou pst ???
 		
 	public String getSeason2() {
 		return season2;
@@ -148,7 +144,7 @@ public class APIRequest {
 						node = nodeMapGameAttributes.getNamedItem("status");
 						scheduleStatus = node.getNodeValue();
 						ResultScoreModel resultScoreModel = DataStore.getScoreResultsBySchedule(scheduleID);
-						if ( scheduleStatus.equals("closed") && resultScoreModel==null) { // à verif si ca renvoie bien null s'il n'y a pas de resultat
+						if ( scheduleStatus.equals("closed") && resultScoreModel==null) {
 							return scheduleID;
 						}
 					}
@@ -157,7 +153,6 @@ public class APIRequest {
 					return null;
 				}
 				break;
-			// à compléter si besoin
 			default:
 				break;
 		}
@@ -176,13 +171,9 @@ public class APIRequest {
 				int home_score = -1, away_score = -1;
 				try {
 					Node node = null;
-					//NamedNodeMap nodeMapGameAttributes = element.getAttributes();
-					//node = nodeMapGameAttributes.getNamedItem("id");
-
 					NodeList teamNodes = element.getElementsByTagName("team");
 					for (int j=0;j<teamNodes.getLength();j++) {
 						NamedNodeMap nodeMapTeamAttributes = teamNodes.item(j).getAttributes();
-						//node = nodeMapTeamAttributes.getNamedItem("id");
 						node = nodeMapTeamAttributes.getNamedItem("points");
 						if (j==0) {
 							home_score = Integer.parseInt(node.getNodeValue());

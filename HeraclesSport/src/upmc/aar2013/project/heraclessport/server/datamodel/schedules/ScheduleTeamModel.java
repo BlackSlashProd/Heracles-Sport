@@ -4,18 +4,25 @@ import java.util.Date;
 
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * ScheduleTeamModel stocke les informations d'une rencontre par équipe.
+ * ScheduleTeamModel constitue un type de rencontre et implémente ScheduleModel.
+ * Au chargement ScheduleTeamModel instancie les deux équipes concernées 
+ * par le paris ainsi que le résultat (scores) si il est connu.
+ */
 @Entity
 public class ScheduleTeamModel extends ScheduleModel {
-	Key<TeamModel> sched_home_team_id;
-	Key<TeamModel> sched_away_team_id;
-	@Ignore TeamModel sched_home_team;
-	@Ignore TeamModel sched_away_team;
-	@Ignore ResultScoreModel sched_res_score;
+	Key<TeamModel> sched_home_team_id;			// Equipe Domicile Clé
+	Key<TeamModel> sched_away_team_id;			// Equipe Exterieur Clé
+	@Ignore TeamModel sched_home_team;			// Equipe Domicile
+	@Ignore TeamModel sched_away_team;			// Equipe Exterieur
+	@Ignore ResultScoreModel sched_res_score;	// Résultat de la rencontre (si connu)
 	
+	@SuppressWarnings("unused")
 	private ScheduleTeamModel() {}
 	
 	public ScheduleTeamModel(Sport sched_sport, String sched_id, Date sched_date, boolean sched_isFinish,

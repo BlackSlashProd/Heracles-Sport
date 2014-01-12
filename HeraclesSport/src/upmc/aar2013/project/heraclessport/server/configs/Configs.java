@@ -1,5 +1,9 @@
 package upmc.aar2013.project.heraclessport.server.configs;
 
+/**
+ * Rêgles du jeu.
+ *
+ */
 public class Configs {
 
 	private static int CONFIG_RULES_POINT_START = 30;

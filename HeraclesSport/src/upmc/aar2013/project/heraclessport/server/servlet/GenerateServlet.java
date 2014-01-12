@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet outil de génération de pseudos aléatoires.
+ */
 public class GenerateServlet extends HttpServlet {
+	
+	private static final long serialVersionUID = -5126659953943096469L;
 	
 	private static List<String> lst_rand_name = Arrays.asList(
 			"MichaelJordan","AlainChabal","Olympius",

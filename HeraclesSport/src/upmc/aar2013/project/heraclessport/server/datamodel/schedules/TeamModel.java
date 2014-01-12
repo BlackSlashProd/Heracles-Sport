@@ -2,12 +2,16 @@ package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
 import com.googlecode.objectify.annotation.*;
 
+/**
+ * Objet persistant dans le DataStore.
+ * TeamModel stocke les informations d'une équipe.
+ */
 @Entity
 public class TeamModel {
 	@Id String team_id;
-	@Index String team_name;
-	String team_town;
-	String team_country;
+	@Index String team_name;	// Nom de l'équipe
+	String team_town;			// Ville de l'équipe
+	String team_country;		// Pays de l'équipe
 	
 	@SuppressWarnings("unused")
 	private TeamModel() {}

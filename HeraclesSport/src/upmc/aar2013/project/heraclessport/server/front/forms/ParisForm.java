@@ -1,10 +1,6 @@
 package upmc.aar2013.project.heraclessport.server.front.forms;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisScoreModel;
@@ -12,6 +8,10 @@ import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisVictoryMod
 import upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleModel;
 import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 
+/**
+ * Formulaire de paris sur les rencontres.
+ * ParisForm hérite des méthodes générales aux formulaires de GeneralForm.
+ */
 public class ParisForm extends GeneralForm {
 	private static final String FIELD_SHED_ID  = "sched_id";
 	private static final String FIELD_PARIS_TYPE  = "paris_type";
@@ -29,7 +29,6 @@ public class ParisForm extends GeneralForm {
 		String paris_scor_teamhome = getFieldValue(request, FIELD_PARIS_SCORE_TEAM_HOME);
 		String paris_scor_teamaway = getFieldValue(request, FIELD_PARIS_SCORE_TEAM_AWAY);
 		String paris_bet = request.getParameter(FIELD_PARIS_BET);
-		boolean noError = true;
 		try {
 			checkExistingSchedule(sched_id);
 			int paris_bet_int = checkInteger(paris_bet);
@@ -60,12 +59,17 @@ public class ParisForm extends GeneralForm {
 				throw new Exception("Type de paris non permis.");
 			}
 		} catch(Exception e) {
-        	noError = false;
         	setError("general",e.getMessage());
         	setResult(e.getMessage());
         }
     }
     
+    /**
+     * Vérifie qu'un champ soit bien un entier non nul.
+     * @param integer Le champ représentant l'entier
+     * @return l'entier en int
+     * @throws Exception
+     */
     private int checkInteger(String integer) throws Exception {
     	try {
     		int res = Integer.parseInt(integer);
@@ -76,7 +80,12 @@ public class ParisForm extends GeneralForm {
     		throw new Exception("Champ numerique non valide");
     	} // Integer.parseInt
 	}
-
+    
+    /**
+     * Test l'existence d'une rencontre.
+     * @param sched_id l'ID de la rencontre
+     * @throws Exception
+     */
 	private void checkExistingSchedule(String sched_id) throws Exception {
     	ScheduleModel sched = DataStore.getSchedule(sched_id);
 		if(sched==null)
@@ -86,7 +95,13 @@ public class ParisForm extends GeneralForm {
 				throw new Exception("Cette rencontre a déjà commencé.");
 		
 	}
-
+	/**
+	 * Vérifie qu'un utilisateur peut parier sur une rencontre donnée
+	 * @param userId L'ID de l'utilisateur
+	 * @param schedId L'ID de la rencontre 
+	 * @param paris_bet La mise pariée
+	 * @throws Exception
+	 */
 	public void checkUserCanParis(String userId, String schedId, int paris_bet) throws Exception {
     	if(DataStore.hasParisForUserAndSchedule(userId, schedId))
     		throw new Exception("Vous avez déjà parié sur cette rencontre.");

@@ -3,18 +3,13 @@ package upmc.aar2013.project.heraclessport.server.servlet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-
 import upmc.aar2013.project.heraclessport.server.configs.Sport;
-import upmc.aar2013.project.heraclessport.server.datamodel.*;
 import upmc.aar2013.project.heraclessport.server.datamodel.api.DataStore;
 import upmc.aar2013.project.heraclessport.server.datamodel.paris.ParisScoreModel;
 import upmc.aar2013.project.heraclessport.server.configs.Teams;
@@ -27,12 +22,13 @@ import upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel;
 import upmc.aar2013.project.heraclessport.server.tools.APIRequest;
 
 /**
- * Servlet implementation class MaServletaar
+ * Servlet de test permettant de :
+ * - Remplir la base de données avec des données de test.
+ * - Finir les rencontres des données de test.
+ * - Vider complêtement la base de données.
  */
 public class DataTestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-	private final int tries = 3;
 
 	/**
 	 * @throws ServletException 
@@ -40,7 +36,6 @@ public class DataTestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String fct = request.getParameter("fct");
-		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HomePage.jsp");
 		// Remplir BDD
 		if(fct.compareTo("create")==0) {
 			UserModel user = DataStore.getUser("user001");
@@ -134,18 +129,6 @@ public class DataTestServlet extends HttpServlet {
 		}   
 		
 		response.sendRedirect("/");
-	}
-	
-	private boolean callUpdateScore(String scheduleID) {
-		if (scheduleID==null) return false;
-		
-		boolean result = false;
-		int m=0;
-		do {
-			m++;
-			result = APIRequest.getInstance().updateGameBoxscore(Sport.NBA, scheduleID);
-		} while (!result && m <= tries);
-		return result;
 	}
 	
 	@Override
