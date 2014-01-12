@@ -46,11 +46,17 @@ public class DataTestServlet extends HttpServlet {
 			UserModel usermod003 = new UserModel("user003","fake_emilie","fake_emilie@fake.com");
 			UserModel usermod004 = new UserModel("user004","fake_lola","fake_lola@fake.com");
 			UserModel usermod005 = new UserModel("user005","fake_tom","fake_tom@fake.com");
+			UserModel usermod006 = new UserModel("user006","fake_joe","fake_joe@fake.com");
+			UserModel usermod007 = new UserModel("user007","fake_estelle","fake_estelle@fake.com");
+			UserModel usermod008 = new UserModel("user008","fake_max","fake_max@fake.com");
 			DataStore.storeUser(usermod001);
 			DataStore.storeUser(usermod002);
 			DataStore.storeUser(usermod003);
 			DataStore.storeUser(usermod004);
 			DataStore.storeUser(usermod005);
+			DataStore.storeUser(usermod006);
+			DataStore.storeUser(usermod007);
+			DataStore.storeUser(usermod008);
 			// Teams
 			TeamModel teammod001 = new TeamModel("team001","fake_ChicagoBulls","Chicago","Central");
 			TeamModel teammod002 = new TeamModel("team002","fake_BostonCeltics","Boston","Atlantic");
@@ -90,17 +96,37 @@ public class DataTestServlet extends HttpServlet {
 			DataStore.storeSchedule(schedmod005);
 			
 			// Paris
-			ParisVictoryModel paris001 = new ParisVictoryModel(usermod005.getUser_id(), schedmod001.getSched_id(), 5, Teams.HOME);
-			ParisVictoryModel paris002 = new ParisVictoryModel(usermod001.getUser_id(), schedmod001.getSched_id(), 2, Teams.AWAY);
-			ParisScoreModel paris003 = new ParisScoreModel(usermod004.getUser_id(), schedmod001.getSched_id(), 2, Teams.ALL);
-			paris003.setScore_team_home(97);
-			paris003.setScore_team_away(84);
+			ParisVictoryModel paris001 = new ParisVictoryModel(usermod001.getUser_id(), schedmod001.getSched_id(), 5, Teams.HOME);
+			ParisVictoryModel paris002 = new ParisVictoryModel(usermod002.getUser_id(), schedmod001.getSched_id(), 2, Teams.AWAY);
+			ParisVictoryModel paris003 = new ParisVictoryModel(usermod002.getUser_id(), schedmod003.getSched_id(), 10, Teams.AWAY);
+			ParisVictoryModel paris004 = new ParisVictoryModel(usermod003.getUser_id(), schedmod003.getSched_id(), 5, Teams.AWAY);
+			ParisVictoryModel paris005 = new ParisVictoryModel(usermod004.getUser_id(), schedmod003.getSched_id(), 15, Teams.HOME);
+			ParisVictoryModel paris006 = new ParisVictoryModel(usermod005.getUser_id(), schedmod003.getSched_id(), 15, Teams.HOME);
+			
+			ParisScoreModel paris007 = new ParisScoreModel(usermod005.getUser_id(), schedmod002.getSched_id(), 10, Teams.ALL);
+			paris007.setScore_team_home(154);
+			paris007.setScore_team_away(125);
+			ParisScoreModel paris008 = new ParisScoreModel(usermod006.getUser_id(), schedmod002.getSched_id(), 1, Teams.HOME);
+			paris008.setScore_team_home(80);
+			ParisScoreModel paris009 = new ParisScoreModel(usermod007.getUser_id(), schedmod002.getSched_id(), 1, Teams.AWAY);
+			paris009.setScore_team_away(80);
+			ParisScoreModel paris010 = new ParisScoreModel(usermod008.getUser_id(), schedmod002.getSched_id(), 2, Teams.ALL);
+			paris010.setScore_team_home(80);
+			paris010.setScore_team_away(80);
+			
 			DataStore.storeNewParis(paris001);
 			DataStore.storeNewParis(paris002);
 			DataStore.storeNewParis(paris003);
-
-			APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
-			APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
+			DataStore.storeNewParis(paris004);
+			DataStore.storeNewParis(paris005);
+			DataStore.storeNewParis(paris006);
+			DataStore.storeNewParis(paris007);
+			DataStore.storeNewParis(paris008);
+			DataStore.storeNewParis(paris009);
+			DataStore.storeNewParis(paris010);
+			
+			//APIRequest.getInstance().updateScheduleRequest(Sport.NBA);
+			//APIRequest.getInstance().updateLeagueHierarchyRequest(Sport.NBA);
 			}
 
 		} else if(fct.compareTo("remove")==0) {

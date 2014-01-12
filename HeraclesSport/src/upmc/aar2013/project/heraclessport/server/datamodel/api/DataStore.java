@@ -317,13 +317,17 @@ public class DataStore {
 				return Configs.getMultTeamVict();
 		} else if(paris instanceof ParisScoreModel) {
 			ParisScoreModel parisScore = ((ParisScoreModel) paris);
+			Teams team = parisScore.getParis_team();
 			int paris_home = parisScore.getScore_team_home();
 			int paris_away = parisScore.getScore_team_away();
 			int score_home = score.getScore_res_score_home();
 			int score_away = score.getScore_res_score_away();
-			if (paris_home == score_home && paris_away == score_away)
+			//System.out.println("paris_home:"+paris_home+",paris_away:"+paris_away+",score_home:"+score_home+",score_away:"+score_away);
+			if (team == Teams.ALL && paris_home == score_home && paris_away == score_away)
 				return Configs.getMultTeamScorBoth();
-			if (paris_home == score_home || paris_away == score_away)
+			if (team == Teams.HOME && paris_home == score_home)
+				return Configs.getMultTeamScorOne();
+			if (team == Teams.AWAY && paris_away == score_away)
 				return Configs.getMultTeamScorOne();
 		} else { // pour debug, à supprimer
 			System.out.println("ERROR checkParis !!!");
