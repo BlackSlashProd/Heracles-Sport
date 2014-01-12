@@ -15,7 +15,7 @@
 	<cron>
 		<url>/cron/score</url>
 		<description>récupérations et mise à jour des scores et paris</description>
-		<schedule>every 45 minutes</schedule>
+		<schedule>every 4 hours</schedule>
 		<timezone>Europe/Paris</timezone>
 	</cron>
 	<cron>
