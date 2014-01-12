@@ -4,11 +4,6 @@ public class Configs {
 
 	private static int CONFIG_RULES_POINT_START = 30;
 	private static int CONFIG_RULES_DAILY_BONUS = 5;
-	/*
-	private static int CONFIG_RULES_PARIS_MULT_TEAM_VICT = 2;
-	private static int CONFIG_RULES_PARIS_MULT_TEAM_SCOR_ONE = 3;
-	private static int CONFIG_RULES_PARIS_MULT_TEAM_SCOR_ALL = 5;
-	*/
 	private static int CONFIG_RULES_PARIS_MULT_TEAM_VICT = 2;
 	private static int CONFIG_RULES_PARIS_MULT_TEAM_SCOR_ONE = 3;
 	private static int CONFIG_RULES_PARIS_MULT_TEAM_SCOR_BOTH = 5;

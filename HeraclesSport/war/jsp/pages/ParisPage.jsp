@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.schedules.ScheduleTeamModel" %>
+<%@ page import="upmc.aar2013.project.heraclessport.server.configs.Configs" %>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -46,7 +47,7 @@
 			                <%= sched.getSched_away_team().getTeam_name() %>
 			            </h3>
 			            <p>
-			                <b>Date : </b><%= sched.getSched_date() %><br/><br/>
+			                <b>Date : </b><%= sched.getSched_dateClean() %><br/><br/>
 			                <b>Temps restant : </b><%= sched.computeTimeLeft() %><br/><br/>
 			            </p>
 			            <% 
@@ -66,10 +67,13 @@
 					                <% if(DataStore.hasParisForUserAndSchedule(user.getUser_id(), sched.getSched_id())) { %>
 					                    <div class="fiel_clear">
 					                    <% if(request.getAttribute("form") != null && (active!=null && active.compareTo(sched.getSched_id())==0)) { %>
-                                            <p class="succes">${form.result}</p>
+                                            <p class="succes">${form.result}<br/></p>
                                         <% } else { %>
-                                            <p class="orange">Vous avez déjà parié sur cette rencontre.</p>
+                                            <p class="succes">
+                                                Vous avez déjà parié sur cette rencontre.<br/>
+                                            </p>
                                         <% } %>
+                                        <p style="text-align:center;"><a href="/histo">Consultez vos paris</a></p>
                                         </div>
 					                <% } else { %>
 					                 <% if(active!=null && active.compareTo(sched.getSched_id())==0
@@ -82,8 +86,8 @@
 					                <div class="fiel_clear">
 					                    <label for="paris_type">Type de paris</label>
 					                    <select class="paris_type" name="paris_type">
-					                       <option value="vict" selected="selected">Victoire</option>
-					                       <option value="scor">Score</option>
+					                       <option value="vict" selected="selected">Victoire (x<%= Configs.getMultTeamVict() %>)</option>
+					                       <option value="scor">Score (x<%= Configs.getMultTeamScorOne() %> ET x<%= Configs.getMultTeamScorBoth() %>)</option>
 					                    </select>
 					                </div>
 				                    <div class="paris_type_vict fiel_clear">
@@ -98,9 +102,9 @@
 				                        <div>
 					                        <label for="paris_scor_eqp">Equipe</label>
 	                                        <select class="paris_scor_eqp" name="paris_scor_eqp">
-	                                           <option value="all" selected="selected">Les deux</option>
-	                                           <option value="home"><%= sched.getSched_home_team().getTeam_name() %></option>
-	                                           <option value="away"><%= sched.getSched_away_team().getTeam_name() %></option>
+	                                           <option value="all" selected="selected">Les deux (x<%= Configs.getMultTeamScorBoth() %>)</option>
+	                                           <option value="home"><%= sched.getSched_home_team().getTeam_name() %> (x<%= Configs.getMultTeamScorOne() %>)</option>
+	                                           <option value="away"><%= sched.getSched_away_team().getTeam_name() %> (x<%= Configs.getMultTeamScorOne() %>)</option>
 	                                        </select>
                                         </div>
                                         <div class="scor_eqp_home">

@@ -119,10 +119,8 @@ public class UserModel {
 	}
 	
 	public void addUserPointsResult(int points) {
-		if(points<0 && -points>this.user_point) points = -this.user_point;
-		if(points<0) this.user_point_lost += points;
+		if(points<0) this.user_point_lost += -points;
 		else this.user_point_win += points;
-		addUserPoint(points);
 	}
     /**
 	 * @return the user_point_win

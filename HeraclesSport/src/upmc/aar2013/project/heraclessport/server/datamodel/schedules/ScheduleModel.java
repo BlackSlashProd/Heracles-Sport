@@ -1,5 +1,6 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.schedules;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,11 @@ public abstract class ScheduleModel {
 	 */
 	public Date getSched_date() {
 		return sched_date;
+	}
+	
+	public String getSched_dateClean() {
+		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
+        return dfl.format(getSched_date());
 	}
 
 	/**

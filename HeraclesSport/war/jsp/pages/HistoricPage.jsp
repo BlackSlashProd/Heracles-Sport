@@ -42,12 +42,11 @@
 				                <%=schedule.getSched_away_team().getTeam_name()%>
 				            </h3>
 				            <p>
-				                <b>Date : </b><%=schedule.getSched_date()%><br/><br/>
-	                            <b>Statut : </b>
+				                <b>Date : </b><%=schedule.getSched_dateClean() %><br/><br/>
 	                            <% if(!schedule.isSched_isStart()) { %>
-	                                 Non commencé (Temps restant : <%= schedule.computeTimeLeft() %>)
+	                            <b>Statut : </b> Non commencé (Temps restant : <%= schedule.computeTimeLeft() %>)
 	                            <% } else { %>
-	                                 En cours.
+	                            <b>Statut : </b> En cours.
 	                            <% } %>
 	                            <br/><br/>				                
 				            </p>
@@ -107,7 +106,7 @@
                                 <%=schedule.getSched_away_team().getTeam_name()%>
                             </h3>
                             <p>
-                                <b>Date : </b><%=schedule.getSched_date()%><br/><br/>
+                                <b>Date : </b><%=schedule.getSched_dateClean() %><br/><br/>
                             </p>
                             <p>
                                 <%
@@ -125,12 +124,12 @@
                                 %>
                             </p>
                             
-                            <% if(pari.isIswin()) { %>
+                            <% if(pari.getResult()>0) { %>
                                <p class="green">
-                                    Paris Gagné !<br/>
+                                    Paris Gagné (+<%= pari.getResult() %>) - Mise de départ (<%= pari.getBet() %>)<br/>
                             <% } else { %>
-                               <p class="orange">
-                                    Paris Perdu !<br/>
+                               <p class="red">
+                                    Paris Perdu (<%= pari.getResult() %>)<br/>
                             <% } %>
                             <% if (pari instanceof ParisScoreModel) { %>
                                 <b>Pari sur le score : </b> <br/>
