@@ -40,7 +40,7 @@
 			                    </div>
 			                <% } %>
 			                <div class="fiel_clear">
-			                     <a id="generate" href="#">Générer un pseudo</a>
+			                     <a id="generate" href="#" class="green">Générer un pseudo</a>
 			                </div>
 			                <div class="fiel_clear">
 				                <label for="pseudo">Pseudo</label>
