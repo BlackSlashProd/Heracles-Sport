@@ -32,6 +32,9 @@
 				           <td>Joueur</td>
 				           <td>Points</td>
 				           <td>En jeu</td>
+				           <td>Ratio (point/jour)</td>
+				           <td>Points Gagnés</td>
+				           <td>Points Perdus</td>
 				       </tr>
 			           <%
 			            List<UserModel> players = (List<UserModel>) request.getAttribute("players");
@@ -48,6 +51,9 @@
 				           <td><%= player.getUser_pseudo() %></td>
 				           <td><%= player.getUser_point() %></td>
 				           <td><%= player.getUser_ingame_point() %></td>
+				           <td><%= player.getUser_dailyRatio() %></td>
+				           <td><%= player.getUser_point_win() %></td>
+				           <td><%= player.getUser_point_lost() %></td>
 				       </tr>
 				       <% 
 				        } 
