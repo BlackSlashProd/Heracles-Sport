@@ -29,13 +29,13 @@ public abstract class ScheduleModel {
 		this.sched_sport = sched_sport.getName();
 		this.sched_date = sched_date;
 		this.sched_isFinish = sched_isFinish;
-		if(sched_date.before(new Date()))
-			this.sched_isStart = true;
+		this.sched_isStart = false;
 	}
 	
 	@OnLoad 
 	public void onLoad() {
-		
+		if(sched_date.before(new Date()))
+			this.sched_isStart = true;
 	}
 	
 	public String computeTimeLeft() {

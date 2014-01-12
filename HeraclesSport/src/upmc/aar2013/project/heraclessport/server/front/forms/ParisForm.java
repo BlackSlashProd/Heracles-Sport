@@ -39,7 +39,7 @@ public class ParisForm extends GeneralForm {
 				if (paris_vict.equals("teamhome")) team = Teams.HOME;
 				if (paris_vict.equals("teamaway")) team = Teams.AWAY;
 				ParisVictoryModel parisVictoryModel = new ParisVictoryModel(userId, sched_id, paris_bet_int, team);
-				DataStore.storeParis(parisVictoryModel);
+				DataStore.storeNewParis(parisVictoryModel);
 				setResult("Paris sur la victoire effectué.");
 			}
 			else if (paris_type.equals("scor")) {
@@ -52,7 +52,7 @@ public class ParisForm extends GeneralForm {
 					ParisScoreModel parisScoreModel = new ParisScoreModel(userId, sched_id, paris_bet_int, team);
 					parisScoreModel.setScore_team_home(paris_scor_teamhome_int);
 					parisScoreModel.setScore_team_away(paris_scor_teamaway_int);
-					DataStore.storeParis(parisScoreModel);
+					DataStore.storeNewParis(parisScoreModel);
 					setResult("Paris sur les scores effectué.");
 				} catch (NumberFormatException e) {} // Integer.parseInt
 			}  

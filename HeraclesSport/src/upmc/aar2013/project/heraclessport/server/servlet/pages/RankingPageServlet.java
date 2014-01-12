@@ -22,10 +22,14 @@ public class RankingPageServlet extends HttpServlet {
 	private static final long serialVersionUID = -4541267725137249836L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		List<UserModel> players = DataStore.getAllUsersOrderBy("user_point");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		request.setAttribute("user", user);
+		if(user != null) {
+			UserModel usermod = DataStore.getUser(user.getUserId());
+			if(usermod==null) response.sendRedirect(userService.createLogoutURL("/"));
+			request.setAttribute("user",usermod);
+		}
+		List<UserModel> players = DataStore.getAllUsersOrderBy("user_point");
 		request.setAttribute("players", players);
 		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/RankingPage.jsp");  
         dispatch.forward(request, response);

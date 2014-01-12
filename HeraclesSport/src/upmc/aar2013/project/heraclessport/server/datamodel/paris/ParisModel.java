@@ -13,6 +13,7 @@ public abstract class ParisModel {
 	@Index Key<UserModel> paris_user_key;
 	@Index Key<ScheduleModel> paris_sched_key;
 	@Index boolean finish;
+	@Index boolean iswin;
 	int bet;
 	
 	@Ignore UserModel paris_user;
@@ -30,13 +31,7 @@ public abstract class ParisModel {
 		this.paris_sched_key = DataStore.createScheduleKey(paris_sched);
 		this.bet = bet;
 		this.finish = false;
-	}
-	
-	@OnSave
-	public void onSave() {
-		UserModel user = DataStore.getUser(this.getParis_userId());
-		user.setUser_point(user.getUser_point()-this.bet);
-		DataStore.storeUser(user);
+		this.iswin = false;
 	}
 	
 	@OnLoad 
@@ -55,13 +50,27 @@ public abstract class ParisModel {
 	}
 
 	/**
+	 * @return the iswin
+	 */
+	public boolean isIswin() {
+		return iswin;
+	}
+
+	/**
+	 * @param iswin the iswin to set
+	 */
+	public void setIswin(boolean iswin) {
+		this.iswin = iswin;
+	}
+
+	/**
 	 * @param finish the finish to set
 	 */
 	public void setFinish(boolean finish) {
 		this.finish = finish;
 	}
 
-	private String getParis_schedId() {
+	public String getParis_schedId() {
 		return paris_sched_key.getRaw().getName();
 	}
 
@@ -92,7 +101,6 @@ public abstract class ParisModel {
 	public String getParis_userId() {
 		return paris_user_key.getRaw().getName();
 	}
-
 	/**
 	 * @return the paris_user
 	 */

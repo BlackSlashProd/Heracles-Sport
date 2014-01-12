@@ -9,6 +9,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     --> 
     <!-- Servlets Page -->
     <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.HomePageServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ParisPageServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.pages.ParisPageServlet</servlet-class>
     </servlet>
@@ -33,6 +37,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>DataTestServlet</servlet-name>
         <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.DataTestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerateServlet</servlet-name>
+        <servlet-class>upmc.aar2013.project.heraclessport.server.servlet.GenerateServlet</servlet-class>
+    </servlet>
     <!-- Servlets Cron -->
     <servlet>
         <servlet-name>TeamCronServlet</servlet-name>
@@ -54,6 +62,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     Mapping the servlets list 
     -->
     <!-- Servlets Page -->
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ParisPageServlet</servlet-name>
         <url-pattern>/paris</url-pattern>
@@ -78,6 +90,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
      <servlet-mapping>
         <servlet-name>DataTestServlet</servlet-name>
         <url-pattern>/datatest</url-pattern>
+    </servlet-mapping> 
+     <servlet-mapping>
+        <servlet-name>GenerateServlet</servlet-name>
+        <url-pattern>/generate</url-pattern>
     </servlet-mapping> 
     <!-- Servlets Cron -->
     <servlet-mapping>
@@ -104,10 +120,22 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	        <url-pattern>/histo</url-pattern>
 	        <url-pattern>/log</url-pattern>
 	        <url-pattern>/datatest</url-pattern>
+	        <url-pattern>/generate</url-pattern>
 	    </web-resource-collection>
 	    <auth-constraint>
 	        <role-name>*</role-name>
 	    </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <!-- cron -->
+            <url-pattern>/cron/*</url-pattern>
+            <!-- debug -->
+            <url-pattern>/datatest</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
     </security-constraint>
     <!-- Objectify -->
     <filter>
@@ -118,15 +146,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	    <filter-name>ObjectifyFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<!-- cron -->
-	<security-constraint>
-		<web-resource-collection>
-			<url-pattern>/cron/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
     <!-- Default Welcome File -->
     <welcome-file-list>
         <welcome-file>jsp/pages/HomePage.jsp</welcome-file>

@@ -22,14 +22,17 @@
 			<section>
 			    <h2>Rencontres à venir</h2>
 			    <p>
-			        Liste des rencontres sur lesquelles miser.<br/> 
-			        <% 
-			           UserModel user = (UserModel)request.getAttribute("user");
-			           if(user != null) { %>
-			           Mise disponible : <%= user.getUser_point() %><br/>
-			        <% } %>
-			        <br/>
+			        Liste des rencontres sur lesquelles miser.<br/><br/>
 			    </p>
+                <% 
+                   UserModel user = (UserModel)request.getAttribute("user");
+                   if(user != null) { %>
+                   <div class="user_zone">
+                   <p>
+                        <b class="orange"> Mise disponible :</b> <b class="green"><%= user.getUser_point() %></b><br/>
+                   </p>
+                   </div>
+                <% } %>
 			    <div class="schedules">
 			        <%
 			        List<ScheduleTeamModel> scheds = (List<ScheduleTeamModel>) request.getAttribute("schedules");

@@ -49,18 +49,7 @@ public class ResultScoreModel extends ResultModel {
 	/**
 	 * @return the winner team object
 	 */
-	public TeamModel getWinner() {
-		if(this.getScore_res_score_home()>this.getScore_res_score_away()) 
-			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
-		else if(this.getScore_res_score_home()<this.getScore_res_score_away())
-			return ((ScheduleTeamModel)getRes_sched()).getSched_home_team();
-		return null;
-	}
-	
-	/**
-	 * @return the winner team enum
-	 */
-	public Teams getWinner2() {
+	public Teams getWinner() {
 		if(this.getScore_res_score_home()>this.getScore_res_score_away()) 
 			return Teams.HOME;
 		else if(this.getScore_res_score_home()<this.getScore_res_score_away())

@@ -44,8 +44,12 @@ $(document).ready(function(){
     		}
     		return false;
     	});
-        $('html, body').animate({  
-            scrollTop:$(".active").offset().top-200
-        }, 'slow');
+    	var $active = $('.active');
+
+    	    if($active.length) {
+		        $('html, body').animate({  
+		            scrollTop:$active.offset().top-200
+		        }, 'slow');
+    	    }
 });
 

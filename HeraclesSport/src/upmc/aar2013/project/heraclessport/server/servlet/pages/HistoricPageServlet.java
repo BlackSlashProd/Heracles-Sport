@@ -29,9 +29,11 @@ public class HistoricPageServlet extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if(user != null) {
-			List<ParisModel> paris = DataStore.getAllTeamParisByUser(user.getUserId(), false);
+			List<ParisModel> parisNotFinish = DataStore.getAllTeamParisByUser(user.getUserId(), false);
+			List<ParisModel> parisFinish = DataStore.getAllTeamParisByUser(user.getUserId(), true);
 			request.setAttribute("user", DataStore.getUser(user.getUserId()));
-			request.setAttribute("paris", paris);
+			request.setAttribute("parisNotFinish", parisNotFinish);
+			request.setAttribute("parisFinish", parisFinish);
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HistoricPage.jsp");  
         dispatch.forward(request, response);

@@ -34,13 +34,15 @@ public class ConnectServlet extends HttpServlet {
 				DataStore.storeUser(usermod);
 			}
 		}		
-		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HomePage.jsp");  
-        dispatch.forward(request, response);
+		/*RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HomePage.jsp");  
+        dispatch.forward(request, response);*/
+		response.sendRedirect("/");
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HomePage.jsp");  
-        dispatch.forward(request, response);
+		/*RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/HomePage.jsp");  
+        dispatch.forward(request, response);*/
+		response.sendRedirect("/");
 	}
 }

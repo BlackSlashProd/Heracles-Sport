@@ -30,12 +30,14 @@ public class ParisPageServlet extends HttpServlet {
 	private static final long serialVersionUID = -4541267725137249836L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		List<ScheduleTeamModel> schedules = DataStore.getAllTeamSchedulesByFinish("sched_date", false);
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		if(user != null) {
-			request.setAttribute("user",DataStore.getUser(user.getUserId()));
-		}
+			UserModel usermod = DataStore.getUser(user.getUserId());
+			if(usermod==null) response.sendRedirect(userService.createLogoutURL("/"));
+			request.setAttribute("user",usermod);
+		}		
+		List<ScheduleTeamModel> schedules = DataStore.getAllTeamSchedulesNotStarted("sched_date");
 		request.setAttribute("schedules", schedules);
 		RequestDispatcher dispatch = request.getRequestDispatcher("jsp/pages/ParisPage.jsp");  
         dispatch.forward(request, response);
@@ -45,14 +47,16 @@ public class ParisPageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		
+		if(user != null) {
+			UserModel usermod = DataStore.getUser(user.getUserId());
+			if(usermod==null) response.sendRedirect(userService.createLogoutURL("/"));
+			request.setAttribute("user",usermod);
+		}
 		List<ScheduleTeamModel> schedules = DataStore.getAllTeamSchedulesByFinish("sched_date", false);
 		String active = request.getParameter("sched_id");
 		request.setAttribute("active", active);
 		request.setAttribute("schedules", schedules);
-		
 		if(user != null) {
-			request.setAttribute("user",DataStore.getUser(user.getUserId()));
 			ParisForm parisform = new ParisForm();
 			parisform.createParis(request, user.getUserId());
 			request.setAttribute(JSP_VAR_FORM, parisform);

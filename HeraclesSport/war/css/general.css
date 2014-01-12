@@ -7,6 +7,7 @@
 a {
 	color:#FF6600;
 	text-decoration:none;
+	font-weight:bold;
 }
 a:hover {
 	color:#66FF00;
@@ -16,6 +17,9 @@ ul {
 }
 ul li {
 	float:left;
+}
+.green {
+	color:#33FF33;
 }
 .orange {
 	color:#FF6600;
@@ -123,6 +127,12 @@ section h3 {
 }
 footer {
 	height:20px;
+}
+.user_zone {
+    margin: 10px 0;
+    padding: 10px 0;
+    border-top: 5px solid #33FF33;
+    border-bottom: 5px solid #33FF33;
 }
 /*
 * Forms

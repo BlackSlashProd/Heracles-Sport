@@ -11,6 +11,8 @@
         <link rel="icon" type="image/png" href="images/style/favicon.png" />
         <link rel="stylesheet" href="css/general.css" type="text/css" />
         <link rel="stylesheet" href="css/account.css" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/script_account.js"></script>
     </head>
     <body>
         <div id="page">
@@ -23,7 +25,7 @@
 			        <p>
 			            <b>Compte Google :</b> <%= ((UserModel)request.getAttribute("user")).getUser_name()  %> <br/>
 			            <b>Mail Google :</b> <%= ((UserModel)request.getAttribute("user")).getUser_mail()  %> <br/>
-			            <b>Date création compte :</b> <%= ((UserModel)request.getAttribute("user")).getUser_creation()  %> <br/>
+			            <b>Date création compte :</b> <%= ((UserModel)request.getAttribute("user")).getUser_creationDateClean()  %> <br/>
 			            <b>Pseudonyme :</b> <%= ((UserModel)request.getAttribute("user")).getUser_pseudo()  %> <br/>
 			            <b>User Point :</b> <%= ((UserModel)request.getAttribute("user")).getUser_point()  %> <br/>
 			            <br/>
@@ -37,6 +39,9 @@
 			                        <p class="${empty form.errors ? 'succes' : 'error'}">${form.result}</p>
 			                    </div>
 			                <% } %>
+			                <div class="fiel_clear">
+			                     <a id="generate" href="#">Générer un pseudo</a>
+			                </div>
 			                <div class="fiel_clear">
 				                <label for="pseudo">Pseudo</label>
 				                <input type="text" id="pseudo" name="pseudo" value="<%= ((UserModel)request.getAttribute("user")).getUser_pseudo()%>" size="20" maxlength="20" />

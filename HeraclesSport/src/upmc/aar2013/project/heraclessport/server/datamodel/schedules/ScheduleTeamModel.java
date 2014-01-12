@@ -29,6 +29,7 @@ public class ScheduleTeamModel extends ScheduleModel {
 	
 	@OnLoad
 	public void onLoad() {
+		super.onLoad();
 		TeamModel teamHome = DataStore.getTeam(getSched_home_team_id());
 		if(teamHome!=null) this.sched_home_team = teamHome;
 		TeamModel teamAway = DataStore.getTeam(getSched_away_team_id());

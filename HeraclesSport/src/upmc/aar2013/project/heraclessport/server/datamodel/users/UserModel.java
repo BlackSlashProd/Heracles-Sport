@@ -1,5 +1,6 @@
 package upmc.aar2013.project.heraclessport.server.datamodel.users;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class UserModel {
     String user_mail;
     Date user_creation;
     @Index int user_point;
+    @Index int user_point_win;
+	@Index int user_point_lost;
     
 	@SuppressWarnings("unused")
 	private UserModel() {}
@@ -32,7 +35,9 @@ public class UserModel {
 		this.user_mail = user_mail;
 		this.user_pseudo = user_name;
     	this.user_creation = new Date();
-    	this.user_point = Configs.getStartPoint();		
+    	this.user_point = Configs.getStartPoint();	
+    	this.user_point_win = 0;
+    	this.user_point_lost = 0;
 	}
 	
 	@OnLoad
@@ -79,8 +84,22 @@ public class UserModel {
 	/**
 	 * @return the user_creation
 	 */
-	public Date getUser_creation() {
+	private Date getUser_creation() {
 		return user_creation;
+	}
+	private int getUser_numberOfDay() {
+		long diff = getUser_creation().getTime()-(new Date()).getTime();
+		return (int)(diff/(1000*60*60*24));
+	}
+	public float getUser_dailyRatio() {
+		float ratio = (float)getUser_point_win()-(float)getUser_point_lost();
+		int nbdays = getUser_numberOfDay();
+		if(nbdays>0) ratio /= (float)nbdays;
+		return ratio;
+	}
+	public String getUser_creationDateClean() {
+		DateFormat dfl = DateFormat.getDateInstance(DateFormat.FULL);
+        return dfl.format(getUser_creation());
 	}
 	/**
 	 * @param user_creation the user_creation to set
@@ -94,15 +113,28 @@ public class UserModel {
 	public int getUser_point() {
 		return user_point;
 	}
-	/**
-	 * @param user_point the user_point to set
-	 */
-	public void setUser_point(int user_point) {
-		this.user_point = user_point;
+	public void addUserPoint(int points) {
+		if(points<0 && -points>this.user_point) points = -this.user_point;
+		this.user_point += points;
 	}
 	
-	public void addUser_point(int toadd) {
-		this.user_point += toadd;
+	public void addUserPointsResult(int points) {
+		if(points<0 && -points>this.user_point) points = -this.user_point;
+		if(points<0) this.user_point_lost += points;
+		else this.user_point_win += points;
+		addUserPoint(points);
+	}
+    /**
+	 * @return the user_point_win
+	 */
+	public int getUser_point_win() {
+		return user_point_win;
+	}
+	/**
+	 * @return the user_point_lost
+	 */
+	public int getUser_point_lost() {
+		return user_point_lost;
 	}
 	/**
 	 * @return the user_ingame_point

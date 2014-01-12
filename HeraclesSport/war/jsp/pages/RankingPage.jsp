@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="upmc.aar2013.project.heraclessport.server.datamodel.users.UserModel" %>
-<%@ page import="com.google.appengine.api.users.User" %>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -20,7 +19,7 @@
 			    <p>
 			        Classement de tous les joueurs.<br/> 
 			        <% 
-			           User user = (User)request.getAttribute("user");
+			           UserModel user = (UserModel)request.getAttribute("user");
 			           if(user != null) { %>
 			            <a href="#me">Accéder directement à votre place.</a><br/>
 			        <% } %>
@@ -38,7 +37,7 @@
 			            List<UserModel> players = (List<UserModel>) request.getAttribute("players");
 				        int place = 1;
 				        for (UserModel player : players) {
-				        	if(user!=null && (user.getUserId().compareTo(player.getUser_id())==0)) {
+				        	if(user!=null && (user.getUser_id().compareTo(player.getUser_id())==0)) {
 				       %>
 				       <tr id="me">
 				       <%   }

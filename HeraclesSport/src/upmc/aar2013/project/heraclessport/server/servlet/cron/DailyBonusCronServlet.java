@@ -24,7 +24,7 @@ public class DailyBonusCronServlet extends HttpServlet {
 		System.out.println("appel de la servlet cron DailyBonus");
 		List<UserModel> users = DataStore.getAllUsers();
 		for (UserModel user : users) {
-			user.addUser_point(Configs.getDailyPoint());
+			user.addUserPoint(Configs.getDailyPoint());
 			DataStore.storeUser(user);
 		}
 	}

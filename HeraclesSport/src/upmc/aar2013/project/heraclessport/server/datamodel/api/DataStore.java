@@ -119,6 +119,14 @@ public class DataStore {
 		Collections.reverse(res);
 		return res;
 	}
+	public static List<ScheduleTeamModel> getAllTeamSchedulesNotStarted(String order) {
+		List<ScheduleTeamModel> res = new ArrayList<ScheduleTeamModel>();
+		for(ScheduleTeamModel stm : getAllTeamSchedulesByFinish(order,false)) {
+			if(!stm.isSched_isStart())
+				res.add(stm);
+		}
+		return res;
+	}
 	public static void storeSchedule(ScheduleModel sched) {
 		ofy().save().entity(sched).now();
 	}
@@ -143,6 +151,14 @@ public class DataStore {
 	 */
 	public static void storeParis(ParisModel mod) {
 		ofy().save().entity(mod).now();
+	}
+	public static void storeNewParis(ParisModel paris) {
+		if(!hasParisForUserAndSchedule(paris.getParis_userId(),paris.getParis_schedId())){
+			UserModel user = getUser(paris.getParis_userId());
+			user.addUserPoint(-paris.getBet());
+			storeUser(user);
+			storeParis(paris);
+		}
 	}
 	private static List<ParisScoreModel> getAllScoreParis() {
 		return ofy().load().type(ParisScoreModel.class).list();
@@ -216,52 +232,56 @@ public class DataStore {
 		}
 		return result;
 	}
-	
 	/*
 	 * Tools Methods
 	 */
 	public static void updateSchedule(String schedId, ResultScoreModel score) {
 		ScheduleModel schedule = DataStore.getSchedule(schedId);
-
-		if(schedule instanceof ScheduleTeamModel) {
-			List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
-			List<UserModel> winnersParis = new ArrayList<UserModel>();
-			Map<String, Integer> winnerBetValues = new HashMap<String, Integer>();
-			int cumulLoosers = 0, cumulWinners = 0, benefitMult = 0;
-			
-			for(ParisModel paris : teamParis) {
-				benefitMult = checkParis(paris, score);
-				int bet = paris.getBet();
-				if(benefitMult!=0) {
-					UserModel user = paris.getParis_user();
-					winnersParis.add(user);
-					winnerBetValues.put(user.getUser_id(), bet);
-					cumulWinners += bet;
-				} else
-					cumulLoosers += bet;
+		if(!schedule.isSched_isFinish()) {
+			if(schedule instanceof ScheduleTeamModel) {
+				List<ParisModel> teamParis = getAllTeamParisBySchedule(schedId);
+				List<UserModel> winnersParis = new ArrayList<UserModel>();
+				Map<String, Integer> winnerBetValues = new HashMap<String, Integer>();
+				int cumulLoosers = 0, cumulWinners = 0, benefitMult = 0;
 				
-				paris.setFinish(true); // peut etre inutile
-				DataStore.storeParis(paris);
+				for(ParisModel paris : teamParis) {
+					benefitMult = checkParis(paris, score);
+					int bet = paris.getBet();
+					if(benefitMult!=0) {
+						paris.setIswin(true);
+						UserModel user = paris.getParis_user();
+						winnersParis.add(user);
+						winnerBetValues.put(user.getUser_id(), bet);
+						cumulWinners += bet;
+					} else
+						cumulLoosers += bet;
+					
+					paris.setFinish(true);
+					DataStore.storeParis(paris);
+				}
+	
+				for(UserModel user : winnersParis) {
+					int bet = winnerBetValues.get(user.getUser_id());
+					int winnerBetsPartPercent = bet/cumulWinners;
+					int winnerPart = winnerBetsPartPercent*cumulLoosers;
+					user.addUserPointsResult((benefitMult*(bet + winnerPart)));
+					DataStore.storeUser(user);
+				}
+				
+				schedule.setSched_isFinish(true);
+				DataStore.storeSchedule(schedule);
+			} else {
+				System.out.println("ERROR updateSchedule : Type of schedule unknow.");
 			}
-
-			for(UserModel user : winnersParis) {
-				int bet = winnerBetValues.get(user.getUser_id());
-				int winnerBetsPartPercent = bet/cumulWinners;
-				int winnerPart = winnerBetsPartPercent*cumulLoosers;
-				user.addUser_point(benefitMult*(bet + winnerPart));
-				DataStore.storeUser(user);
-			}
-			
-			schedule.setSched_isFinish(true); // peut etre inutile
-			DataStore.storeSchedule(schedule);
-		} else { // pour debug, à supprimer
-			System.out.println("ERROR updateSchedule!!!");
+		}
+		else {
+			System.out.println("ERROR updateSchedule : Schedule is up to date.");
 		}
 	}
 	
 	public static int checkParis(ParisModel paris, ResultScoreModel score) {
 		if(paris instanceof ParisVictoryModel) {
-			Teams winner = score.getWinner2(); // attention au nom de methode pourri !!!
+			Teams winner = score.getWinner();
 			Teams bet = ((ParisVictoryModel)paris).getTeam();
 			if (winner==bet)
 				return Configs.getMultTeamVict();
