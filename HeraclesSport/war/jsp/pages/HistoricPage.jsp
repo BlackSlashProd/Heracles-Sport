@@ -50,6 +50,7 @@
 	                            <% } %>
 	                            <br/>
 	                            <b>A se partager : </b><b class="orange"><%= schedule.getTotalBets() %></b>
+	                            <b>Votre mise : </b><b class="orange"><%= pari.getBet() %></b>
 	                            <br/><br/>			                
 				            </p>
 				            <p>
@@ -111,6 +112,7 @@
                                 <b>Date : </b><%=schedule.getSched_dateClean() %>
                                 <br/>
                                 <b>Bonus partagé : </b><b class="orange"><%= schedule.getTotalBets() %></b>
+                                <b>Votre mise : </b><b class="orange"><%= pari.getBet() %></b>
                                 <br/><br/>
                             </p>
                             <p>

@@ -161,7 +161,12 @@ public class UserModel {
 		}
 		return user_ingame_point;
 	}
-
+	/**
+	 * 
+	 */
+	public int getUser_totalVict(boolean win) {
+		return DataStore.getCountResultParis(this.user_id, win);
+	}
 	/**
 	 * @return the user_id
 	 */

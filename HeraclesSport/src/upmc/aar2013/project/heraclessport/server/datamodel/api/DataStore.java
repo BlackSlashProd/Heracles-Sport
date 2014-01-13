@@ -166,6 +166,20 @@ public class DataStore {
 	private static List<ParisVictoryModel> getAllVictoryParis() {
 		return ofy().load().type(ParisVictoryModel.class).list();
 	}
+	public static int getCountResultParis(String userId, boolean win) {
+		List<ParisScoreModel> scores = getAllScoreParisByUser(userId, true);
+		List<ParisVictoryModel> victs = getAllVictoryParisByUser(userId, true);
+		int count = 0;
+		for(ParisScoreModel score : scores) {
+			if(win && score.getResult()>0) count++;
+			if(!win && score.getResult()<0) count++;
+		}
+		for(ParisVictoryModel vict : victs) {
+			if(win && vict.getResult()>0) count++;
+			if(!win && vict.getResult()<0) count++;
+		}
+		return count;
+	}
 	public static List<ParisScoreModel> getAllScoreParisBySchedule(String schedId) {
 		Key<ScheduleModel> schedKey = createScheduleKey(schedId);
 		return ofy().load().type(ParisScoreModel.class).filter("paris_sched_key", schedKey).list();
@@ -270,7 +284,7 @@ public class DataStore {
 				for(ParisModel paris : winnersVictoryParis) {
 					benefitMult = checkParis(paris, score);
 					float bet = paris.getBet();
-					float winnerBetsPartPercent = 100f;
+					float winnerBetsPartPercent = 1f;
 					if (cumulVictoryWinners!=0f)
 						winnerBetsPartPercent = bet/cumulVictoryWinners;
 					float winnerPart = winnerBetsPartPercent*cumulVictoryLoosers;
@@ -282,7 +296,7 @@ public class DataStore {
 				for(ParisModel paris : winnersScoreParis) {
 					benefitMult = checkParis(paris, score);
 					float bet = paris.getBet();
-					float winnerBetsPartPercent = 100f;
+					float winnerBetsPartPercent = 1f;
 					if (cumulScoreWinners!=0f)
 						winnerBetsPartPercent = bet/cumulScoreWinners;
 					float winnerPart = winnerBetsPartPercent*cumulScoreLoosers;

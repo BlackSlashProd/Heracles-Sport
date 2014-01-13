@@ -35,6 +35,8 @@
 				           <td>Ratio (point/jour)</td>
 				           <td>Points Gagnés</td>
 				           <td>Points Perdus</td>
+				           <td>Paris Gagnés</td>
+				           <td>Paris Perdus</td>
 				       </tr>
 			           <%
 			            List<UserModel> players = (List<UserModel>) request.getAttribute("players");
@@ -54,6 +56,8 @@
 				           <td><%= player.getUser_dailyRatio() %></td>
 				           <td><%= player.getUser_point_win() %></td>
 				           <td><%= player.getUser_point_lost() %></td>
+				           <td><%= player.getUser_totalVict(true) %></td>
+				           <td><%= player.getUser_totalVict(false) %></td>
 				       </tr>
 				       <% 
 				        } 

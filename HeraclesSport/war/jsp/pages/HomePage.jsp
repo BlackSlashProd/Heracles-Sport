@@ -70,6 +70,10 @@
 				                <b class="orange">Points disponibles : </b><b class="green"><%= user.getUser_point() %></b><br/>
 				                <b class="orange">Point en jeux : </b><b class="green"><%= user.getUser_ingame_point() %></b><br/>
 				                <b class="orange">Ratio (Point/Jour) : </b><b class="green"><%= user.getUser_dailyRatio() %></b><br/>
+				                <b class="orange">Total points gagnés : </b><b class="green"><%= user.getUser_point_win() %></b><br/>
+                                <b class="orange">Total points perdus : </b><b class="green"><%= user.getUser_point_lost() %></b><br/>
+                                <b class="orange">Paris gagnés : </b><b class="green"><%= user.getUser_totalVict(true) %></b><br/>
+                                <b class="orange">Paris perdus : </b><b class="green"><%= user.getUser_totalVict(false) %></b><br/>
 				                <br/><br/>
 				            </p>
 				            <% if(userService.isUserAdmin()) { %>
