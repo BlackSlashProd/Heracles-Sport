@@ -6,6 +6,10 @@
 <b>Suau Therry (2405893)</b><br/>
 
 <h2>Important</h2>
+<h3>Quotas Google App Engine</h3>
+Nous nous sommes apercu que le site devenait inopérationel lorsque que nous atteignons les limites de requêtes en lecture dans le DataStore fixées par Google App Engine en compte gratuit.
+Pour pallier à çà nous n'avons pas de solution, il faut attendre que les quotas soient remis à zéro.
+
 <h3>Requêtes à l'API</h3>
 Afin de ne pas avoir à attendre les tâches Cron chargées de récupérer les rencontres, vous pouvez récupérer, en plus des données de tests disponibles, de véritables rencontre grâce à cette procédure :
 - Se connecter en admin
