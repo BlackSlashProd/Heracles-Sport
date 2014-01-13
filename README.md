@@ -21,3 +21,5 @@ Afin de ne pas avoir à attendre les tâches Cron chargées de récupérer les r
 <b>Application URL : </b> <a href="http://heracles-sport.appspot.com/" target="_blank">heracles-sport</a><br/>
 
 <b>GEA Project URL : </b> <a href="https://appengine.google.com/dashboard?app_id=s~heracles-sport" target="_blank">googleappengine-heracles-sport-project</a><br/>
+
+<b>Soutenances PDF URL : </b> <a href="https://github.com/BlackSlashProd/Heracles-Sport/blob/master/HeraclesSport/doc/soutenances_aar_barbier_suau.pdf" target="_blank">SoutenancesBarbierSuau.pdf</a><br/>
